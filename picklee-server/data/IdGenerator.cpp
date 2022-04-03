@@ -6,15 +6,9 @@
 
 
 IdGenerator::IdGenerator()
-    : IdGenerator(0, 0, 0)
-{
-}
-
-
-IdGenerator::IdGenerator(int oper, int client, int warehouse)
-    : _oper(oper),
-      _client(client),
-      _warehouse(warehouse)
+    : _oper(0),
+      _client(0),
+      _warehouse(0)
 {
 }
 
@@ -45,6 +39,14 @@ QString IdGenerator::generateOrder(const Operator& oper, const Customer& custome
     result += QDateTime::currentDateTime().toString(*dateTimeFormat);
 
     return result;
+}
+
+
+void IdGenerator::reset(int oper, int client, int warehouse)
+{
+    _oper = oper;
+    _client = client;
+    _warehouse = warehouse;
 }
 
 
