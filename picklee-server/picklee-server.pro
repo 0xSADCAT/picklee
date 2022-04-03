@@ -3,11 +3,22 @@ QT += core gui widgets
 CONFIG += c++17
 
 SOURCES += \
+    data/IdGenerator.cpp \
+    data/Order.cpp \
+    data/Person.cpp \
+    data/Product.cpp \
+    data/Warehouse.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
-    MainWindow.hpp
+    MainWindow.hpp \
+    data/Constants.hpp \
+    data/IdGenerator.hpp \
+    data/Order.hpp \
+    data/Person.hpp \
+    data/Product.hpp \
+    data/Warehouse.hpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
