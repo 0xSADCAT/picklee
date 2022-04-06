@@ -42,7 +42,7 @@ void Warehouse::deliver(const ProductCount& product)
 {
     assert(product.count() > 0);
 
-    auto iter = std::find(_products.begin(), _products.end(), [&](const ProductCount& each) {
+    auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) {
         return each.code() == product.code();
     });
 
@@ -58,7 +58,7 @@ bool Warehouse::fetch(const ProductCount& product)
 {
     assert(product.count() > 0);
 
-    auto iter = std::find(_products.begin(), _products.end(), [&](const ProductCount& each) {
+    auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) {
         return each.code() == product.code();
     });
 
@@ -80,7 +80,7 @@ bool Warehouse::canFetch(const ProductCount& product) const
 {
     assert(product.count() > 0);
 
-    auto iter = std::find(_products.begin(), _products.end(), [&](const ProductCount& each) {
+    auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) {
         return each.code() == product.code();
     });
 
