@@ -76,10 +76,9 @@ int Operator::id() const
 }
 
 
-Customer::Customer(int id, const Person& name, const QDate& dateOfBirth)
+Customer::Customer(int id, const Person& name)
     : _id(id),
-      _name(name),
-      _dateOfBirth(dateOfBirth)
+      _name(name)
 {
 }
 
@@ -99,16 +98,4 @@ const Person& Customer::name() const
 void Customer::setName(const Person& newName)
 {
     _name = newName;
-}
-
-
-const QDate& Customer::dateOfBirth() const
-{
-    return _dateOfBirth;
-}
-
-
-void Customer::setDateOfBirth(const QDate& newDateOfBirth)
-{
-    _dateOfBirth = newDateOfBirth;
 }

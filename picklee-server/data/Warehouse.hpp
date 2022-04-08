@@ -2,14 +2,14 @@
 
 #include "Product.hpp"
 
-#include <QList>
 #include <QString>
+#include <vector>
 
 
 class Warehouse
 {
 public:
-    Warehouse(int priority, const QString& description);
+    Warehouse(int id, int priority, const QString& description);
 
     int priority() const;
     void setPriority(int newPriority);
@@ -18,7 +18,7 @@ public:
     void setDescription(const QString& newDescription);
 
     /// Состав склада (только для чтения)
-    const QList<ProductCount>& products() const;
+    const std::vector<ProductCount>& products() const;
 
     /**
      * @brief Поставить продукт на склад
@@ -46,9 +46,11 @@ public:
      */
     bool canFetch(const ProductCount& product) const;
 
-private:
-    int _priority;                 ///< Приоритет
-    QString _description;          ///< Описание
-    QList<ProductCount> _products; ///< Состав склада
-};
+    int id() const;
 
+private:
+    int _id;                             ///< Идентификатор
+    int _priority;                       ///< Приоритет
+    QString _description;                ///< Описание
+    std::vector<ProductCount> _products; ///< Состав склада
+};

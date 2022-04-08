@@ -1,8 +1,9 @@
 #include "Warehouse.hpp"
 
 
-Warehouse::Warehouse(int priority, const QString& description)
-    : _priority(priority),
+Warehouse::Warehouse(int id, int priority, const QString& description)
+    : _id(id),
+      _priority(priority),
       _description(description)
 {
 }
@@ -32,7 +33,7 @@ void Warehouse::setDescription(const QString& newDescription)
 }
 
 
-const QList<ProductCount>& Warehouse::products() const
+const std::vector<ProductCount>& Warehouse::products() const
 {
     return _products;
 }
@@ -47,7 +48,7 @@ void Warehouse::deliver(const ProductCount& product)
     });
 
     if (iter == _products.end()) {
-        _products.append(product);
+        _products.push_back(product);
     } else {
         iter->countRef() += product.count();
     }
@@ -89,4 +90,10 @@ bool Warehouse::canFetch(const ProductCount& product) const
     } else {
         return iter->count() >= product.count();
     }
+}
+
+
+int Warehouse::id() const
+{
+    return _id;
 }

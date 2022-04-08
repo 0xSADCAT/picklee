@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QDate>
 #include <QString>
 
 
@@ -55,18 +54,14 @@ private:
 class Customer
 {
 public:
-    Customer(int id, const Person& name, const QDate& dateOfBirth);
+    Customer(int id, const Person& name);
 
     int id() const;
 
     const Person& name() const;
     void setName(const Person& newName);
 
-    const QDate& dateOfBirth() const;
-    void setDateOfBirth(const QDate& newDateOfBirth);
-
 private:
     int _id;
     Person _name;
-    QDate _dateOfBirth;
 };

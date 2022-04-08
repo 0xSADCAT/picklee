@@ -1,7 +1,7 @@
 #include "Order.hpp"
 
 
-Order::Order(const QString& id, int operId, int customerId, const QList<ProductCount> products, Status status)
+Order::Order(const QString& id, int operId, int customerId, const std::vector<ProductCount> products, Status status)
     : _id(id),
       _operId(operId),
       _customerId(customerId),
@@ -17,7 +17,7 @@ const QString& Order::id() const
 }
 
 
-const QList<ProductCount>& Order::products() const
+const std::vector<ProductCount>& Order::products() const
 {
     return _products;
 }
