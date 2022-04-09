@@ -1,12 +1,12 @@
 #pragma once
 
-#include <QWidget>
+#include <QtWidgets>
 
 class MainWindow : public QWidget
 {
-    Q_OBJECT
+    Q_OBJECT;
 
-        public:
-                 MainWindow(QWidget *parent = nullptr);
+public:
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 };

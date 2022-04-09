@@ -1,5 +1,8 @@
 #include "Product.hpp"
 
+#include "Constants.hpp"
+#include "Convertor.hpp"
+
 
 VendorCode::VendorCode(const QString& code)
     : _str(code)
@@ -56,6 +59,15 @@ void ProductDescription::setDescription(const QString& newDescription)
 }
 
 
+void ProductDescription::convert(Convertor& convertor) const
+{
+    convertor.beginBlock(className);
+    convertor.field(VendorCode::className, _code.str());
+    convertor.field(fn::description, _description);
+    convertor.endBlock(className);
+}
+
+
 ProductCount::ProductCount(const VendorCode& code, int count)
     : _code(code),
       _count(count)
@@ -90,4 +102,13 @@ void ProductCount::setCount(int newCount)
 int& ProductCount::countRef()
 {
     return _count;
+}
+
+
+void ProductCount::convert(Convertor& convertor) const
+{
+    convertor.beginBlock(className);
+    convertor.field(VendorCode::className, _code.str());
+    convertor.field(fn::count, QString::number(_count));
+    convertor.endBlock(className);
 }

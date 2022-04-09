@@ -1,5 +1,8 @@
 #include "Warehouse.hpp"
 
+#include "Constants.hpp"
+#include "Convertor.hpp"
+
 
 Warehouse::Warehouse(int id, int priority, const QString& description)
     : _id(id),
@@ -96,4 +99,21 @@ bool Warehouse::canFetch(const ProductCount& product) const
 int Warehouse::id() const
 {
     return _id;
+}
+
+
+void Warehouse::convert(Convertor& conv)
+{
+    conv.beginBlock(className);
+    conv.field(fn::id, QString::number(_id));
+    conv.field(fn::priority, QString::number(_priority));
+    conv.field(fn::description, _description);
+
+    conv.beginBlock(_products.data()->className);
+    for (auto&& prod : _products) {
+        prod.convert(conv);
+    }
+    conv.endBlock(_products.data()->className);
+
+    conv.endBlock(className);
 }

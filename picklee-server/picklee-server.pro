@@ -3,6 +3,7 @@ QT += core gui widgets
 CONFIG += c++17
 
 SOURCES += \
+    data/Convertor.cpp \
     data/DataBase.cpp \
     data/Filter.cpp \
     data/IdGenerator.cpp \
@@ -16,6 +17,7 @@ SOURCES += \
 HEADERS += \
     MainWindow.hpp \
     data/Constants.hpp \
+    data/Convertor.hpp \
     data/DataBase.hpp \
     data/Filter.hpp \
     data/I_DataBase.hpp \

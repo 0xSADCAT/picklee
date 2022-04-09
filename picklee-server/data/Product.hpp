@@ -3,10 +3,15 @@
 #include <QString>
 
 
+class Convertor;
+
+
 /// Артикул
 class VendorCode
 {
 public:
+    static inline const QString className = "VendorCode";
+
     VendorCode(const QString& code);
 
     QString str() const;
@@ -24,6 +29,8 @@ bool operator!=(const VendorCode& left, const VendorCode& right);
 class ProductDescription
 {
 public:
+    static inline const QString className = "ProductDescription";
+
     ProductDescription(const VendorCode& code, const QString& description);
 
     const VendorCode& code() const;
@@ -31,6 +38,8 @@ public:
 
     const QString& description() const;
     void setDescription(const QString& newDescription);
+
+    void convert(Convertor& convertor) const;
 
 private:
     VendorCode _code;
@@ -42,6 +51,8 @@ private:
 class ProductCount
 {
 public:
+    static inline const QString className = "ProductCount";
+
     ProductCount(const VendorCode& code, int count);
 
     const VendorCode& code() const;
@@ -51,6 +62,8 @@ public:
     void setCount(int newCount);
 
     int& countRef();
+
+    void convert(Convertor& convertor) const;
 
 private:
     VendorCode _code;

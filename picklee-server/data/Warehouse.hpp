@@ -6,9 +6,14 @@
 #include <vector>
 
 
+class Convertor;
+
+
 class Warehouse
 {
 public:
+    static inline const QString className = "Warehouse";
+
     Warehouse(int id, int priority, const QString& description);
 
     int priority() const;
@@ -47,6 +52,8 @@ public:
     bool canFetch(const ProductCount& product) const;
 
     int id() const;
+
+    void convert(Convertor& conv);
 
 private:
     int _id;                             ///< Идентификатор

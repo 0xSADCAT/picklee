@@ -1,5 +1,8 @@
 #include "Order.hpp"
 
+#include "Constants.hpp"
+#include "Convertor.hpp"
+
 
 Order::Order(const QString& id, int operId, int customerId, const std::vector<ProductCount> products, Status status)
     : _id(id),
@@ -47,4 +50,41 @@ Order::Status Order::status() const
 void Order::setStatus(Status newStatus)
 {
     _status = newStatus;
+}
+
+
+void Order::convert(Convertor& convertor) const
+{
+    QString status;
+    switch (_status) {
+    case Status::InProcessing:
+        status = "InProcessing";
+        break;
+
+    case Status::Issued:
+        status = "Issued";
+        break;
+
+    case Status::ReadyToIssue:
+        status = "ReadyToIssue";
+        break;
+
+    case Status::WaitingForDelivery:
+        status = "WaitingForDelivery";
+        break;
+    }
+
+    convertor.beginBlock(className);
+    convertor.field(fn::id, _id);
+    convertor.field(fn::operId, QString::number(_operId));
+    convertor.field(fn::customerId, QString::number(_customerId));
+    convertor.field(fn::status, status);
+
+    convertor.beginBlock(_products.data()->className);
+    for (auto&& prod : _products) {
+        prod.convert(convertor);
+    }
+    convertor.endBlock(_products.data()->className);
+
+    convertor.endBlock(className);
 }

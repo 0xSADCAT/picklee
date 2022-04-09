@@ -7,10 +7,15 @@
 #include <vector>
 
 
+class Convertor;
+
+
 /// Заказ
 class Order
 {
 public:
+    static inline const QString className = "Order";
+
     /// Статус заказа
     enum class Status {
         InProcessing,       ///< В обработке
@@ -29,6 +34,8 @@ public:
 
     Status status() const;
     void setStatus(Status newStatus);
+
+    void convert(Convertor& convertor) const;
 
 private:
     QString _id;

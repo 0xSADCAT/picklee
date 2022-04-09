@@ -1,6 +1,9 @@
 #include "MainWindow.hpp"
+#include "data/Convertor.hpp"
+#include "data/DataBase.hpp"
 
 #include <QApplication>
+#include <iostream>
 
 /*
  * база данных:
@@ -33,8 +36,33 @@
  *             - количество
  */
 
+
 int main(int argc, char *argv[])
 {
+    JsonConvertor conv;
+    IdGenerator idGenerator;
+    idGenerator.reset(24, 377, 2);
+
+    Operator oper(idGenerator.generateOperator(), Person("John", "Johnson", "Johnsovich"));
+    Customer cust(idGenerator.generateClient(), Person("Albert", "Testoviy", "Mahmudovich"));
+    ProductDescription desc({"12345-222"}, "Some shit");
+    ProductCount prod(desc.code(), 14);
+    Order order(idGenerator.generateOrder(oper, cust), oper.id(), cust.id(), {prod, ProductCount({"3213555"}, 200)}, Order::Status::WaitingForDelivery);
+    Warehouse ware(200, -4, "BigTIHS");
+    ware.deliver({desc.code(), 400});
+    ware.deliver({{"00000"}, 1});
+
+    oper.convert(conv);
+    cust.convert(conv);
+    desc.convert(conv);
+    prod.convert(conv);
+    order.convert(conv);
+    ware.convert(conv);
+
+    std::cout << conv.result().toStdString() << std::endl;
+
+    return 0;
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
