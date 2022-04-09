@@ -22,6 +22,21 @@ const std::vector<ProductCount>& Order::products() const
     return _products;
 }
 
+void Order::addProduct(const ProductCount& product)
+{
+    assert(product.count() > 0);
+
+    auto iter = std::find_if(_products.begin(), _products.end(), [&product](const ProductCount& prod) {
+        return prod.code() == product.code();
+    });
+
+    if (iter != _products.end()) {
+        iter->countRef() += product.count();
+    } else {
+        _products.push_back(product);
+    }
+}
+
 
 Order::Status Order::status() const
 {

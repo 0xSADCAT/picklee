@@ -25,6 +25,8 @@ public:
 
     const std::vector<ProductCount>& products() const;
 
+    void addProduct(const ProductCount& product);
+
     Status status() const;
     void setStatus(Status newStatus);
 

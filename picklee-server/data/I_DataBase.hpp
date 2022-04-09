@@ -7,6 +7,7 @@
 
 #include <QString>
 #include <optional>
+#include <variant>
 #include <vector>
 
 
@@ -109,13 +110,13 @@ public:
     virtual CreateResult createWarehouse(const QString& description, int priority) = 0;
 
     /// Найти заказы по фильтру
-    virtual std::vector<Order> findOrder(const Filter& filter) const = 0;
+    virtual void findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const = 0;
     /// Найти заказчиков по фильтру
-    virtual std::vector<Customer> findCustomer(const Filter& filter) const = 0;
+    virtual void findCustomer(const Filter& filter, std::back_insert_iterator<std::vector<Customer>> inserter) const = 0;
     /// Найти операторов по фильтру
-    virtual std::vector<Operator> findOperator(const Filter& filter) const = 0;
+    virtual void findOperator(const Filter& filter, std::back_insert_iterator<std::vector<Operator>> inserter) const = 0;
     /// Найти описания по фильтру
-    virtual std::vector<ProductDescription> findDescription(const Filter& filter) const = 0;
+    virtual void findDescription(const Filter& filter, std::back_insert_iterator<std::vector<ProductDescription>> inserter) const = 0;
 
     /// Найти конктерный заказ по идентификатору
     virtual std::optional<Order> orderById(const QString& id) const = 0;
@@ -180,7 +181,7 @@ public:
      * @param newDescription Новое описание товара
      * @return Результат операции
      */
-    virtual EditResult editProductDescription(const VendorCode& code, const ProductDescription& newDescription) = 0;
+    virtual EditResult editProductDescription(const VendorCode& code, const QString& newDescription) = 0;
 
     /**
      * @brief Редактировать данные об операторе
@@ -197,6 +198,14 @@ public:
      * @return Результат операции
      */
     virtual EditResult editCustomerData(int customerId, const Person& newData) = 0;
+
+    /**
+     * @brief Редактировать приоритет склада
+     * @param warehouseId Идентификатор склада
+     * @param newPriority Новый приоритет
+     * @return Результат операции
+     */
+    virtual EditResult editWarehousePriority(int warehouseId, int newPriority) = 0;
 
     /**
      * @brief Редактировать описание склада
