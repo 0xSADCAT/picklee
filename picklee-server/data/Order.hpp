@@ -3,7 +3,7 @@
 #include "Person.hpp"
 #include "Product.hpp"
 
-#include <QString>
+#include <string>
 #include <vector>
 
 
@@ -14,7 +14,7 @@ class Convertor;
 class Order
 {
 public:
-    static inline const QString className = "Order";
+    static inline constexpr std::wstring_view className = L"Order";
 
     /// Статус заказа
     enum class Status {
@@ -24,9 +24,9 @@ public:
         Issued              ///< Выдано
     };
 
-    Order(const QString& id, int operId, int customerId, const std::vector<ProductCount> products, Status status);
+    Order(const std::wstring& id, int operId, int customerId, const std::vector<ProductCount> products, Status status);
 
-    const QString& id() const;
+    const std::wstring& id() const;
 
     const std::vector<ProductCount>& products() const;
 
@@ -38,7 +38,7 @@ public:
     void convert(Convertor& convertor) const;
 
 private:
-    QString _id;
+    std::wstring _id;
     int _operId;
     int _customerId;
     std::vector<ProductCount> _products;

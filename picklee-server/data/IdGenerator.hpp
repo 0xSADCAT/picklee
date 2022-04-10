@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <string>
 #include <tuple>
 
 
@@ -18,7 +18,7 @@ public:
     int generateOperator();
     int generateWarehouse();
 
-    static QString generateOrder(const Operator& oper, const Customer& customer);
+    static std::wstring generateOrder(const Operator& oper, const Customer& customer);
 
     /**
      * @brief Установить новые значения счетчиков идентификаторов

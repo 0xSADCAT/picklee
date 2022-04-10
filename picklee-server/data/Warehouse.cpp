@@ -3,8 +3,11 @@
 #include "Constants.hpp"
 #include "Convertor.hpp"
 
+#include <algorithm>
+#include <cassert>
 
-Warehouse::Warehouse(int id, int priority, const QString& description)
+
+Warehouse::Warehouse(int id, int priority, const std::wstring& description)
     : _id(id),
       _priority(priority),
       _description(description)
@@ -24,13 +27,13 @@ void Warehouse::setPriority(int newPriority)
 }
 
 
-const QString& Warehouse::description() const
+const std::wstring& Warehouse::description() const
 {
     return _description;
 }
 
 
-void Warehouse::setDescription(const QString& newDescription)
+void Warehouse::setDescription(const std::wstring& newDescription)
 {
     _description = newDescription;
 }
@@ -105,8 +108,8 @@ int Warehouse::id() const
 void Warehouse::convert(Convertor& conv)
 {
     conv.beginBlock(className);
-    conv.field(fn::id, QString::number(_id));
-    conv.field(fn::priority, QString::number(_priority));
+    conv.field(fn::id, std::to_wstring(_id));
+    conv.field(fn::priority, std::to_wstring(_priority));
     conv.field(fn::description, _description);
 
     conv.beginBlock(_products.data()->className);

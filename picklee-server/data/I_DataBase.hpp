@@ -5,8 +5,8 @@
 #include "Product.hpp"
 #include "Warehouse.hpp"
 
-#include <QString>
 #include <optional>
+#include <string>
 #include <variant>
 #include <vector>
 
@@ -37,7 +37,7 @@ struct CreateResult {
     };
 
     const Status status;                                 ///< Статус операции
-    const std::variant<QString, int, std::monostate> id; ///< Идентификатор, если создание было успешным
+    const std::variant<std::wstring, int, std::monostate> id; ///< Идентификатор, если создание было успешным
 
     CreateResult(Status status, int id)
         : status(status),
@@ -45,7 +45,7 @@ struct CreateResult {
     {
     }
 
-    CreateResult(Status status, const QString& id)
+    CreateResult(Status status, const std::wstring& id)
         : status(status),
           id(id)
     {
@@ -107,7 +107,7 @@ public:
     /// Создать ногый заказ
     virtual CreateResult createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) = 0;
     /// Создать новый склад
-    virtual CreateResult createWarehouse(const QString& description, int priority) = 0;
+    virtual CreateResult createWarehouse(const std::wstring& description, int priority) = 0;
 
     /// Найти заказы по фильтру
     virtual void findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const = 0;
@@ -119,7 +119,7 @@ public:
     virtual void findDescription(const Filter& filter, std::back_insert_iterator<std::vector<ProductDescription>> inserter) const = 0;
 
     /// Найти конктерный заказ по идентификатору
-    virtual std::optional<Order> orderById(const QString& id) const = 0;
+    virtual std::optional<Order> orderById(const std::wstring& id) const = 0;
     /// Найти конктерного заказчика по идентификатору
     virtual std::optional<Customer> customerById(int id) const = 0;
     /// Найти конктерного оператора по идентификатору
@@ -181,7 +181,7 @@ public:
      * @param newDescription Новое описание товара
      * @return Результат операции
      */
-    virtual EditResult editProductDescription(const VendorCode& code, const QString& newDescription) = 0;
+    virtual EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) = 0;
 
     /**
      * @brief Редактировать данные об операторе
@@ -213,7 +213,7 @@ public:
      * @param newDescription Новое описание склада
      * @return Результат операции
      */
-    virtual EditResult editWarehouseDescription(int warehouseId, const QString& newDescription) = 0;
+    virtual EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) = 0;
 
     /**
      * @brief Установить новый статус заказа
@@ -221,7 +221,7 @@ public:
      * @param status Новый статус заказа
      * @return Результат операции
      */
-    virtual EditResult setOrderStatus(const QString& id, Order::Status status) = 0;
+    virtual EditResult setOrderStatus(const std::wstring& id, Order::Status status) = 0;
 
     /**
      * @brief Добавить продукт к заказу
@@ -229,7 +229,7 @@ public:
      * @param product Пара артикул-количество
      * @return Результат операции
      */
-    virtual EditResult addProductToOrder(const QString& id, const ProductCount& product) = 0;
+    virtual EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) = 0;
 
     /// Удалить пару артикул-описание
     virtual RemoveResult removeDescription(const VendorCode& code) = 0;
@@ -238,7 +238,7 @@ public:
     /// Удалить заказчика
     virtual RemoveResult removeCustomer(int id) = 0;
     /// Удалить заказ
-    virtual RemoveResult removeOrder(const QString& id) = 0;
+    virtual RemoveResult removeOrder(const std::wstring& id) = 0;
     /// Удалить склад
     virtual RemoveResult removeWarehouse(int id) = 0;
 };

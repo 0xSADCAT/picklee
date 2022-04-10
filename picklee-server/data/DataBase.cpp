@@ -75,13 +75,13 @@ CreateResult DataBase::createCustomer(const Person& person)
 
 CreateResult DataBase::createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products)
 {
-    QString id = _idGenerator.generateOrder(oper, customer);
+    std::wstring id = _idGenerator.generateOrder(oper, customer);
     _orders.emplace_back(id, oper.id(), customer.id(), products, Order::Status::InProcessing);
     return CreateResult(CreateResult::Status::Success, id);
 }
 
 
-CreateResult DataBase::createWarehouse(const QString& description, int priority)
+CreateResult DataBase::createWarehouse(const std::wstring& description, int priority)
 {
     int id = _idGenerator.generateWarehouse();
     _warehouses.emplace_back(id, priority, description);
@@ -129,7 +129,7 @@ void DataBase::findDescription(const Filter& filter, std::back_insert_iterator<s
 }
 
 
-std::optional<Order> DataBase::orderById(const QString& id) const
+std::optional<Order> DataBase::orderById(const std::wstring& id) const
 {
     auto it = std::find_if(_orders.begin(), _orders.end(), [&id](const Order& order) { return order.id() == id; });
     if (it != _orders.end()) {
@@ -276,7 +276,7 @@ ProductResult DataBase::deliver(int warehouseId, const VendorCode& code, int cou
 }
 
 
-EditResult DataBase::editProductDescription(const VendorCode& code, const QString& newDescription)
+EditResult DataBase::editProductDescription(const VendorCode& code, const std::wstring& newDescription)
 {
     auto iter = std::find_if(_descriptions.begin(), _descriptions.end(), [&code](const ProductDescription& prod) {
         return prod.code() == code;
@@ -324,7 +324,7 @@ EditResult DataBase::editWarehousePriority(int warehouseId, int newPriority)
 }
 
 
-EditResult DataBase::editWarehouseDescription(int warehouseId, const QString& newDescription)
+EditResult DataBase::editWarehouseDescription(int warehouseId, const std::wstring& newDescription)
 {
     if (auto iter = iterById(_warehouses, warehouseId); iter == _warehouses.end()) {
         return EditResult::IdNotFound;
@@ -335,7 +335,7 @@ EditResult DataBase::editWarehouseDescription(int warehouseId, const QString& ne
 }
 
 
-EditResult DataBase::setOrderStatus(const QString& id, Order::Status status)
+EditResult DataBase::setOrderStatus(const std::wstring& id, Order::Status status)
 {
     auto iter = std::find_if(_orders.begin(), _orders.end(), [&id](const Order& order) {
         return order.id() == id;
@@ -350,7 +350,7 @@ EditResult DataBase::setOrderStatus(const QString& id, Order::Status status)
 }
 
 
-EditResult DataBase::addProductToOrder(const QString& id, const ProductCount& product)
+EditResult DataBase::addProductToOrder(const std::wstring& id, const ProductCount& product)
 {
     auto iter = std::find_if(_orders.begin(), _orders.end(), [&id](const Order& order) {
         return order.id() == id;
@@ -404,7 +404,7 @@ RemoveResult DataBase::removeCustomer(int id)
 }
 
 
-RemoveResult DataBase::removeOrder(const QString& id)
+RemoveResult DataBase::removeOrder(const std::wstring& id)
 {
     if (auto iter = iterById(_orders, id); iter == _orders.end()) {
         return RemoveResult::IdNotFound;

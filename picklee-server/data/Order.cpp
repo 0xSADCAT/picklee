@@ -3,8 +3,11 @@
 #include "Constants.hpp"
 #include "Convertor.hpp"
 
+#include <algorithm>
+#include <cassert>
 
-Order::Order(const QString& id, int operId, int customerId, const std::vector<ProductCount> products, Status status)
+
+Order::Order(const std::wstring& id, int operId, int customerId, const std::vector<ProductCount> products, Status status)
     : _id(id),
       _operId(operId),
       _customerId(customerId),
@@ -14,7 +17,7 @@ Order::Order(const QString& id, int operId, int customerId, const std::vector<Pr
 }
 
 
-const QString& Order::id() const
+const std::wstring& Order::id() const
 {
     return _id;
 }
@@ -55,29 +58,29 @@ void Order::setStatus(Status newStatus)
 
 void Order::convert(Convertor& convertor) const
 {
-    QString status;
+    std::wstring_view status;
     switch (_status) {
     case Status::InProcessing:
-        status = "InProcessing";
+        status = L"InProcessing";
         break;
 
     case Status::Issued:
-        status = "Issued";
+        status = L"Issued";
         break;
 
     case Status::ReadyToIssue:
-        status = "ReadyToIssue";
+        status = L"ReadyToIssue";
         break;
 
     case Status::WaitingForDelivery:
-        status = "WaitingForDelivery";
+        status = L"WaitingForDelivery";
         break;
     }
 
     convertor.beginBlock(className);
     convertor.field(fn::id, _id);
-    convertor.field(fn::operId, QString::number(_operId));
-    convertor.field(fn::customerId, QString::number(_customerId));
+    convertor.field(fn::operId, std::to_wstring(_operId));
+    convertor.field(fn::customerId, std::to_wstring(_customerId));
     convertor.field(fn::status, status);
 
     convertor.beginBlock(_products.data()->className);

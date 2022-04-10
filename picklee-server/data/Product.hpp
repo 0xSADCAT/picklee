@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <string>
 
 
 class Convertor;
@@ -10,14 +10,14 @@ class Convertor;
 class VendorCode
 {
 public:
-    static inline const QString className = "VendorCode";
+    static inline const std::wstring className = L"VendorCode";
 
-    VendorCode(const QString& code);
+    VendorCode(const std::wstring& code);
 
-    QString str() const;
+    std::wstring str() const;
 
 private:
-    QString _str;
+    std::wstring _str;
 };
 
 
@@ -29,21 +29,21 @@ bool operator!=(const VendorCode& left, const VendorCode& right);
 class ProductDescription
 {
 public:
-    static inline const QString className = "ProductDescription";
+    static inline const std::wstring className = L"ProductDescription";
 
-    ProductDescription(const VendorCode& code, const QString& description);
+    ProductDescription(const VendorCode& code, const std::wstring& description);
 
     const VendorCode& code() const;
     void setCode(const VendorCode& newCode);
 
-    const QString& description() const;
-    void setDescription(const QString& newDescription);
+    const std::wstring& description() const;
+    void setDescription(const std::wstring& newDescription);
 
     void convert(Convertor& convertor) const;
 
 private:
     VendorCode _code;
-    QString _description;
+    std::wstring _description;
 };
 
 
@@ -51,7 +51,7 @@ private:
 class ProductCount
 {
 public:
-    static inline const QString className = "ProductCount";
+    static inline const std::wstring className = L"ProductCount";
 
     ProductCount(const VendorCode& code, int count);
 

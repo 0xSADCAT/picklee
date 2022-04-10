@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <string>
 
 
 class Convertor;
@@ -10,18 +10,18 @@ class Convertor;
 class Person
 {
 public:
-    static inline const QString className = "Person";
+    static inline constexpr std::wstring_view className = L"Person";
 
-    Person(const QString& firstName, const QString& lastName, const QString& patronymic);
+    Person(const std::wstring& firstName, const std::wstring& lastName, const std::wstring& patronymic);
 
-    const QString& firstName() const;
-    void setFirstName(const QString& newFirstName);
+    const std::wstring& firstName() const;
+    void setFirstName(const std::wstring& newFirstName);
 
-    const QString& lastName() const;
-    void setLastName(const QString& newLastName);
+    const std::wstring& lastName() const;
+    void setLastName(const std::wstring& newLastName);
 
-    const QString& patronymic() const;
-    void setPatronymic(const QString& newPatronymic);
+    const std::wstring& patronymic() const;
+    void setPatronymic(const std::wstring& newPatronymic);
 
     /**
      * @brief Содержит ли имя, фамилия или отчество искомую строку
@@ -29,14 +29,14 @@ public:
      * @param cs Тип сравнения, по-умолчанию без учета регистра
      * @return true, если одно из трех содержит str
      */
-    bool anyContains(const QString& str, Qt::CaseSensitivity cs = Qt::CaseInsensitive) const;
+    bool anyContains(const std::wstring& str) const;
 
     void convert(Convertor& conv);
 
 private:
-    QString _firstName;
-    QString _lastName;
-    QString _patronymic;
+    std::wstring _firstName;
+    std::wstring _lastName;
+    std::wstring _patronymic;
 };
 
 
@@ -44,7 +44,7 @@ private:
 class Operator
 {
 public:
-    static inline const QString className = "Operator";
+    static inline constexpr std::wstring_view className = L"Operator";
 
     Operator(int id, const Person& name);
 
@@ -65,7 +65,7 @@ private:
 class Customer
 {
 public:
-    static inline const QString className = "Customer";
+    static inline constexpr std::wstring_view className = L"Customer";
 
     Customer(int id, const Person& name);
 

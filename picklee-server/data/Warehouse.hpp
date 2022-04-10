@@ -2,7 +2,7 @@
 
 #include "Product.hpp"
 
-#include <QString>
+#include <string>
 #include <vector>
 
 
@@ -12,15 +12,15 @@ class Convertor;
 class Warehouse
 {
 public:
-    static inline const QString className = "Warehouse";
+    static inline constexpr std::wstring_view className = L"Warehouse";
 
-    Warehouse(int id, int priority, const QString& description);
+    Warehouse(int id, int priority, const std::wstring& description);
 
     int priority() const;
     void setPriority(int newPriority);
 
-    const QString& description() const;
-    void setDescription(const QString& newDescription);
+    const std::wstring& description() const;
+    void setDescription(const std::wstring& newDescription);
 
     /// Состав склада (только для чтения)
     const std::vector<ProductCount>& products() const;
@@ -58,6 +58,6 @@ public:
 private:
     int _id;                             ///< Идентификатор
     int _priority;                       ///< Приоритет
-    QString _description;                ///< Описание
+    std::wstring _description;           ///< Описание
     std::vector<ProductCount> _products; ///< Состав склада
 };

@@ -1,21 +1,21 @@
 #pragma once
 
-#include <QString>
+#include <string_view>
 
 
-Q_GLOBAL_STATIC_WITH_ARGS(const QString, dateTimeFormat, ("dd.MM.yy-hh:mm:ss"));
+static constexpr std::wstring_view dateTimeFormat = L"dd.MM.yy-hh:mm:ss";
 
 
 /// Имена полей данных
 namespace fn {
-static constexpr char id[] = "id";
-static constexpr char operId[] = "operId";
-static constexpr char customerId[] = "customerId";
-static constexpr char status[] = "status";
-static constexpr char firstName[] = "firstName";
-static constexpr char lastName[] = "lastName";
-static constexpr char patronymic[] = "patronymic";
-static constexpr char description[] = "description";
-static constexpr char count[] = "count";
-static constexpr char priority[] = "priority";
+static constexpr std::wstring_view id = L"id";
+static constexpr std::wstring_view operId = L"operId";
+static constexpr std::wstring_view customerId = L"customerId";
+static constexpr std::wstring_view status = L"status";
+static constexpr std::wstring_view firstName = L"firstName";
+static constexpr std::wstring_view lastName = L"lastName";
+static constexpr std::wstring_view patronymic = L"patronymic";
+static constexpr std::wstring_view description = L"description";
+static constexpr std::wstring_view count = L"count";
+static constexpr std::wstring_view priority = L"priority";
 }

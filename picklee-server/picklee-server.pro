@@ -5,6 +5,7 @@ CONFIG += c++17
 SOURCES += \
     data/Convertor.cpp \
     data/DataBase.cpp \
+    data/DateTime.cpp \
     data/Filter.cpp \
     data/IdGenerator.cpp \
     data/Order.cpp \
@@ -19,12 +20,14 @@ HEADERS += \
     data/Constants.hpp \
     data/Convertor.hpp \
     data/DataBase.hpp \
+    data/DateTime.hpp \
     data/Filter.hpp \
     data/I_DataBase.hpp \
     data/IdGenerator.hpp \
     data/Order.hpp \
     data/Person.hpp \
     data/Product.hpp \
+    data/Utils.hpp \
     data/Warehouse.hpp
 
 # Default rules for deployment.

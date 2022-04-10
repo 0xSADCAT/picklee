@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QString>
+#include <string>
 
 
 class Order;
@@ -57,9 +57,8 @@ public:
     /**
      * @brief Фильтр "содержит"
      * @param str Строка для поиска
-     * @param strongCase true - учитывать регистр
      */
-    FilterContains(const QString& str, bool strongCase = false);
+    FilterContains(const std::wstring& str);
 
     virtual bool filter(const Order& order) const override;
     virtual bool filter(const Customer& customer) const override;
@@ -68,8 +67,7 @@ public:
     virtual bool filter(const ProductDescription& product) const override;
 
 private:
-    const QString _str;
-    const Qt::CaseSensitivity _cs;
+    const std::wstring _str;
 };
 
 
@@ -93,7 +91,7 @@ public:
      * @details Фильтрует по идентификатору. Создавая данным конструктором фильтр полностью
      *          исключает все, кроме заказов.
      */
-    FilterId(const QString& id);
+    FilterId(const std::wstring& id);
 
     virtual bool filter(const Order& order) const override;
     virtual bool filter(const Customer& customer) const override;
@@ -102,7 +100,7 @@ public:
     virtual bool filter(const ProductDescription&) const override;
 
 private:
-    const QString _str;
+    const std::wstring _str;
     const int _id;
     const bool _ordersOnly;
 };
@@ -122,7 +120,7 @@ public:
      * @brief Фильтр частичного соответствия артикула
      * @param str Часть артикула
      */
-    FilterVendorCode(const QString& str);
+    FilterVendorCode(const std::wstring& str);
 
     virtual bool filter(const Order& order) const override;
     virtual bool filter(const Customer&) const override;
@@ -131,6 +129,6 @@ public:
     virtual bool filter(const ProductDescription& product) const override;
 
 private:
-    const QString _code;
+    const std::wstring _code;
     const bool _partical;
 };

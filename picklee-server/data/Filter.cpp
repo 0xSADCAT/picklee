@@ -3,11 +3,11 @@
 #include "Order.hpp"
 #include "Person.hpp"
 #include "Product.hpp"
+#include "Utils.hpp"
 
 
-FilterContains::FilterContains(const QString& str, bool strongCase)
-    : _str(str),
-      _cs(strongCase ? Qt::CaseSensitive : Qt::CaseInsensitive)
+FilterContains::FilterContains(const std::wstring& str)
+    : _str(str)
 {
 }
 
@@ -26,36 +26,36 @@ bool FilterContains::filter(const Order& order) const
 
 bool FilterContains::filter(const Customer& customer) const
 {
-    return customer.name().anyContains(_str, _cs);
+    return customer.name().anyContains(_str);
 }
 
 
 bool FilterContains::filter(const Operator& oper) const
 {
-    return oper.name().anyContains(_str, _cs);
+    return oper.name().anyContains(_str);
 }
 
 
 bool FilterContains::filter(const ProductCount& product) const
 {
-    return product.code().str().contains(_str, _cs);
+    return util::str::contains(product.code().str().data(), _str.data());
 }
 
 
 bool FilterContains::filter(const ProductDescription& product) const
 {
-    return product.code().str().contains(_str, _cs) or product.description().contains(_str, _cs);
+    return util::str::contains(product.code().str().data(), _str.data()) or util::str::contains(product.description().data(), _str.data());
 }
 
 FilterId::FilterId(int id)
-    : _str(QString::number(id)),
+    : _str(std::to_wstring(id)),
       _id(id),
       _ordersOnly(false)
 {
 }
 
 
-FilterId::FilterId(const QString& id)
+FilterId::FilterId(const std::wstring& id)
     : _str(id),
       _id(-1),
       _ordersOnly(true)
@@ -65,7 +65,7 @@ FilterId::FilterId(const QString& id)
 
 bool FilterId::filter(const Order& order) const
 {
-    return order.id().contains(_str);
+    return util::str::contains(order.id().data(), _str.data());
 }
 
 
@@ -108,7 +108,7 @@ FilterVendorCode::FilterVendorCode(const VendorCode& code)
 }
 
 
-FilterVendorCode::FilterVendorCode(const QString& str)
+FilterVendorCode::FilterVendorCode(const std::wstring& str)
     : _code(str),
       _partical(true)
 {
@@ -142,7 +142,7 @@ bool FilterVendorCode::filter(const Operator&) const
 bool FilterVendorCode::filter(const ProductCount& product) const
 {
     if (_partical) {
-        return product.code().str().contains(_code);
+        return util::str::contains(product.code().str().data(), _code.data());
     } else {
         return product.code().str() == _code;
     }
@@ -152,7 +152,7 @@ bool FilterVendorCode::filter(const ProductCount& product) const
 bool FilterVendorCode::filter(const ProductDescription& product) const
 {
     if (_partical) {
-        return product.code().str().contains(_code);
+        return util::str::contains(product.code().str().data(), _code.data());
     } else {
         return product.code().str() == _code;
     }

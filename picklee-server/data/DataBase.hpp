@@ -7,7 +7,7 @@
 #include "Product.hpp"
 #include "Warehouse.hpp"
 
-#include <QString>
+#include <string>
 #include <vector>
 
 
@@ -24,14 +24,14 @@ public:
     virtual CreateResult createOperator(const Person& person) override;
     virtual CreateResult createCustomer(const Person& person) override;
     virtual CreateResult createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) override;
-    virtual CreateResult createWarehouse(const QString& description, int priority) override;
+    virtual CreateResult createWarehouse(const std::wstring& description, int priority) override;
 
     virtual void findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const override;
     virtual void findCustomer(const Filter& filter, std::back_insert_iterator<std::vector<Customer>> inserter) const override;
     virtual void findOperator(const Filter& filter, std::back_insert_iterator<std::vector<Operator>> inserter) const override;
     virtual void findDescription(const Filter& filter, std::back_insert_iterator<std::vector<ProductDescription>> inserter) const override;
 
-    virtual std::optional<Order> orderById(const QString& id) const override;
+    virtual std::optional<Order> orderById(const std::wstring& id) const override;
     virtual std::optional<Customer> customerById(int id) const override;
     virtual std::optional<Operator> operatorById(int id) const override;
     virtual std::optional<const Warehouse*> warehouseById(int id) const override;
@@ -44,18 +44,18 @@ public:
     virtual ProductResult fetch(int warehouseId, const VendorCode& code, int count) override;
     virtual ProductResult deliver(int warehouseId, const VendorCode& code, int count) override;
 
-    virtual EditResult editProductDescription(const VendorCode& code, const QString& newDescription) override;
+    virtual EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) override;
     virtual EditResult editOperatorData(int operatorId, const Person& newData) override;
     virtual EditResult editCustomerData(int customerId, const Person& newData) override;
     virtual EditResult editWarehousePriority(int warehouseId, int newPriority) override;
-    virtual EditResult editWarehouseDescription(int warehouseId, const QString& newDescription) override;
-    virtual EditResult setOrderStatus(const QString& id, Order::Status status) override;
-    virtual EditResult addProductToOrder(const QString& id, const ProductCount& product) override;
+    virtual EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) override;
+    virtual EditResult setOrderStatus(const std::wstring& id, Order::Status status) override;
+    virtual EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) override;
 
     virtual RemoveResult removeDescription(const VendorCode& code) override;
     virtual RemoveResult removeOperator(int id) override;
     virtual RemoveResult removeCustomer(int id) override;
-    virtual RemoveResult removeOrder(const QString& id) override;
+    virtual RemoveResult removeOrder(const std::wstring& id) override;
     virtual RemoveResult removeWarehouse(int id) override;
 
 private:

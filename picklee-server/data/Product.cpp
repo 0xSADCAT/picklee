@@ -3,14 +3,20 @@
 #include "Constants.hpp"
 #include "Convertor.hpp"
 
+#include <exception>
+#include <regex>
 
-VendorCode::VendorCode(const QString& code)
+
+using namespace std::string_literals;
+
+
+VendorCode::VendorCode(const std::wstring& code)
     : _str(code)
 {
 }
 
 
-QString VendorCode::str() const
+std::wstring VendorCode::str() const
 {
     return _str;
 }
@@ -28,7 +34,7 @@ bool operator!=(const VendorCode& left, const VendorCode& right)
 }
 
 
-ProductDescription::ProductDescription(const VendorCode& code, const QString& description)
+ProductDescription::ProductDescription(const VendorCode& code, const std::wstring& description)
     : _code(code),
       _description(description)
 {
@@ -47,13 +53,13 @@ void ProductDescription::setCode(const VendorCode& newCode)
 }
 
 
-const QString& ProductDescription::description() const
+const std::wstring& ProductDescription::description() const
 {
     return _description;
 }
 
 
-void ProductDescription::setDescription(const QString& newDescription)
+void ProductDescription::setDescription(const std::wstring& newDescription)
 {
     _description = newDescription;
 }
@@ -109,6 +115,6 @@ void ProductCount::convert(Convertor& convertor) const
 {
     convertor.beginBlock(className);
     convertor.field(VendorCode::className, _code.str());
-    convertor.field(fn::count, QString::number(_count));
+    convertor.field(fn::count, std::to_wstring(_count));
     convertor.endBlock(className);
 }

@@ -2,9 +2,12 @@
 
 #include "Constants.hpp"
 #include "Convertor.hpp"
+#include "Utils.hpp"
+
+#include <algorithm>
 
 
-Person::Person(const QString& firstName, const QString& lastName, const QString& patronymic)
+Person::Person(const std::wstring& firstName, const std::wstring& lastName, const std::wstring& patronymic)
     : _firstName(firstName),
       _lastName(lastName),
       _patronymic(patronymic)
@@ -12,45 +15,45 @@ Person::Person(const QString& firstName, const QString& lastName, const QString&
 }
 
 
-const QString& Person::firstName() const
+const std::wstring& Person::firstName() const
 {
     return _firstName;
 }
 
 
-void Person::setFirstName(const QString& newFirstName)
+void Person::setFirstName(const std::wstring& newFirstName)
 {
     _firstName = newFirstName;
 }
 
 
-const QString& Person::lastName() const
+const std::wstring& Person::lastName() const
 {
     return _lastName;
 }
 
 
-void Person::setLastName(const QString& newLastName)
+void Person::setLastName(const std::wstring& newLastName)
 {
     _lastName = newLastName;
 }
 
 
-const QString& Person::patronymic() const
+const std::wstring& Person::patronymic() const
 {
     return _patronymic;
 }
 
 
-void Person::setPatronymic(const QString& newPatronymic)
+void Person::setPatronymic(const std::wstring& newPatronymic)
 {
     _patronymic = newPatronymic;
 }
 
 
-bool Person::anyContains(const QString& str, Qt::CaseSensitivity cs) const
+bool Person::anyContains(const std::wstring& str) const
 {
-    return _firstName.contains(str, cs) or _lastName.contains(str, cs) or _patronymic.contains(str, cs);
+    return util::str::contains(_firstName, str) or util::str::contains(_lastName, str) or util::str::contains(_patronymic, str);
 }
 
 
@@ -92,7 +95,7 @@ int Operator::id() const
 void Operator::convert(Convertor& conv)
 {
     conv.beginBlock(className);
-    conv.field(fn::id, QString::number(_id));
+    conv.field(fn::id, std::to_wstring(_id));
     _name.convert(conv);
     conv.endBlock(className);
 }
@@ -126,7 +129,7 @@ void Customer::setName(const Person& newName)
 void Customer::convert(Convertor& conv)
 {
     conv.beginBlock(className);
-    conv.field(fn::id, QString::number(_id));
+    conv.field(fn::id, std::to_wstring(_id));
     _name.convert(conv);
     conv.endBlock(className);
 }
