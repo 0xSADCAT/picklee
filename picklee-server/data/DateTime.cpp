@@ -1,6 +1,10 @@
 #include "DateTime.hpp"
 
+#include <cassert>
 #include <chrono>
+#include <ctime>
+#include <ratio>
+#include <tuple>
 
 
 Time::Time(int hours, int minutes, int seconds)
@@ -15,6 +19,16 @@ Time::Time(int hours, int minutes, int seconds)
 
 Time Time::current()
 {
+    using namespace std::chrono;
+
+    auto time = system_clock::to_time_t(system_clock::now());
+    int seconds = time % 60;
+    time /= 60;
+    int minutes = time % 60;
+    time /= 60;
+    int hours = time % 24;
+
+    return Time(hours, minutes, seconds);
 }
 
 
@@ -79,8 +93,36 @@ Date::Date(int day, Month month, int year)
 }
 
 
+namespace {
+/**
+ * @brief Конвертирует время из std::chrono в структуру std::tm
+ * @param tp Точка времени для конвертации
+ * @return Структура std::tm
+ *
+ * @author Minsheng Liu
+ * @link https://gist.github.com/notcome/526b1fbca6cb359c1152
+ * Thanks a lot!
+ */
+std::tm toUTCTime(const std::chrono::system_clock::time_point& tp);
+}
+
+
 Date Date::current()
 {
+    using namespace std::chrono;
+
+    std::tm tm = toUTCTime(system_clock::now());
+
+    // Если сработает - функции в анонимном namespace что-то сделали не так
+    assert(tm.tm_mday >= 1 and tm.tm_mday <= 31);
+    assert(tm.tm_mon >= 0 and tm.tm_mon < 12);
+    assert(tm.tm_year > 1900);
+
+    int day = tm.tm_mday;
+    Month month = static_cast<Month>(tm.tm_mon + 1);
+    int year = tm.tm_year;
+
+    return Date(day, month, year);
 }
 
 
@@ -355,4 +397,126 @@ bool operator<(const DateTime& left, const DateTime& right)
     }
 
     return false;
+}
+
+
+namespace {
+template<typename value_type>
+struct timed {
+    std::chrono::time_point<std::chrono::steady_clock> timestamp;
+    value_type value;
+
+    timed(const value_type& value)
+        : value(value), timestamp(std::chrono::steady_clock::now())
+    {
+    }
+
+    timed(value_type&& rvalue)
+        : value(std::move(rvalue)), timestamp(std::chrono::steady_clock::now())
+    {
+    }
+};
+
+
+typedef timed<std::string> commitMessage;
+
+
+constexpr int getWeekdayFromDays(int days)
+{
+    if (days >= -4)
+        return (days + 4) % 7;
+    else
+        return (days + 5) % 7 + 6;
+}
+
+
+// From 1970-01-01 -> 0000-03-01
+constexpr int shiftEpoch(int days)
+{
+    const int EpochShiftDays = 719468;
+    return days + EpochShiftDays;
+}
+
+
+constexpr int getEraFromDays(int days)
+{
+    const int dEra = 365 * 400 + 97;
+    return (days >= 0 ? days : days - (dEra - 1)) / dEra;
+}
+
+
+constexpr int getDayOfEra(int days, int era)
+{
+    const int dEra = 365 * 400 + 97;
+    return days - era * dEra;
+}
+
+
+constexpr int getYearOfEra(int dayOfEra)
+{
+    const int d4Years = 365 * 4 + 1;
+    const int d100Years = 365 * 100 + 24;
+    const int d400Years = 365 * 400 + 97;
+
+    const int adjustedDays = dayOfEra - dayOfEra / (d4Years - 1)
+                             + dayOfEra / d100Years
+                             - dayOfEra / (d400Years - 1);
+    return adjustedDays / 365;
+}
+
+
+constexpr int getYDay(int dayOfEra, int yearOfEra)
+{
+    return dayOfEra - (365 * yearOfEra + yearOfEra / 4 - yearOfEra / 100);
+}
+
+
+constexpr std::tuple<int, int, int, int> getYMDFromDays(int days)
+{
+    days = shiftEpoch(days);
+    const int era = getEraFromDays(days);
+    const int dayOfEra = getDayOfEra(days, era);
+    const int yearOfEra = getYearOfEra(dayOfEra);
+    const int shiftedYear = yearOfEra + era * 400;
+    const int yday = getYDay(dayOfEra, yearOfEra);
+
+    // dMarch + dApril + dMay + dJune + dJuly
+    const int dToAugust = 31 + 30 + 31 + 30 + 31;
+    const int shiftedMonth = (5 * yday + 2) / dToAugust;
+
+    const int mday = yday - (dToAugust * shiftedMonth + 2) / 5 + 1;
+    const int month = shiftedMonth + (shiftedMonth < 10 ? 3 : -9);
+    const int year = shiftedYear + (month <= 2 ? 1 : 0);
+
+    return std::tuple<int, int, int, int>(year, month, mday, yday);
+}
+
+
+std::tm toUTCTime(const std::chrono::system_clock::time_point& tp)
+{
+    using namespace std;
+    using namespace chrono;
+    typedef duration<int, ratio_multiply<hours::period, ratio<24>>> days;
+
+    auto t = tp.time_since_epoch();
+    days d = duration_cast<days>(t);
+    t -= d;
+
+    int year, month, mday, yday;
+    std::tie(year, month, mday, yday) = getYMDFromDays(d.count());
+    std::tm tm {};
+    tm.tm_year = year - 1900;
+    tm.tm_mon = month - 1;
+    tm.tm_yday = yday;
+    tm.tm_mday = mday;
+    tm.tm_wday = getWeekdayFromDays(d.count());
+
+    tm.tm_hour = static_cast<int>(duration_cast<hours>(t).count());
+    t -= hours(tm.tm_hour);
+    tm.tm_min = static_cast<int>(duration_cast<minutes>(t).count());
+    t -= minutes(tm.tm_min);
+    tm.tm_sec = static_cast<int>(duration_cast<seconds>(t).count());
+    t -= seconds(tm.tm_sec);
+    return tm;
+}
 }
