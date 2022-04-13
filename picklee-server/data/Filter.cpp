@@ -1,9 +1,9 @@
 #include "Filter.hpp"
 
+#include "../utils/Utils.hpp"
 #include "Order.hpp"
 #include "Person.hpp"
 #include "Product.hpp"
-#include "Utils.hpp"
 
 
 FilterContains::FilterContains(const std::wstring& str)

@@ -241,4 +241,7 @@ public:
     virtual RemoveResult removeOrder(const std::wstring& id) = 0;
     /// Удалить склад
     virtual RemoveResult removeWarehouse(int id) = 0;
+
+    /// Очистить базу данных
+    virtual void drop() = 0;
 };

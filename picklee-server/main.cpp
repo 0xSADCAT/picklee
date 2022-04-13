@@ -7,54 +7,20 @@
 #include <string>
 
 
-using namespace std::string_literals;
-
-/*
- * база данных:
- *     - последний id:
- *         - клиент
- *         - оператор
- *         - склад
- *     - описания продуктов:
- *         - артикул
- *         - описание
- *     - клиенты:
- *         - id
- *         - имя
- *         - дата рождения
- *     - операторы:
- *         - id
- *         - имя
- *     - заказы:
- *         - id
- *         - статус
- *         - состав:
- *             - артикул
- *             - количество
- *     - склады:
- *         - id
- *         - описание
- *         - приоритет
- *         - продукты:
- *             - артикул
- *             - количество
- */
-
-
 int main(int argc, char *argv[])
 {
     JsonConvertor conv;
     IdGenerator idGenerator;
     idGenerator.reset(24, 377, 2);
 
-    Operator oper(idGenerator.generateOperator(), Person(L"John"s, L"Johnson"s, L"Johnsovich"s));
-    Customer cust(idGenerator.generateClient(), Person(L"Albert"s, L"Testoviy"s, L"Mahmudovich"s));
-    ProductDescription desc({L"12345-222"s}, L"Some shit"s);
+    Operator oper(idGenerator.generateOperator(), Person(L"John", L"Johnson", L"Johnsovich"));
+    Customer cust(idGenerator.generateClient(), Person(L"Albert", L"Testoviy", L"Mahmudovich"));
+    ProductDescription desc({L"12345-222"}, L"Some shit");
     ProductCount prod(desc.code(), 14);
-    Order order(idGenerator.generateOrder(oper, cust), oper.id(), cust.id(), {prod, ProductCount({L"3213555"s}, 200)}, Order::Status::WaitingForDelivery);
-    Warehouse ware(200, -4, L"BigTIHS"s);
+    Order order(idGenerator.generateOrder(oper, cust), oper.id(), cust.id(), {prod, ProductCount({L"3213555"}, 200)}, Order::Status::WaitingForDelivery);
+    Warehouse ware(200, -4, L"BigTIHS");
     ware.deliver({desc.code(), 400});
-    ware.deliver({{L"00000"s}, 1});
+    ware.deliver({{L"00000"}, 1});
 
     oper.convert(conv);
     cust.convert(conv);

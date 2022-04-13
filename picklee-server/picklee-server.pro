@@ -27,8 +27,8 @@ HEADERS += \
     data/Order.hpp \
     data/Person.hpp \
     data/Product.hpp \
-    data/Utils.hpp \
-    data/Warehouse.hpp
+    data/Warehouse.hpp \
+    utils/Utils.hpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

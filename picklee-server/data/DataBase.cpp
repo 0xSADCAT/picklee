@@ -89,7 +89,7 @@ CreateResult DataBase::createWarehouse(const std::wstring& description, int prio
 }
 
 
-void DataBase::findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const
+void DataBase::findOrder(const Filter& filter, VectorInserter<Order> inserter) const
 {
     for (auto&& order : _orders) {
         if (filter.filter(order)) {
@@ -99,7 +99,7 @@ void DataBase::findOrder(const Filter& filter, std::back_insert_iterator<std::ve
 }
 
 
-void DataBase::findCustomer(const Filter& filter, std::back_insert_iterator<std::vector<Customer>> inserter) const
+void DataBase::findCustomer(const Filter& filter, VectorInserter<Customer> inserter) const
 {
     for (auto&& customer : _customers) {
         if (filter.filter(customer)) {
@@ -109,7 +109,7 @@ void DataBase::findCustomer(const Filter& filter, std::back_insert_iterator<std:
 }
 
 
-void DataBase::findOperator(const Filter& filter, std::back_insert_iterator<std::vector<Operator>> inserter) const
+void DataBase::findOperator(const Filter& filter, VectorInserter<Operator> inserter) const
 {
     for (auto&& oper : _operators) {
         if (filter.filter(oper)) {
@@ -119,7 +119,7 @@ void DataBase::findOperator(const Filter& filter, std::back_insert_iterator<std:
 }
 
 
-void DataBase::findDescription(const Filter& filter, std::back_insert_iterator<std::vector<ProductDescription>> inserter) const
+void DataBase::findDescription(const Filter& filter, VectorInserter<ProductDescription> inserter) const
 {
     for (auto&& desc : _descriptions) {
         if (filter.filter(desc)) {
@@ -424,4 +424,15 @@ RemoveResult DataBase::removeWarehouse(int id)
         _warehouses.erase(iter);
         return res;
     }
+}
+
+
+void DataBase::drop()
+{
+    _idGenerator.reset(0, 0, 0);
+    _orders.clear();
+    _operators.clear();
+    _customers.clear();
+    _warehouses.clear();
+    _descriptions.clear();
 }

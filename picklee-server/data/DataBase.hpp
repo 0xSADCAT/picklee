@@ -11,52 +11,58 @@
 #include <vector>
 
 
+template<typename T>
+using VectorInserter = std::back_insert_iterator<std::vector<T>>;
+
+
 class DataBase : public I_DataBase
 {
 public:
     DataBase() = default;
 
-    virtual AddResult addDescription(const VendorCode& code, const ProductDescription& description) override;
-    virtual AddResult addOperator(const Operator& oper) override;
-    virtual AddResult addCustomer(const Customer& customer) override;
-    virtual AddResult addOrder(const Order& order) override;
+    AddResult addDescription(const VendorCode& code, const ProductDescription& description) override;
+    AddResult addOperator(const Operator& oper) override;
+    AddResult addCustomer(const Customer& customer) override;
+    AddResult addOrder(const Order& order) override;
 
-    virtual CreateResult createOperator(const Person& person) override;
-    virtual CreateResult createCustomer(const Person& person) override;
-    virtual CreateResult createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) override;
-    virtual CreateResult createWarehouse(const std::wstring& description, int priority) override;
+    CreateResult createOperator(const Person& person) override;
+    CreateResult createCustomer(const Person& person) override;
+    CreateResult createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) override;
+    CreateResult createWarehouse(const std::wstring& description, int priority) override;
 
-    virtual void findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const override;
-    virtual void findCustomer(const Filter& filter, std::back_insert_iterator<std::vector<Customer>> inserter) const override;
-    virtual void findOperator(const Filter& filter, std::back_insert_iterator<std::vector<Operator>> inserter) const override;
-    virtual void findDescription(const Filter& filter, std::back_insert_iterator<std::vector<ProductDescription>> inserter) const override;
+    void findOrder(const Filter& filter, VectorInserter<Order> inserter) const override;
+    void findCustomer(const Filter& filter, VectorInserter<Customer> inserter) const override;
+    void findOperator(const Filter& filter, VectorInserter<Operator> inserter) const override;
+    void findDescription(const Filter& filter, VectorInserter<ProductDescription> inserter) const override;
 
-    virtual std::optional<Order> orderById(const std::wstring& id) const override;
-    virtual std::optional<Customer> customerById(int id) const override;
-    virtual std::optional<Operator> operatorById(int id) const override;
-    virtual std::optional<const Warehouse*> warehouseById(int id) const override;
-    virtual std::optional<ProductDescription> productByCode(const VendorCode& code) const override;
+    std::optional<Order> orderById(const std::wstring& id) const override;
+    std::optional<Customer> customerById(int id) const override;
+    std::optional<Operator> operatorById(int id) const override;
+    std::optional<const Warehouse*> warehouseById(int id) const override;
+    std::optional<ProductDescription> productByCode(const VendorCode& code) const override;
 
-    virtual void allProductCountByCode(const VendorCode& code, CountInserter inserter) const override;
+    void allProductCountByCode(const VendorCode& code, CountInserter inserter) const override;
 
-    virtual std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const override;
+    std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const override;
 
-    virtual ProductResult fetch(int warehouseId, const VendorCode& code, int count) override;
-    virtual ProductResult deliver(int warehouseId, const VendorCode& code, int count) override;
+    ProductResult fetch(int warehouseId, const VendorCode& code, int count) override;
+    ProductResult deliver(int warehouseId, const VendorCode& code, int count) override;
 
-    virtual EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) override;
-    virtual EditResult editOperatorData(int operatorId, const Person& newData) override;
-    virtual EditResult editCustomerData(int customerId, const Person& newData) override;
-    virtual EditResult editWarehousePriority(int warehouseId, int newPriority) override;
-    virtual EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) override;
-    virtual EditResult setOrderStatus(const std::wstring& id, Order::Status status) override;
-    virtual EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) override;
+    EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) override;
+    EditResult editOperatorData(int operatorId, const Person& newData) override;
+    EditResult editCustomerData(int customerId, const Person& newData) override;
+    EditResult editWarehousePriority(int warehouseId, int newPriority) override;
+    EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) override;
+    EditResult setOrderStatus(const std::wstring& id, Order::Status status) override;
+    EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) override;
 
-    virtual RemoveResult removeDescription(const VendorCode& code) override;
-    virtual RemoveResult removeOperator(int id) override;
-    virtual RemoveResult removeCustomer(int id) override;
-    virtual RemoveResult removeOrder(const std::wstring& id) override;
-    virtual RemoveResult removeWarehouse(int id) override;
+    RemoveResult removeDescription(const VendorCode& code) override;
+    RemoveResult removeOperator(int id) override;
+    RemoveResult removeCustomer(int id) override;
+    RemoveResult removeOrder(const std::wstring& id) override;
+    RemoveResult removeWarehouse(int id) override;
+
+    void drop() override;
 
 private:
     IdGenerator _idGenerator;                      ///< Генератор идентификаторов
