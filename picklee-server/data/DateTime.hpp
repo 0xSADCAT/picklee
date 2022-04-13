@@ -39,6 +39,8 @@ public:
 
     bool isValid() const;
 
+    std::wstring toString() const;
+
     friend bool operator==(const Time& left, const Time& right);
     friend bool operator!=(const Time& left, const Time& right);
     friend bool operator<(const Time& left, const Time& right);
@@ -76,6 +78,8 @@ public:
     void setYear(int newYear);
 
     bool isValid() const;
+
+    std::wstring toString(wchar_t sep = L'-') const;
 
     friend bool operator==(const Date& left, const Date& right);
     friend bool operator!=(const Date& left, const Date& right);
@@ -129,6 +133,8 @@ public:
     void setDate(const Date& newDate);
 
     bool isValid() const;
+
+    std::wstring toString(wchar_t sep = L' ', wchar_t dateSep = L'-') const;
 
     friend bool operator==(const DateTime& left, const DateTime& right);
     friend bool operator!=(const DateTime& left, const DateTime& right);

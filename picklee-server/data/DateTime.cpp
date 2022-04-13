@@ -21,7 +21,10 @@ Time Time::current()
 {
     using namespace std::chrono;
 
-    auto time = system_clock::to_time_t(system_clock::now());
+    /// Поправка на часовой пояс
+    static constexpr auto hourDelta = 3h;
+
+    auto time = system_clock::to_time_t(system_clock::now() + hourDelta);
     int seconds = time % 60;
     time /= 60;
     int minutes = time % 60;
@@ -77,6 +80,12 @@ bool Time::isValid() const
 }
 
 
+std::wstring Time::toString() const
+{
+    return std::to_wstring(_hours) + L':' + std::to_wstring(_minutes) + L':' + std::to_wstring(_seconds);
+}
+
+
 void Time::validate()
 {
     _valid = (_hours >= 0 and _hours < 24) and (_minutes >= 0 and _minutes < 60) and (_seconds >= 0 and _seconds < 60);
@@ -111,16 +120,19 @@ Date Date::current()
 {
     using namespace std::chrono;
 
+    /// Поправка, т.к. функция возвращает количество лет с 1900 года
+    constexpr int deltaYear = 1900;
+
     std::tm tm = toUTCTime(system_clock::now());
 
     // Если сработает - функции в анонимном namespace что-то сделали не так
     assert(tm.tm_mday >= 1 and tm.tm_mday <= 31);
     assert(tm.tm_mon >= 0 and tm.tm_mon < 12);
-    assert(tm.tm_year > 1900);
+    assert(tm.tm_year > 0);
 
     int day = tm.tm_mday;
     Month month = static_cast<Month>(tm.tm_mon + 1);
-    int year = tm.tm_year;
+    int year = tm.tm_year + deltaYear;
 
     return Date(day, month, year);
 }
@@ -168,6 +180,12 @@ void Date::setYear(int newYear)
 bool Date::isValid() const
 {
     return _valid;
+}
+
+
+std::wstring Date::toString(wchar_t sep) const
+{
+    return std::to_wstring(_day) + sep + std::to_wstring(static_cast<int>(_month)) + sep + std::to_wstring(_year);
 }
 
 
@@ -292,6 +310,11 @@ void DateTime::setYear(int newYear)
 bool DateTime::isValid() const
 {
     return _time.isValid() and _date.isValid();
+}
+
+std::wstring DateTime::toString(wchar_t sep, wchar_t dateSep) const
+{
+    return _date.toString(dateSep) + sep + _time.toString();
 }
 
 

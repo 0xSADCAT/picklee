@@ -1,9 +1,9 @@
 #include "IdGenerator.hpp"
 
 #include "Constants.hpp"
+#include "DateTime.hpp"
 #include "Person.hpp"
 
-#include <QDateTime>
 #include <QString>
 
 
@@ -38,7 +38,7 @@ std::wstring IdGenerator::generateOrder(const Operator& oper, const Customer& cu
     std::wstring result;
 
     result += std::to_wstring(oper.id()) + L"-" + std::to_wstring(customer.id()) + L"-";
-    result += QDateTime::currentDateTime().toString(QString::fromStdWString(std::wstring(dateTimeFormat))).toStdWString();
+    result += DateTime::current().toString(L'.');
 
     return result;
 }
