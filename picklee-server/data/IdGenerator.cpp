@@ -7,52 +7,49 @@
 #include <QString>
 
 
-IdGenerator::IdGenerator()
-    : _oper(0),
-      _client(0),
-      _warehouse(0)
+IdGenerator::IdGenerator() : _oper(0), _client(0), _warehouse(0)
 {
 }
 
 
 int IdGenerator::generateClient()
 {
-    return ++_client;
+  return ++_client;
 }
 
 
 int IdGenerator::generateOperator()
 {
-    return ++_oper;
+  return ++_oper;
 }
 
 
 int IdGenerator::generateWarehouse()
 {
-    return ++_warehouse;
+  return ++_warehouse;
 }
 
 
 std::wstring IdGenerator::generateOrder(const Operator& oper, const Customer& customer)
 {
-    std::wstring result;
+  std::wstring result;
 
-    result += std::to_wstring(oper.id()) + L"-" + std::to_wstring(customer.id()) + L"-";
-    result += DateTime::current().toString(L'.');
+  result += std::to_wstring(oper.id()) + L"-" + std::to_wstring(customer.id()) + L"-";
+  result += DateTime::current().toString(L'.');
 
-    return result;
+  return result;
 }
 
 
 void IdGenerator::reset(int oper, int client, int warehouse)
 {
-    _oper = oper;
-    _client = client;
-    _warehouse = warehouse;
+  _oper = oper;
+  _client = client;
+  _warehouse = warehouse;
 }
 
 
 std::tuple<int, int, int> IdGenerator::getAll() const
 {
-    return {_oper, _client, _warehouse};
+  return {_oper, _client, _warehouse};
 }

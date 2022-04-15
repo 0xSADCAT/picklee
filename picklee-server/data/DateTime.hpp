@@ -4,19 +4,20 @@
 
 
 /// Месяц
-enum class Month {
-    January = 1,
-    February = 2,
-    March = 3,
-    April = 4,
-    May = 5,
-    June = 6,
-    July = 7,
-    August = 8,
-    September = 9,
-    October = 10,
-    November = 11,
-    December = 12
+enum class Month
+{
+  January = 1,
+  February = 2,
+  March = 3,
+  April = 4,
+  May = 5,
+  June = 6,
+  July = 7,
+  August = 8,
+  September = 9,
+  October = 10,
+  November = 11,
+  December = 12
 };
 
 
@@ -24,35 +25,35 @@ enum class Month {
 class Time
 {
 public:
-    Time(int hours, int minutes, int seconds);
+  Time(int hours, int minutes, int seconds);
 
-    static Time current();
+  static Time current();
 
-    int hours() const;
-    void setHours(int newHours);
+  int hours() const;
+  void setHours(int newHours);
 
-    int minutes() const;
-    void setMinutes(int newMinutes);
+  int minutes() const;
+  void setMinutes(int newMinutes);
 
-    int seconds() const;
-    void setSeconds(int newSeconds);
+  int seconds() const;
+  void setSeconds(int newSeconds);
 
-    bool isValid() const;
+  bool isValid() const;
 
-    std::wstring toString() const;
+  std::wstring toString() const;
 
-    friend bool operator==(const Time& left, const Time& right);
-    friend bool operator!=(const Time& left, const Time& right);
-    friend bool operator<(const Time& left, const Time& right);
+  friend bool operator==(const Time& left, const Time& right);
+  friend bool operator!=(const Time& left, const Time& right);
+  friend bool operator<(const Time& left, const Time& right);
 
 private:
-    int _hours;
-    int _minutes;
-    int _seconds;
+  int _hours;
+  int _minutes;
+  int _seconds;
 
-    bool _valid;
+  bool _valid;
 
-    void validate();
+  void validate();
 };
 
 bool operator==(const Time& left, const Time& right);
@@ -64,35 +65,35 @@ bool operator<(const Time& left, const Time& right);
 class Date
 {
 public:
-    Date(int day, Month month, int year);
+  Date(int day, Month month, int year);
 
-    static Date current();
+  static Date current();
 
-    int day() const;
-    void setDay(int newDay);
+  int day() const;
+  void setDay(int newDay);
 
-    Month month() const;
-    void setMonth(Month newMonth);
+  Month month() const;
+  void setMonth(Month newMonth);
 
-    int year() const;
-    void setYear(int newYear);
+  int year() const;
+  void setYear(int newYear);
 
-    bool isValid() const;
+  bool isValid() const;
 
-    std::wstring toString(wchar_t sep = L'-') const;
+  std::wstring toString(wchar_t sep = L'-') const;
 
-    friend bool operator==(const Date& left, const Date& right);
-    friend bool operator!=(const Date& left, const Date& right);
-    friend bool operator<(const Date& left, const Date& right);
+  friend bool operator==(const Date& left, const Date& right);
+  friend bool operator!=(const Date& left, const Date& right);
+  friend bool operator<(const Date& left, const Date& right);
 
 private:
-    int _day;
-    Month _month;
-    int _year;
+  int _day;
+  Month _month;
+  int _year;
 
-    bool _valid;
+  bool _valid;
 
-    void validate();
+  void validate();
 };
 
 bool operator==(const Date& left, const Date& right);
@@ -104,45 +105,45 @@ bool operator<(const Date& left, const Date& right);
 class DateTime
 {
 public:
-    DateTime(const Time time, const Date date);
+  DateTime(const Time time, const Date date);
 
-    static DateTime current();
+  static DateTime current();
 
-    int hours() const;
-    void setHours(int newHours);
+  int hours() const;
+  void setHours(int newHours);
 
-    int minutes() const;
-    void setMinutes(int newMinutes);
+  int minutes() const;
+  void setMinutes(int newMinutes);
 
-    int seconds() const;
-    void setSeconds(int newSeconds);
+  int seconds() const;
+  void setSeconds(int newSeconds);
 
-    int day() const;
-    void setDay(int newDay);
+  int day() const;
+  void setDay(int newDay);
 
-    Month month() const;
-    void setMonth(Month newMonth);
+  Month month() const;
+  void setMonth(Month newMonth);
 
-    int year() const;
-    void setYear(int newYear);
+  int year() const;
+  void setYear(int newYear);
 
-    const Time& time() const;
-    void setTime(const Time& newTime);
+  const Time& time() const;
+  void setTime(const Time& newTime);
 
-    const Date& date() const;
-    void setDate(const Date& newDate);
+  const Date& date() const;
+  void setDate(const Date& newDate);
 
-    bool isValid() const;
+  bool isValid() const;
 
-    std::wstring toString(wchar_t sep = L' ', wchar_t dateSep = L'-') const;
+  std::wstring toString(wchar_t sep = L' ', wchar_t dateSep = L'-') const;
 
-    friend bool operator==(const DateTime& left, const DateTime& right);
-    friend bool operator!=(const DateTime& left, const DateTime& right);
-    friend bool operator<(const DateTime& left, const DateTime& right);
+  friend bool operator==(const DateTime& left, const DateTime& right);
+  friend bool operator!=(const DateTime& left, const DateTime& right);
+  friend bool operator<(const DateTime& left, const DateTime& right);
 
 private:
-    Time _time;
-    Date _date;
+  Time _time;
+  Date _date;
 };
 
 bool operator==(const DateTime& left, const DateTime& right);

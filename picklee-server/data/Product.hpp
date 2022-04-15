@@ -10,14 +10,14 @@ class Convertor;
 class VendorCode
 {
 public:
-    static inline const std::wstring className = L"VendorCode";
+  static inline const std::wstring className = L"VendorCode";
 
-    VendorCode(const std::wstring& code);
+  VendorCode(const std::wstring& code);
 
-    std::wstring str() const;
+  std::wstring str() const;
 
 private:
-    std::wstring _str;
+  std::wstring _str;
 };
 
 
@@ -29,21 +29,21 @@ bool operator!=(const VendorCode& left, const VendorCode& right);
 class ProductDescription
 {
 public:
-    static inline const std::wstring className = L"ProductDescription";
+  static inline const std::wstring className = L"ProductDescription";
 
-    ProductDescription(const VendorCode& code, const std::wstring& description);
+  ProductDescription(const VendorCode& code, const std::wstring& description);
 
-    const VendorCode& code() const;
-    void setCode(const VendorCode& newCode);
+  const VendorCode& code() const;
+  void setCode(const VendorCode& newCode);
 
-    const std::wstring& description() const;
-    void setDescription(const std::wstring& newDescription);
+  const std::wstring& description() const;
+  void setDescription(const std::wstring& newDescription);
 
-    void convert(Convertor& convertor) const;
+  void convert(Convertor& convertor) const;
 
 private:
-    VendorCode _code;
-    std::wstring _description;
+  VendorCode _code;
+  std::wstring _description;
 };
 
 
@@ -51,21 +51,21 @@ private:
 class ProductCount
 {
 public:
-    static inline const std::wstring className = L"ProductCount";
+  static inline const std::wstring className = L"ProductCount";
 
-    ProductCount(const VendorCode& code, int count);
+  ProductCount(const VendorCode& code, int count);
 
-    const VendorCode& code() const;
-    void setCode(const VendorCode& newCode);
+  const VendorCode& code() const;
+  void setCode(const VendorCode& newCode);
 
-    int count() const;
-    void setCount(int newCount);
+  int count() const;
+  void setCount(int newCount);
 
-    int& countRef();
+  int& countRef();
 
-    void convert(Convertor& convertor) const;
+  void convert(Convertor& convertor) const;
 
 private:
-    VendorCode _code;
-    int _count;
+  VendorCode _code;
+  int _count;
 };
