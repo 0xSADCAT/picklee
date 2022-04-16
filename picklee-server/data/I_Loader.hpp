@@ -18,10 +18,10 @@ public:
   virtual ~I_Loader() = default;
 
   /**
-   * @brief Дать загрузчику строку для парсинга и загрузки данных в БД
+   * @brief Загрузить в БД из строки
    * @param string Строка для загрузки
    */
-  virtual void convert(const std::wstring_view& string) = 0;
+  virtual void loadFrom(const std::wstring& string) = 0;
 
   /// Получить ошибки при загрузке
   virtual std::vector<std::pair<std::wstring_view, std::wstring>> errors() const = 0;

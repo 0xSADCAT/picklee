@@ -20,7 +20,7 @@ class DataBase : public I_DataBase
 public:
   DataBase() = default;
 
-  AddResult addDescription(const VendorCode& code, const ProductDescription& description) override;
+  AddResult addDescription(const ProductDescription& description) override;
   AddResult addOperator(const Operator& oper) override;
   AddResult addCustomer(const Customer& customer) override;
   AddResult addOrder(const Order& order) override;

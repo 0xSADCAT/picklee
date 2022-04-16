@@ -33,10 +33,10 @@ const static auto iterById = [](auto& container, const auto& id) {
 }
 
 
-AddResult DataBase::addDescription(const VendorCode& code, const ProductDescription& description)
+AddResult DataBase::addDescription(const ProductDescription& description)
 {
-  const auto predicate = [&code](const ProductDescription& desc) {
-    return code == desc.code();
+  const auto predicate = [&description](const ProductDescription& desc) {
+    return description.code() == desc.code();
   };
 
   return addSomeToContainer(description, _descriptions, predicate);

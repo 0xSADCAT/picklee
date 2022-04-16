@@ -92,7 +92,7 @@ public:
   virtual ~I_DataBase() = default;
 
   /// Добавить описание
-  virtual AddResult addDescription(const VendorCode& code, const ProductDescription& description) = 0;
+  virtual AddResult addDescription(const ProductDescription& description) = 0;
   /// Добавить оператора
   virtual AddResult addOperator(const Operator& oper) = 0;
   /// Добавить заказчика

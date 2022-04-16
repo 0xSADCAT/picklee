@@ -1,6 +1,7 @@
 #include "MainWindow.hpp"
 #include "data/Convertor.hpp"
 #include "data/DataBase.hpp"
+#include "data/JsonLoader.hpp"
 
 #include <QApplication>
 #include <iostream>
@@ -26,14 +27,24 @@ int main(int argc, char* argv[])
   ware.deliver({desc.code(), 400});
   ware.deliver({{L"00000"}, 1});
 
-  oper.convert(conv);
-  cust.convert(conv);
-  desc.convert(conv);
-  prod.convert(conv);
-  order.convert(conv);
-  ware.convert(conv);
+  DataBase db;
+  JsonLoader loader(db);
 
-  std::wcout << conv.result() << std::endl;
+  oper.convert(conv);
+  loader.loadFrom(conv.result());
+  conv.clear();
+
+  cust.convert(conv);
+  loader.loadFrom(conv.result());
+  conv.clear();
+
+  order.convert(conv);
+  loader.loadFrom(conv.result());
+  conv.clear();
+
+  ware.convert(conv);
+  loader.loadFrom(conv.result());
+  conv.clear();
 
   return 0;
 
