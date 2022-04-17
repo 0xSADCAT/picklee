@@ -11,13 +11,13 @@
 namespace util::str
 {
 /// Содержит ли строка str подстроку substr
-function contains = [](const std::wstring_view& str, const std::wstring_view& substr) {
+function contains = [](const std::wstring_view& str, const std::wstring_view& substr) noexcept {
   return str.find(substr) != str.npos;
 };
 
 
 /// Начинается ли строка str с префикса prefix
-function startsWith = [](const std::wstring_view& str, const std::wstring_view& prefix) {
+function startsWith = [](const std::wstring_view& str, const std::wstring_view& prefix) noexcept {
   if (str.length() < prefix.length())
     return false;
   return std::equal(str.begin(), str.begin() + prefix.length(), prefix.begin());
@@ -25,7 +25,7 @@ function startsWith = [](const std::wstring_view& str, const std::wstring_view& 
 
 
 /// Оканчивается ли строка str суффиксом suffix
-function endsWith = [](const std::wstring_view& str, const std::wstring_view& suffix) {
+function endsWith = [](const std::wstring_view& str, const std::wstring_view& suffix) noexcept {
   if (str.length() < suffix.length())
     return false;
   return std::equal(str.begin() + str.length() - suffix.length(), str.end(), suffix.begin(), suffix.end());
@@ -39,7 +39,7 @@ namespace util::container
 {
 
 /// Содержитли контейнер container элемент element
-function contains = [](const auto&& container, const auto&& element) {
+function contains = [](const auto&& container, const auto&& element) noexcept {
   return std::find(container.begin(), container.end(), element) != container.end();
 };
 } // util::container

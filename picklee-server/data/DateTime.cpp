@@ -7,13 +7,14 @@
 #include <tuple>
 
 
-Time::Time(int hours, int minutes, int seconds) : _hours(hours), _minutes(minutes), _seconds(seconds), _valid(false)
+Time::Time(int hours, int minutes, int seconds) noexcept
+    : _hours(hours), _minutes(minutes), _seconds(seconds), _valid(false)
 {
   validate();
 }
 
 
-Time Time::current()
+Time Time::current() noexcept
 {
   using namespace std::chrono;
 
@@ -31,52 +32,52 @@ Time Time::current()
 }
 
 
-int Time::hours() const
+int Time::hours() const noexcept
 {
   return _hours;
 }
 
 
-void Time::setHours(int newHours)
+void Time::setHours(int newHours) noexcept
 {
   _hours = newHours;
   validate();
 }
 
 
-int Time::minutes() const
+int Time::minutes() const noexcept
 {
   return _minutes;
 }
 
 
-void Time::setMinutes(int newMinutes)
+void Time::setMinutes(int newMinutes) noexcept
 {
   _minutes = newMinutes;
   validate();
 }
 
 
-int Time::seconds() const
+int Time::seconds() const noexcept
 {
   return _seconds;
 }
 
 
-void Time::setSeconds(int newSeconds)
+void Time::setSeconds(int newSeconds) noexcept
 {
   _seconds = newSeconds;
   validate();
 }
 
 
-bool Time::isValid() const
+bool Time::isValid() const noexcept
 {
   return _valid;
 }
 
 
-std::wstring Time::toString() const
+std::wstring Time::toString() const noexcept
 {
   return std::to_wstring(_hours) + L':' + std::to_wstring(_minutes) + L':' + std::to_wstring(_seconds);
 }
@@ -88,7 +89,7 @@ void Time::validate()
 }
 
 
-Date::Date(int day, Month month, int year) : _day(day), _month(month), _year(year), _valid(false)
+Date::Date(int day, Month month, int year) noexcept : _day(day), _month(month), _year(year), _valid(false)
 {
   validate();
 }
@@ -109,7 +110,7 @@ std::tm toUTCTime(const std::chrono::system_clock::time_point& tp);
 }
 
 
-Date Date::current()
+Date Date::current() noexcept
 {
   using namespace std::chrono;
 
@@ -131,52 +132,52 @@ Date Date::current()
 }
 
 
-int Date::day() const
+int Date::day() const noexcept
 {
   return _day;
 }
 
 
-void Date::setDay(int newDay)
+void Date::setDay(int newDay) noexcept
 {
   _day = newDay;
   validate();
 }
 
 
-Month Date::month() const
+Month Date::month() const noexcept
 {
   return _month;
 }
 
 
-void Date::setMonth(Month newMonth)
+void Date::setMonth(Month newMonth) noexcept
 {
   _month = newMonth;
   validate();
 }
 
 
-int Date::year() const
+int Date::year() const noexcept
 {
   return _year;
 }
 
 
-void Date::setYear(int newYear)
+void Date::setYear(int newYear) noexcept
 {
   _year = newYear;
   validate();
 }
 
 
-bool Date::isValid() const
+bool Date::isValid() const noexcept
 {
   return _valid;
 }
 
 
-std::wstring Date::toString(wchar_t sep) const
+std::wstring Date::toString(wchar_t sep) const noexcept
 {
   return std::to_wstring(_day) + sep + std::to_wstring(static_cast<int>(_month)) + sep + std::to_wstring(_year);
 }
@@ -225,136 +226,136 @@ void Date::validate()
 }
 
 
-DateTime::DateTime(const Time time, const Date date) : _time(time), _date(date)
+DateTime::DateTime(const Time time, const Date date) noexcept : _time(time), _date(date)
 {
 }
 
-DateTime DateTime::current()
+DateTime DateTime::current() noexcept
 {
   return DateTime(Time::current(), Date::current());
 }
 
 
-int DateTime::hours() const
+int DateTime::hours() const noexcept
 {
   return _time.hours();
 }
 
 
-void DateTime::setHours(int newHours)
+void DateTime::setHours(int newHours) noexcept
 {
   _time.setHours(newHours);
 }
 
 
-int DateTime::minutes() const
+int DateTime::minutes() const noexcept
 {
   return _time.minutes();
 }
 
 
-void DateTime::setMinutes(int newMinutes)
+void DateTime::setMinutes(int newMinutes) noexcept
 {
   _time.setMinutes(newMinutes);
 }
 
 
-int DateTime::seconds() const
+int DateTime::seconds() const noexcept
 {
   return _time.seconds();
 }
 
 
-void DateTime::setSeconds(int newSeconds)
+void DateTime::setSeconds(int newSeconds) noexcept
 {
   _time.setSeconds(newSeconds);
 }
 
 
-int DateTime::day() const
+int DateTime::day() const noexcept
 {
   return _date.day();
 }
 
 
-void DateTime::setDay(int newDay)
+void DateTime::setDay(int newDay) noexcept
 {
   _date.setDay(newDay);
 }
 
 
-Month DateTime::month() const
+Month DateTime::month() const noexcept
 {
   return _date.month();
 }
 
 
-void DateTime::setMonth(Month newMonth)
+void DateTime::setMonth(Month newMonth) noexcept
 {
   _date.setMonth(newMonth);
 }
 
 
-int DateTime::year() const
+int DateTime::year() const noexcept
 {
   return _date.year();
 }
 
 
-void DateTime::setYear(int newYear)
+void DateTime::setYear(int newYear) noexcept
 {
   _date.setYear(newYear);
 }
 
 
-bool DateTime::isValid() const
+bool DateTime::isValid() const noexcept
 {
   return _time.isValid() and _date.isValid();
 }
 
-std::wstring DateTime::toString(wchar_t sep, wchar_t dateSep) const
+std::wstring DateTime::toString(wchar_t sep, wchar_t dateSep) const noexcept
 {
   return _date.toString(dateSep) + sep + _time.toString();
 }
 
 
-const Time& DateTime::time() const
+const Time& DateTime::time() const noexcept
 {
   return _time;
 }
 
 
-void DateTime::setTime(const Time& newTime)
+void DateTime::setTime(const Time& newTime) noexcept
 {
   _time = newTime;
 }
 
 
-const Date& DateTime::date() const
+const Date& DateTime::date() const noexcept
 {
   return _date;
 }
 
 
-void DateTime::setDate(const Date& newDate)
+void DateTime::setDate(const Date& newDate) noexcept
 {
   _date = newDate;
 }
 
 
-bool operator==(const Time& left, const Time& right)
+bool operator==(const Time& left, const Time& right) noexcept
 {
   return left._hours == right._hours and left._minutes == right._minutes and left._seconds == right._seconds;
 }
 
 
-bool operator!=(const Time& left, const Time& right)
+bool operator!=(const Time& left, const Time& right) noexcept
 {
   return left._hours != right._hours or left._minutes != right._minutes or left._seconds != right._seconds;
 }
 
 
-bool operator<(const Time& left, const Time& right)
+bool operator<(const Time& left, const Time& right) noexcept
 {
   if (left._hours < right._hours)
   {
@@ -377,19 +378,19 @@ bool operator<(const Time& left, const Time& right)
 }
 
 
-bool operator==(const Date& left, const Date& right)
+bool operator==(const Date& left, const Date& right) noexcept
 {
   return left._day == right._day and left._month == right._month and left._year == right._year;
 }
 
 
-bool operator!=(const Date& left, const Date& right)
+bool operator!=(const Date& left, const Date& right) noexcept
 {
   return left._day != right._day or left._month != right._month or left._year != right._year;
 }
 
 
-bool operator<(const Date& left, const Date& right)
+bool operator<(const Date& left, const Date& right) noexcept
 {
   if (left._year < right._year)
   {
@@ -410,19 +411,19 @@ bool operator<(const Date& left, const Date& right)
 }
 
 
-bool operator==(const DateTime& left, const DateTime& right)
+bool operator==(const DateTime& left, const DateTime& right) noexcept
 {
   return left._date == right._date and left._time == right._time;
 }
 
 
-bool operator!=(const DateTime& left, const DateTime& right)
+bool operator!=(const DateTime& left, const DateTime& right) noexcept
 {
   return left._date != right._date or left._time != right._time;
 }
 
 
-bool operator<(const DateTime& left, const DateTime& right)
+bool operator<(const DateTime& left, const DateTime& right) noexcept
 {
   if (left._date < right._date)
   {

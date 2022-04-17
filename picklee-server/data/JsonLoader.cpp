@@ -12,22 +12,22 @@
 
 namespace
 {
-const static auto wrapIntoFindRE = [](std::wstring_view name) {
+const static auto wrapIntoFindRE = [](std::wstring_view name) noexcept {
   return LR"(\s*\{?\s*)" + std::wstring(name) + LR"(\s*\{.*)";
 };
 
 
-const static auto wrapParamRE = [](std::wstring_view param) {
+const static auto wrapParamRE = [](std::wstring_view param) noexcept {
   return L"\\s*\"" + std::wstring(param) + L"\"\\s*:\\s*\"([^\"]*)\",?\\s*";
 };
 
 
-const static auto wrapNodeRE = [](std::wstring_view nodeName) {
+const static auto wrapNodeRE = [](std::wstring_view nodeName) noexcept {
   return L"\\s*" + std::wstring(nodeName) + L"\\s*\\{\\s*(" + wrapParamRE(L".*") + L")+\\}\\s*";
 };
 
 
-static const auto noNewLine = [](std::wstring str) {
+static const auto noNewLine = [](std::wstring str) noexcept {
   for (auto& ch : str)
   {
     if (ch == L'\n')
@@ -41,12 +41,12 @@ static const auto noNewLine = [](std::wstring str) {
 }
 
 
-JsonLoader::JsonLoader(I_DataBase& dataBase) : I_Loader(dataBase)
+JsonLoader::JsonLoader(I_DataBase& dataBase) noexcept : I_Loader(dataBase)
 {
 }
 
 
-void JsonLoader::loadFrom(const std::wstring& string)
+void JsonLoader::loadFrom(const std::wstring& string) noexcept
 {
   // TODO: Надо переработать, чтобы метод кушал все подряд
 
@@ -96,25 +96,25 @@ void JsonLoader::loadFrom(const std::wstring& string)
 }
 
 
-std::vector<std::pair<std::wstring_view, std::wstring> > JsonLoader::errors() const
+std::vector<std::pair<std::wstring_view, std::wstring> > JsonLoader::errors() const noexcept
 {
   return _errorList;
 }
 
 
-void JsonLoader::clearErrors()
+void JsonLoader::clearErrors() noexcept
 {
   _errorList.clear();
 }
 
 
-void JsonLoader::pushError(std::wstring_view error, const std::wstring& string)
+void JsonLoader::pushError(std::wstring_view error, const std::wstring& string) noexcept
 {
   _errorList.push_back({error, string});
 }
 
 
-bool JsonLoader::isBracketsValid(std::wstring_view string) const
+bool JsonLoader::isBracketsValid(std::wstring_view string) const noexcept
 {
   int count = 0;
 
@@ -139,7 +139,7 @@ bool JsonLoader::isBracketsValid(std::wstring_view string) const
 }
 
 
-std::vector<ProductDescription> JsonLoader::loadDescription(const std::wstring& string)
+std::vector<ProductDescription> JsonLoader::loadDescription(const std::wstring& string) noexcept
 {
   const static std::wregex nodeExpr(wrapNodeRE(ProductDescription::className));
   const static std::wregex codeExpr(wrapParamRE(VendorCode::className));
@@ -176,7 +176,7 @@ std::vector<ProductDescription> JsonLoader::loadDescription(const std::wstring& 
 }
 
 
-std::vector<ProductCount> JsonLoader::loadCount(const std::wstring& string)
+std::vector<ProductCount> JsonLoader::loadCount(const std::wstring& string) noexcept
 {
   const static std::wregex nodeExpr(wrapNodeRE(ProductCount::className));
   const static std::wregex codeExpr(wrapParamRE(VendorCode::className));
@@ -220,7 +220,7 @@ std::vector<ProductCount> JsonLoader::loadCount(const std::wstring& string)
 }
 
 
-void JsonLoader::loadOperator(const std::wstring& string)
+void JsonLoader::loadOperator(const std::wstring& string) noexcept
 {
   const static std::wregex nodeExpr(wrapNodeRE(Operator::className));
   const static std::wregex idExpr(wrapParamRE(fn::id));
@@ -255,7 +255,7 @@ void JsonLoader::loadOperator(const std::wstring& string)
 }
 
 
-void JsonLoader::loadCustomer(const std::wstring& string)
+void JsonLoader::loadCustomer(const std::wstring& string) noexcept
 {
   // Да, этот метод почти полностью дублирует предыдущий.
   // Сделано намеренно, т.к. один из них может измениться и, скорее всего, эти изменения
@@ -294,12 +294,12 @@ void JsonLoader::loadCustomer(const std::wstring& string)
 }
 
 
-void JsonLoader::loadOrder(const std::wstring& string)
+void JsonLoader::loadOrder(const std::wstring& string) noexcept
 {
 }
 
 
-void JsonLoader::loadWarehouse(const std::wstring& string)
+void JsonLoader::loadWarehouse(const std::wstring& string) noexcept
 {
 }
 

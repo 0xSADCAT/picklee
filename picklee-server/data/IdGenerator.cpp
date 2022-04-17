@@ -7,30 +7,30 @@
 #include <QString>
 
 
-IdGenerator::IdGenerator() : _oper(0), _client(0), _warehouse(0)
+IdGenerator::IdGenerator() noexcept : _oper(0), _client(0), _warehouse(0)
 {
 }
 
 
-int IdGenerator::generateClient()
+int IdGenerator::generateClient() noexcept
 {
   return ++_client;
 }
 
 
-int IdGenerator::generateOperator()
+int IdGenerator::generateOperator() noexcept
 {
   return ++_oper;
 }
 
 
-int IdGenerator::generateWarehouse()
+int IdGenerator::generateWarehouse() noexcept
 {
   return ++_warehouse;
 }
 
 
-std::wstring IdGenerator::generateOrder(const Operator& oper, const Customer& customer)
+std::wstring IdGenerator::generateOrder(const Operator& oper, const Customer& customer) noexcept
 {
   std::wstring result;
 
@@ -41,7 +41,7 @@ std::wstring IdGenerator::generateOrder(const Operator& oper, const Customer& cu
 }
 
 
-void IdGenerator::reset(int oper, int client, int warehouse)
+void IdGenerator::reset(int oper, int client, int warehouse) noexcept
 {
   _oper = oper;
   _client = client;
@@ -49,7 +49,7 @@ void IdGenerator::reset(int oper, int client, int warehouse)
 }
 
 
-std::tuple<int, int, int> IdGenerator::getAll() const
+std::tuple<int, int, int> IdGenerator::getAll() const noexcept
 {
   return {_oper, _client, _warehouse};
 }

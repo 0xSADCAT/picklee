@@ -18,52 +18,53 @@ using VectorInserter = std::back_insert_iterator<std::vector<T>>;
 class DataBase : public I_DataBase
 {
 public:
-  DataBase() = default;
+  DataBase() noexcept = default;
 
-  AddResult addDescription(const ProductDescription& description) override;
-  AddResult addOperator(const Operator& oper) override;
-  AddResult addCustomer(const Customer& customer) override;
-  AddResult addOrder(const Order& order) override;
+  AddResult addDescription(const ProductDescription& description) noexcept override;
+  AddResult addOperator(const Operator& oper) noexcept override;
+  AddResult addCustomer(const Customer& customer) noexcept override;
+  AddResult addOrder(const Order& order) noexcept override;
 
-  CreateResult createOperator(const Person& person) override;
-  CreateResult createCustomer(const Person& person) override;
-  CreateResult
-  createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) override;
-  CreateResult createWarehouse(const std::wstring& description, int priority) override;
+  CreateResult createOperator(const Person& person) noexcept override;
+  CreateResult createCustomer(const Person& person) noexcept override;
+  CreateResult createOrder(const Operator& oper,
+                           const Customer& customer,
+                           const std::vector<ProductCount>& products) noexcept override;
+  CreateResult createWarehouse(const std::wstring& description, int priority) noexcept override;
 
-  void findOrder(const Filter& filter, VectorInserter<Order> inserter) const override;
-  void findCustomer(const Filter& filter, VectorInserter<Customer> inserter) const override;
-  void findOperator(const Filter& filter, VectorInserter<Operator> inserter) const override;
-  void findDescription(const Filter& filter, VectorInserter<ProductDescription> inserter) const override;
+  void findOrder(const Filter& filter, VectorInserter<Order> inserter) const noexcept override;
+  void findCustomer(const Filter& filter, VectorInserter<Customer> inserter) const noexcept override;
+  void findOperator(const Filter& filter, VectorInserter<Operator> inserter) const noexcept override;
+  void findDescription(const Filter& filter, VectorInserter<ProductDescription> inserter) const noexcept override;
 
-  std::optional<Order> orderById(const std::wstring& id) const override;
-  std::optional<Customer> customerById(int id) const override;
-  std::optional<Operator> operatorById(int id) const override;
-  std::optional<const Warehouse*> warehouseById(int id) const override;
-  std::optional<ProductDescription> productByCode(const VendorCode& code) const override;
+  std::optional<Order> orderById(const std::wstring& id) const noexcept override;
+  std::optional<Customer> customerById(int id) const noexcept override;
+  std::optional<Operator> operatorById(int id) const noexcept override;
+  std::optional<const Warehouse*> warehouseById(int id) const noexcept override;
+  std::optional<ProductDescription> productByCode(const VendorCode& code) const noexcept override;
 
-  void allProductCountByCode(const VendorCode& code, CountInserter inserter) const override;
+  void allProductCountByCode(const VendorCode& code, CountInserter inserter) const noexcept override;
 
-  std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const override;
+  std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const noexcept override;
 
-  ProductResult fetch(int warehouseId, const VendorCode& code, int count) override;
-  ProductResult deliver(int warehouseId, const VendorCode& code, int count) override;
+  ProductResult fetch(int warehouseId, const VendorCode& code, int count) noexcept override;
+  ProductResult deliver(int warehouseId, const VendorCode& code, int count) noexcept override;
 
-  EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) override;
-  EditResult editOperatorData(int operatorId, const Person& newData) override;
-  EditResult editCustomerData(int customerId, const Person& newData) override;
-  EditResult editWarehousePriority(int warehouseId, int newPriority) override;
-  EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) override;
-  EditResult setOrderStatus(const std::wstring& id, Order::Status status) override;
-  EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) override;
+  EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) noexcept override;
+  EditResult editOperatorData(int operatorId, const Person& newData) noexcept override;
+  EditResult editCustomerData(int customerId, const Person& newData) noexcept override;
+  EditResult editWarehousePriority(int warehouseId, int newPriority) noexcept override;
+  EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) noexcept override;
+  EditResult setOrderStatus(const std::wstring& id, Order::Status status) noexcept override;
+  EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) noexcept override;
 
-  RemoveResult removeDescription(const VendorCode& code) override;
-  RemoveResult removeOperator(int id) override;
-  RemoveResult removeCustomer(int id) override;
-  RemoveResult removeOrder(const std::wstring& id) override;
-  RemoveResult removeWarehouse(int id) override;
+  RemoveResult removeDescription(const VendorCode& code) noexcept override;
+  RemoveResult removeOperator(int id) noexcept override;
+  RemoveResult removeCustomer(int id) noexcept override;
+  RemoveResult removeOrder(const std::wstring& id) noexcept override;
+  RemoveResult removeWarehouse(int id) noexcept override;
 
-  void drop() override;
+  void drop() noexcept override;
 
 private:
   IdGenerator _idGenerator;                      ///< Генератор идентификаторов

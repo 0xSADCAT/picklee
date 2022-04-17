@@ -20,30 +20,30 @@ class VendorCode;
 class Filter
 {
 public:
-  Filter() = default;
-  virtual ~Filter() = default;
+  Filter() noexcept = default;
+  virtual ~Filter() noexcept = default;
 
-  virtual bool filter(const Order&) const
+  virtual bool filter(const Order&) const noexcept
   {
     return true;
   }
 
-  virtual bool filter(const Customer&) const
+  virtual bool filter(const Customer&) const noexcept
   {
     return true;
   }
 
-  virtual bool filter(const Operator&) const
+  virtual bool filter(const Operator&) const noexcept
   {
     return true;
   }
 
-  virtual bool filter(const ProductCount&) const
+  virtual bool filter(const ProductCount&) const noexcept
   {
     return true;
   }
 
-  virtual bool filter(const ProductDescription&) const
+  virtual bool filter(const ProductDescription&) const noexcept
   {
     return true;
   }
@@ -58,13 +58,13 @@ public:
    * @brief Фильтр "содержит"
    * @param str Строка для поиска
    */
-  FilterContains(const std::wstring& str);
+  FilterContains(const std::wstring& str) noexcept;
 
-  virtual bool filter(const Order& order) const override;
-  virtual bool filter(const Customer& customer) const override;
-  virtual bool filter(const Operator& oper) const override;
-  virtual bool filter(const ProductCount& product) const override;
-  virtual bool filter(const ProductDescription& product) const override;
+  virtual bool filter(const Order& order) const noexcept override;
+  virtual bool filter(const Customer& customer) const noexcept override;
+  virtual bool filter(const Operator& oper) const noexcept override;
+  virtual bool filter(const ProductCount& product) const noexcept override;
+  virtual bool filter(const ProductDescription& product) const noexcept override;
 
 private:
   const std::wstring _str;
@@ -82,7 +82,7 @@ public:
    * @details Фильтрует по идентификатору. Все классы, кроме заказов - точное соответствие,
    *          заказы по принципу "содержит в себе"
    */
-  FilterId(int id);
+  FilterId(int id) noexcept;
 
   /**
    * @brief Фильтр по идентификатору
@@ -91,13 +91,13 @@ public:
    * @details Фильтрует по идентификатору. Создавая данным конструктором фильтр полностью
    *          исключает все, кроме заказов.
    */
-  FilterId(const std::wstring& id);
+  FilterId(const std::wstring& id) noexcept;
 
-  virtual bool filter(const Order& order) const override;
-  virtual bool filter(const Customer& customer) const override;
-  virtual bool filter(const Operator& oper) const override;
-  virtual bool filter(const ProductCount&) const override;
-  virtual bool filter(const ProductDescription&) const override;
+  virtual bool filter(const Order& order) const noexcept override;
+  virtual bool filter(const Customer& customer) const noexcept override;
+  virtual bool filter(const Operator& oper) const noexcept override;
+  virtual bool filter(const ProductCount&) const noexcept override;
+  virtual bool filter(const ProductDescription&) const noexcept override;
 
 private:
   const std::wstring _str;
@@ -114,19 +114,19 @@ public:
    * @brief Фильтр точного соответствия артикула
    * @param code Артикул
    */
-  FilterVendorCode(const VendorCode& code);
+  FilterVendorCode(const VendorCode& code) noexcept;
 
   /**
    * @brief Фильтр частичного соответствия артикула
    * @param str Часть артикула
    */
-  FilterVendorCode(const std::wstring& str);
+  FilterVendorCode(const std::wstring& str) noexcept;
 
-  virtual bool filter(const Order& order) const override;
-  virtual bool filter(const Customer&) const override;
-  virtual bool filter(const Operator&) const override;
-  virtual bool filter(const ProductCount& product) const override;
-  virtual bool filter(const ProductDescription& product) const override;
+  virtual bool filter(const Order& order) const noexcept override;
+  virtual bool filter(const Customer&) const noexcept override;
+  virtual bool filter(const Operator&) const noexcept override;
+  virtual bool filter(const ProductCount& product) const noexcept override;
+  virtual bool filter(const ProductDescription& product) const noexcept override;
 
 private:
   const std::wstring _code;

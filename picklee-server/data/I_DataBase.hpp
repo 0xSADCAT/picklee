@@ -42,15 +42,15 @@ struct CreateResult
   const Status status;                                      ///< Статус операции
   const std::variant<std::wstring, int, std::monostate> id; ///< Идентификатор, если создание было успешным
 
-  CreateResult(Status status, int id) : status(status), id(id)
+  CreateResult(Status status, int id) noexcept : status(status), id(id)
   {
   }
 
-  CreateResult(Status status, const std::wstring& id) : status(status), id(id)
+  CreateResult(Status status, const std::wstring& id) noexcept : status(status), id(id)
   {
   }
 
-  CreateResult(Status status) : status(status), id()
+  CreateResult(Status status) noexcept : status(status), id()
   {
   }
 };
@@ -92,45 +92,59 @@ public:
   virtual ~I_DataBase() = default;
 
   /// Добавить описание
-  virtual AddResult addDescription(const ProductDescription& description) = 0;
+  virtual AddResult addDescription(const ProductDescription& description) noexcept = 0;
+
   /// Добавить оператора
-  virtual AddResult addOperator(const Operator& oper) = 0;
+  virtual AddResult addOperator(const Operator& oper) noexcept = 0;
+
   /// Добавить заказчика
-  virtual AddResult addCustomer(const Customer& customer) = 0;
+  virtual AddResult addCustomer(const Customer& customer) noexcept = 0;
+
   /// Добавить заказ
-  virtual AddResult addOrder(const Order& order) = 0;
+  virtual AddResult addOrder(const Order& order) noexcept = 0;
 
   /// Создать ногово оператора
-  virtual CreateResult createOperator(const Person& person) = 0;
+  virtual CreateResult createOperator(const Person& person) noexcept = 0;
+
   /// Создать нового заказчика
-  virtual CreateResult createCustomer(const Person& person) = 0;
+  virtual CreateResult createCustomer(const Person& person) noexcept = 0;
+
   /// Создать ногый заказ
   virtual CreateResult
-  createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products)
-      = 0;
+  createOrder(const Operator& oper, const Customer& customer, const std::vector<ProductCount>& products) noexcept = 0;
+
   /// Создать новый склад
-  virtual CreateResult createWarehouse(const std::wstring& description, int priority) = 0;
+  virtual CreateResult createWarehouse(const std::wstring& description, int priority) noexcept = 0;
 
   /// Найти заказы по фильтру
-  virtual void findOrder(const Filter& filter, std::back_insert_iterator<std::vector<Order>> inserter) const = 0;
+  virtual void findOrder(const Filter& filter,
+                         std::back_insert_iterator<std::vector<Order>> inserter) const noexcept = 0;
+
   /// Найти заказчиков по фильтру
-  virtual void findCustomer(const Filter& filter, std::back_insert_iterator<std::vector<Customer>> inserter) const = 0;
+  virtual void findCustomer(const Filter& filter,
+                            std::back_insert_iterator<std::vector<Customer>> inserter) const noexcept = 0;
+
   /// Найти операторов по фильтру
-  virtual void findOperator(const Filter& filter, std::back_insert_iterator<std::vector<Operator>> inserter) const = 0;
+  virtual void findOperator(const Filter& filter,
+                            std::back_insert_iterator<std::vector<Operator>> inserter) const noexcept = 0;
   /// Найти описания по фильтру
   virtual void findDescription(const Filter& filter,
-                               std::back_insert_iterator<std::vector<ProductDescription>> inserter) const = 0;
+                               std::back_insert_iterator<std::vector<ProductDescription>> inserter) const noexcept = 0;
 
   /// Найти конктерный заказ по идентификатору
-  virtual std::optional<Order> orderById(const std::wstring& id) const = 0;
+  virtual std::optional<Order> orderById(const std::wstring& id) const noexcept = 0;
   /// Найти конктерного заказчика по идентификатору
-  virtual std::optional<Customer> customerById(int id) const = 0;
+  ///
+  virtual std::optional<Customer> customerById(int id) const noexcept = 0;
+
   /// Найти конктерного оператора по идентификатору
-  virtual std::optional<Operator> operatorById(int id) const = 0;
+  virtual std::optional<Operator> operatorById(int id) const noexcept = 0;
+
   /// Найти конктерный склад по идентификатору
-  virtual std::optional<const Warehouse*> warehouseById(int id) const = 0;
+  virtual std::optional<const Warehouse*> warehouseById(int id) const noexcept = 0;
+
   /// Найти конктерное описание по артикулу
-  virtual std::optional<ProductDescription> productByCode(const VendorCode& code) const = 0;
+  virtual std::optional<ProductDescription> productByCode(const VendorCode& code) const noexcept = 0;
 
   /**
    * @brief Собрать в итератор все продукты по артикулу
@@ -144,7 +158,7 @@ public:
    *          { {{#ar, 3},  2},
    *            {{#ar, 34}, 1} }
    */
-  virtual void allProductCountByCode(const VendorCode& code, CountInserter inserter) const = 0;
+  virtual void allProductCountByCode(const VendorCode& code, CountInserter inserter) const noexcept = 0;
 
   /**
    * @brief Можно ли получить товар (с любого склада)
@@ -158,7 +172,8 @@ public:
    *       3, то второй элемент пары будет равен 3.
    *       Функция собирает данные со складов, исключая те, на которых товара нет вообще.
    */
-  virtual std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const = 0;
+  virtual std::vector<std::pair<int, int>>
+  canFetch(const VendorCode& code, int count, bool onlyFull) const noexcept = 0;
 
   /**
    * @brief Получить товар со склада
@@ -167,7 +182,7 @@ public:
    * @param count Количество для получения
    * @return Результат операции
    */
-  virtual ProductResult fetch(int warehouseId, const VendorCode& code, int count) = 0;
+  virtual ProductResult fetch(int warehouseId, const VendorCode& code, int count) noexcept = 0;
 
   /**
    * @brief Поставить товар на склад
@@ -176,7 +191,7 @@ public:
    * @param count Количество для поставки
    * @return Результат операции
    */
-  virtual ProductResult deliver(int warehouseId, const VendorCode& code, int count) = 0;
+  virtual ProductResult deliver(int warehouseId, const VendorCode& code, int count) noexcept = 0;
 
   /**
    * @brief Редактировать описание продукта
@@ -184,7 +199,7 @@ public:
    * @param newDescription Новое описание товара
    * @return Результат операции
    */
-  virtual EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) = 0;
+  virtual EditResult editProductDescription(const VendorCode& code, const std::wstring& newDescription) noexcept = 0;
 
   /**
    * @brief Редактировать данные об операторе
@@ -192,7 +207,7 @@ public:
    * @param newData Новые данные
    * @return Результат операции
    */
-  virtual EditResult editOperatorData(int operatorId, const Person& newData) = 0;
+  virtual EditResult editOperatorData(int operatorId, const Person& newData) noexcept = 0;
 
   /**
    * @brief Редактировать данные о заказчике
@@ -200,7 +215,7 @@ public:
    * @param newData Новые данные
    * @return Результат операции
    */
-  virtual EditResult editCustomerData(int customerId, const Person& newData) = 0;
+  virtual EditResult editCustomerData(int customerId, const Person& newData) noexcept = 0;
 
   /**
    * @brief Редактировать приоритет склада
@@ -208,7 +223,7 @@ public:
    * @param newPriority Новый приоритет
    * @return Результат операции
    */
-  virtual EditResult editWarehousePriority(int warehouseId, int newPriority) = 0;
+  virtual EditResult editWarehousePriority(int warehouseId, int newPriority) noexcept = 0;
 
   /**
    * @brief Редактировать описание склада
@@ -216,7 +231,7 @@ public:
    * @param newDescription Новое описание склада
    * @return Результат операции
    */
-  virtual EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) = 0;
+  virtual EditResult editWarehouseDescription(int warehouseId, const std::wstring& newDescription) noexcept = 0;
 
   /**
    * @brief Установить новый статус заказа
@@ -224,7 +239,7 @@ public:
    * @param status Новый статус заказа
    * @return Результат операции
    */
-  virtual EditResult setOrderStatus(const std::wstring& id, Order::Status status) = 0;
+  virtual EditResult setOrderStatus(const std::wstring& id, Order::Status status) noexcept = 0;
 
   /**
    * @brief Добавить продукт к заказу
@@ -232,19 +247,23 @@ public:
    * @param product Пара артикул-количество
    * @return Результат операции
    */
-  virtual EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) = 0;
+  virtual EditResult addProductToOrder(const std::wstring& id, const ProductCount& product) noexcept = 0;
 
   /// Удалить пару артикул-описание
-  virtual RemoveResult removeDescription(const VendorCode& code) = 0;
+  virtual RemoveResult removeDescription(const VendorCode& code) noexcept = 0;
+
   /// Удалить оператора
-  virtual RemoveResult removeOperator(int id) = 0;
+  virtual RemoveResult removeOperator(int id) noexcept = 0;
+
   /// Удалить заказчика
-  virtual RemoveResult removeCustomer(int id) = 0;
+  virtual RemoveResult removeCustomer(int id) noexcept = 0;
+
   /// Удалить заказ
-  virtual RemoveResult removeOrder(const std::wstring& id) = 0;
+  virtual RemoveResult removeOrder(const std::wstring& id) noexcept = 0;
+
   /// Удалить склад
-  virtual RemoveResult removeWarehouse(int id) = 0;
+  virtual RemoveResult removeWarehouse(int id) noexcept = 0;
 
   /// Очистить базу данных
-  virtual void drop() = 0;
+  virtual void drop() noexcept = 0;
 };

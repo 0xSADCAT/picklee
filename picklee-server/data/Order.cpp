@@ -7,25 +7,28 @@
 #include <cassert>
 
 
-Order::Order(
-    const std::wstring& id, int operId, int customerId, const std::vector<ProductCount> products, Status status)
+Order::Order(const std::wstring& id,
+             int operId,
+             int customerId,
+             const std::vector<ProductCount> products,
+             Status status) noexcept
     : _id(id), _operId(operId), _customerId(customerId), _products(products), _status(status)
 {
 }
 
 
-const std::wstring& Order::id() const
+const std::wstring& Order::id() const noexcept
 {
   return _id;
 }
 
 
-const std::vector<ProductCount>& Order::products() const
+const std::vector<ProductCount>& Order::products() const noexcept
 {
   return _products;
 }
 
-void Order::addProduct(const ProductCount& product)
+void Order::addProduct(const ProductCount& product) noexcept
 {
   assert(product.count() > 0);
 
@@ -44,19 +47,19 @@ void Order::addProduct(const ProductCount& product)
 }
 
 
-Order::Status Order::status() const
+Order::Status Order::status() const noexcept
 {
   return _status;
 }
 
 
-void Order::setStatus(Status newStatus)
+void Order::setStatus(Status newStatus) noexcept
 {
   _status = newStatus;
 }
 
 
-void Order::convert(Convertor& convertor) const
+void Order::convert(Convertor& convertor) const noexcept
 {
   std::wstring_view status;
   switch (_status)

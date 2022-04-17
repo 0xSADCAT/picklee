@@ -8,38 +8,38 @@
 class Convertor
 {
 public:
-  Convertor() = default;
-  virtual ~Convertor() = default;
+  Convertor() noexcept = default;
+  virtual ~Convertor() noexcept = default;
 
   /**
    * @brief Начать именованный блок данных
    * @param Имя блока данных
    */
-  virtual void beginBlock(const std::wstring_view& blockName) = 0;
+  virtual void beginBlock(const std::wstring_view& blockName) noexcept = 0;
 
   /**
    * @brief Закончить именованный блок данных
    * @param Имя блока данных
    */
-  virtual void endBlock(const std::wstring_view& blockName) = 0;
+  virtual void endBlock(const std::wstring_view& blockName) noexcept = 0;
 
   /**
    * @brief Добавить поле с данными
    * @param Название поля данных
    * @param Данные
    */
-  virtual void field(const std::wstring_view& fieldName, const std::wstring_view& fieldData) = 0;
+  virtual void field(const std::wstring_view& fieldName, const std::wstring_view& fieldData) noexcept = 0;
 
   /**
    * @brief Собрать буфер в результирующею строку
    * @return Результирующая строка
    */
-  virtual std::wstring result() = 0;
+  virtual std::wstring result() noexcept = 0;
 
   /**
    * @brief Очистить буфер
    */
-  virtual void clear() = 0;
+  virtual void clear() noexcept = 0;
 };
 
 
@@ -47,15 +47,15 @@ public:
 class JsonConvertor : public Convertor
 {
 public:
-  JsonConvertor(const std::wstring indentType = L"    ");
+  JsonConvertor(const std::wstring indentType = L"    ") noexcept;
 
-  virtual void beginBlock(const std::wstring_view& blockName) override;
-  virtual void endBlock(const std::wstring_view&) override;
+  virtual void beginBlock(const std::wstring_view& blockName) noexcept override;
+  virtual void endBlock(const std::wstring_view&) noexcept override;
 
-  virtual void field(const std::wstring_view& fieldName, const std::wstring_view& fieldData) override;
+  virtual void field(const std::wstring_view& fieldName, const std::wstring_view& fieldData) noexcept override;
 
-  virtual std::wstring result() override;
-  virtual void clear() override;
+  virtual std::wstring result() noexcept override;
+  virtual void clear() noexcept override;
 
 private:
   int _indent = 1;
@@ -63,5 +63,5 @@ private:
 
   std::list<std::wstring> _buffer;
 
-  void addIndent();
+  void addIndent() noexcept;
 };

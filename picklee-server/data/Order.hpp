@@ -25,18 +25,22 @@ public:
     Issued              ///< Выдано
   };
 
-  Order(const std::wstring& id, int operId, int customerId, const std::vector<ProductCount> products, Status status);
+  Order(const std::wstring& id,
+        int operId,
+        int customerId,
+        const std::vector<ProductCount> products,
+        Status status) noexcept;
 
-  const std::wstring& id() const;
+  const std::wstring& id() const noexcept;
 
-  const std::vector<ProductCount>& products() const;
+  const std::vector<ProductCount>& products() const noexcept;
 
-  void addProduct(const ProductCount& product);
+  void addProduct(const ProductCount& product) noexcept;
 
-  Status status() const;
-  void setStatus(Status newStatus);
+  Status status() const noexcept;
+  void setStatus(Status newStatus) noexcept;
 
-  void convert(Convertor& convertor) const;
+  void convert(Convertor& convertor) const noexcept;
 
 private:
   std::wstring _id;

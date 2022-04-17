@@ -7,48 +7,49 @@
 #include <cassert>
 
 
-Warehouse::Warehouse(int id, int priority, const std::wstring& description)
+Warehouse::Warehouse(int id, int priority, const std::wstring& description) noexcept
     : _id(id), _priority(priority), _description(description)
 {
 }
 
 
-int Warehouse::priority() const
+int Warehouse::priority() const noexcept
 {
   return _priority;
 }
 
 
-void Warehouse::setPriority(int newPriority)
+void Warehouse::setPriority(int newPriority) noexcept
 {
   _priority = newPriority;
 }
 
 
-const std::wstring& Warehouse::description() const
+const std::wstring& Warehouse::description() const noexcept
 {
   return _description;
 }
 
 
-void Warehouse::setDescription(const std::wstring& newDescription)
+void Warehouse::setDescription(const std::wstring& newDescription) noexcept
 {
   _description = newDescription;
 }
 
 
-const std::vector<ProductCount>& Warehouse::products() const
+const std::vector<ProductCount>& Warehouse::products() const noexcept
 {
   return _products;
 }
 
 
-void Warehouse::deliver(const ProductCount& product)
+void Warehouse::deliver(const ProductCount& product) noexcept
 {
   assert(product.count() > 0);
 
-  auto iter = std::find_if(
-      _products.begin(), _products.end(), [&](const ProductCount& each) { return each.code() == product.code(); });
+  auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) noexcept {
+    return each.code() == product.code();
+  });
 
   if (iter == _products.end())
   {
@@ -61,12 +62,13 @@ void Warehouse::deliver(const ProductCount& product)
 }
 
 
-bool Warehouse::fetch(const ProductCount& product)
+bool Warehouse::fetch(const ProductCount& product) noexcept
 {
   assert(product.count() > 0);
 
-  auto iter = std::find_if(
-      _products.begin(), _products.end(), [&](const ProductCount& each) { return each.code() == product.code(); });
+  auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) noexcept {
+    return each.code() == product.code();
+  });
 
   if (iter == _products.end())
   {
@@ -84,12 +86,13 @@ bool Warehouse::fetch(const ProductCount& product)
 }
 
 
-bool Warehouse::canFetch(const ProductCount& product) const
+bool Warehouse::canFetch(const ProductCount& product) const noexcept
 {
   assert(product.count() > 0);
 
-  auto iter = std::find_if(
-      _products.begin(), _products.end(), [&](const ProductCount& each) { return each.code() == product.code(); });
+  auto iter = std::find_if(_products.begin(), _products.end(), [&](const ProductCount& each) noexcept {
+    return each.code() == product.code();
+  });
 
   if (iter == _products.end())
   {
@@ -102,13 +105,13 @@ bool Warehouse::canFetch(const ProductCount& product) const
 }
 
 
-int Warehouse::id() const
+int Warehouse::id() const noexcept
 {
   return _id;
 }
 
 
-void Warehouse::convert(Convertor& conv)
+void Warehouse::convert(Convertor& conv) noexcept
 {
   conv.beginBlock(className);
   conv.field(fn::id, std::to_wstring(_id));

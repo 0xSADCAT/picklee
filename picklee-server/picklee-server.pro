@@ -9,6 +9,7 @@ SOURCES += \
     data/Filter.cpp \
     data/IdGenerator.cpp \
     data/JsonLoader.cpp \
+    data/JsonParser.cpp \
     data/Order.cpp \
     data/Person.cpp \
     data/Product.cpp \
@@ -25,8 +26,10 @@ HEADERS += \
     data/Filter.hpp \
     data/I_DataBase.hpp \
     data/I_Loader.hpp \
+    data/I_Parser.hpp \
     data/IdGenerator.hpp \
     data/JsonLoader.hpp \
+    data/JsonParser.hpp \
     data/Order.hpp \
     data/Person.hpp \
     data/Product.hpp \

@@ -12,13 +12,13 @@ class Customer;
 class IdGenerator
 {
 public:
-  IdGenerator();
+  IdGenerator() noexcept;
 
-  int generateClient();
-  int generateOperator();
-  int generateWarehouse();
+  int generateClient() noexcept;
+  int generateOperator() noexcept;
+  int generateWarehouse() noexcept;
 
-  static std::wstring generateOrder(const Operator& oper, const Customer& customer);
+  static std::wstring generateOrder(const Operator& oper, const Customer& customer) noexcept;
 
   /**
    * @brief Установить новые значения счетчиков идентификаторов
@@ -26,13 +26,13 @@ public:
    * @param client Для клиентов
    * @param warehouse Для складов
    */
-  void reset(int oper, int client, int warehouse);
+  void reset(int oper, int client, int warehouse) noexcept;
 
   /**
    * @brief Получить текущие значения счетчиков
    * @return Счетчики для: <оператор, клиент, склад>
    */
-  std::tuple<int, int, int> getAll() const;
+  std::tuple<int, int, int> getAll() const noexcept;
 
 private:
   int _oper;

@@ -25,26 +25,26 @@ enum class Month
 class Time
 {
 public:
-  Time(int hours, int minutes, int seconds);
+  Time(int hours, int minutes, int seconds) noexcept;
 
-  static Time current();
+  static Time current() noexcept;
 
-  int hours() const;
-  void setHours(int newHours);
+  int hours() const noexcept;
+  void setHours(int newHours) noexcept;
 
-  int minutes() const;
-  void setMinutes(int newMinutes);
+  int minutes() const noexcept;
+  void setMinutes(int newMinutes) noexcept;
 
-  int seconds() const;
-  void setSeconds(int newSeconds);
+  int seconds() const noexcept;
+  void setSeconds(int newSeconds) noexcept;
 
-  bool isValid() const;
+  bool isValid() const noexcept;
 
-  std::wstring toString() const;
+  std::wstring toString() const noexcept;
 
-  friend bool operator==(const Time& left, const Time& right);
-  friend bool operator!=(const Time& left, const Time& right);
-  friend bool operator<(const Time& left, const Time& right);
+  friend bool operator==(const Time& left, const Time& right) noexcept;
+  friend bool operator!=(const Time& left, const Time& right) noexcept;
+  friend bool operator<(const Time& left, const Time& right) noexcept;
 
 private:
   int _hours;
@@ -56,35 +56,35 @@ private:
   void validate();
 };
 
-bool operator==(const Time& left, const Time& right);
-bool operator!=(const Time& left, const Time& right);
-bool operator<(const Time& left, const Time& right);
+bool operator==(const Time& left, const Time& right) noexcept;
+bool operator!=(const Time& left, const Time& right) noexcept;
+bool operator<(const Time& left, const Time& right) noexcept;
 
 
 /// Дата
 class Date
 {
 public:
-  Date(int day, Month month, int year);
+  Date(int day, Month month, int year) noexcept;
 
-  static Date current();
+  static Date current() noexcept;
 
-  int day() const;
-  void setDay(int newDay);
+  int day() const noexcept;
+  void setDay(int newDay) noexcept;
 
-  Month month() const;
-  void setMonth(Month newMonth);
+  Month month() const noexcept;
+  void setMonth(Month newMonth) noexcept;
 
-  int year() const;
-  void setYear(int newYear);
+  int year() const noexcept;
+  void setYear(int newYear) noexcept;
 
-  bool isValid() const;
+  bool isValid() const noexcept;
 
-  std::wstring toString(wchar_t sep = L'-') const;
+  std::wstring toString(wchar_t sep = L'-') const noexcept;
 
-  friend bool operator==(const Date& left, const Date& right);
-  friend bool operator!=(const Date& left, const Date& right);
-  friend bool operator<(const Date& left, const Date& right);
+  friend bool operator==(const Date& left, const Date& right) noexcept;
+  friend bool operator!=(const Date& left, const Date& right) noexcept;
+  friend bool operator<(const Date& left, const Date& right) noexcept;
 
 private:
   int _day;
@@ -96,56 +96,56 @@ private:
   void validate();
 };
 
-bool operator==(const Date& left, const Date& right);
-bool operator!=(const Date& left, const Date& right);
-bool operator<(const Date& left, const Date& right);
+bool operator==(const Date& left, const Date& right) noexcept;
+bool operator!=(const Date& left, const Date& right) noexcept;
+bool operator<(const Date& left, const Date& right) noexcept;
 
 
 /// Дата и время
 class DateTime
 {
 public:
-  DateTime(const Time time, const Date date);
+  DateTime(const Time time, const Date date) noexcept;
 
-  static DateTime current();
+  static DateTime current() noexcept;
 
-  int hours() const;
-  void setHours(int newHours);
+  int hours() const noexcept;
+  void setHours(int newHours) noexcept;
 
-  int minutes() const;
-  void setMinutes(int newMinutes);
+  int minutes() const noexcept;
+  void setMinutes(int newMinutes) noexcept;
 
-  int seconds() const;
-  void setSeconds(int newSeconds);
+  int seconds() const noexcept;
+  void setSeconds(int newSeconds) noexcept;
 
-  int day() const;
-  void setDay(int newDay);
+  int day() const noexcept;
+  void setDay(int newDay) noexcept;
 
-  Month month() const;
-  void setMonth(Month newMonth);
+  Month month() const noexcept;
+  void setMonth(Month newMonth) noexcept;
 
-  int year() const;
-  void setYear(int newYear);
+  int year() const noexcept;
+  void setYear(int newYear) noexcept;
 
-  const Time& time() const;
-  void setTime(const Time& newTime);
+  const Time& time() const noexcept;
+  void setTime(const Time& newTime) noexcept;
 
-  const Date& date() const;
-  void setDate(const Date& newDate);
+  const Date& date() const noexcept;
+  void setDate(const Date& newDate) noexcept;
 
-  bool isValid() const;
+  bool isValid() const noexcept;
 
-  std::wstring toString(wchar_t sep = L' ', wchar_t dateSep = L'-') const;
+  std::wstring toString(wchar_t sep = L' ', wchar_t dateSep = L'-') const noexcept;
 
-  friend bool operator==(const DateTime& left, const DateTime& right);
-  friend bool operator!=(const DateTime& left, const DateTime& right);
-  friend bool operator<(const DateTime& left, const DateTime& right);
+  friend bool operator==(const DateTime& left, const DateTime& right) noexcept;
+  friend bool operator!=(const DateTime& left, const DateTime& right) noexcept;
+  friend bool operator<(const DateTime& left, const DateTime& right) noexcept;
 
 private:
   Time _time;
   Date _date;
 };
 
-bool operator==(const DateTime& left, const DateTime& right);
-bool operator!=(const DateTime& left, const DateTime& right);
-bool operator<(const DateTime& left, const DateTime& right);
+bool operator==(const DateTime& left, const DateTime& right) noexcept;
+bool operator!=(const DateTime& left, const DateTime& right) noexcept;
+bool operator<(const DateTime& left, const DateTime& right) noexcept;

@@ -6,12 +6,12 @@
 #include "Product.hpp"
 
 
-FilterContains::FilterContains(const std::wstring& str) : _str(str)
+FilterContains::FilterContains(const std::wstring& str) noexcept : _str(str)
 {
 }
 
 
-bool FilterContains::filter(const Order& order) const
+bool FilterContains::filter(const Order& order) const noexcept
 {
   for (auto&& product : order.products())
   {
@@ -25,47 +25,47 @@ bool FilterContains::filter(const Order& order) const
 }
 
 
-bool FilterContains::filter(const Customer& customer) const
+bool FilterContains::filter(const Customer& customer) const noexcept
 {
   return customer.name().anyContains(_str);
 }
 
 
-bool FilterContains::filter(const Operator& oper) const
+bool FilterContains::filter(const Operator& oper) const noexcept
 {
   return oper.name().anyContains(_str);
 }
 
 
-bool FilterContains::filter(const ProductCount& product) const
+bool FilterContains::filter(const ProductCount& product) const noexcept
 {
   return util::str::contains(product.code().str().data(), _str.data());
 }
 
 
-bool FilterContains::filter(const ProductDescription& product) const
+bool FilterContains::filter(const ProductDescription& product) const noexcept
 {
   return util::str::contains(product.code().str().data(), _str.data())
          or util::str::contains(product.description().data(), _str.data());
 }
 
-FilterId::FilterId(int id) : _str(std::to_wstring(id)), _id(id), _ordersOnly(false)
+FilterId::FilterId(int id) noexcept : _str(std::to_wstring(id)), _id(id), _ordersOnly(false)
 {
 }
 
 
-FilterId::FilterId(const std::wstring& id) : _str(id), _id(-1), _ordersOnly(true)
+FilterId::FilterId(const std::wstring& id) noexcept : _str(id), _id(-1), _ordersOnly(true)
 {
 }
 
 
-bool FilterId::filter(const Order& order) const
+bool FilterId::filter(const Order& order) const noexcept
 {
   return util::str::contains(order.id().data(), _str.data());
 }
 
 
-bool FilterId::filter(const Customer& customer) const
+bool FilterId::filter(const Customer& customer) const noexcept
 {
   if (_ordersOnly)
   {
@@ -76,7 +76,7 @@ bool FilterId::filter(const Customer& customer) const
 }
 
 
-bool FilterId::filter(const Operator& oper) const
+bool FilterId::filter(const Operator& oper) const noexcept
 {
   if (_ordersOnly)
   {
@@ -87,29 +87,29 @@ bool FilterId::filter(const Operator& oper) const
 }
 
 
-bool FilterId::filter(const ProductCount&) const
+bool FilterId::filter(const ProductCount&) const noexcept
 {
   return false;
 }
 
 
-bool FilterId::filter(const ProductDescription&) const
+bool FilterId::filter(const ProductDescription&) const noexcept
 {
   return false;
 }
 
 
-FilterVendorCode::FilterVendorCode(const VendorCode& code) : _code(code.str()), _partical(false)
+FilterVendorCode::FilterVendorCode(const VendorCode& code) noexcept : _code(code.str()), _partical(false)
 {
 }
 
 
-FilterVendorCode::FilterVendorCode(const std::wstring& str) : _code(str), _partical(true)
+FilterVendorCode::FilterVendorCode(const std::wstring& str) noexcept : _code(str), _partical(true)
 {
 }
 
 
-bool FilterVendorCode::filter(const Order& order) const
+bool FilterVendorCode::filter(const Order& order) const noexcept
 {
   for (auto&& prod : order.products())
   {
@@ -123,19 +123,19 @@ bool FilterVendorCode::filter(const Order& order) const
 }
 
 
-bool FilterVendorCode::filter(const Customer&) const
+bool FilterVendorCode::filter(const Customer&) const noexcept
 {
   return false;
 }
 
 
-bool FilterVendorCode::filter(const Operator&) const
+bool FilterVendorCode::filter(const Operator&) const noexcept
 {
   return false;
 }
 
 
-bool FilterVendorCode::filter(const ProductCount& product) const
+bool FilterVendorCode::filter(const ProductCount& product) const noexcept
 {
   if (_partical)
   {
@@ -148,7 +148,7 @@ bool FilterVendorCode::filter(const ProductCount& product) const
 }
 
 
-bool FilterVendorCode::filter(const ProductDescription& product) const
+bool FilterVendorCode::filter(const ProductDescription& product) const noexcept
 {
   if (_partical)
   {

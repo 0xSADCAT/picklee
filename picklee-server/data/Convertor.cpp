@@ -6,13 +6,13 @@
 using namespace std::string_literals;
 
 
-JsonConvertor::JsonConvertor(const std::wstring indentType) : _indentType(indentType)
+JsonConvertor::JsonConvertor(const std::wstring indentType) noexcept : _indentType(indentType)
 {
   _buffer.push_back(L"{\n");
 }
 
 
-void JsonConvertor::beginBlock(const std::wstring_view& blockName)
+void JsonConvertor::beginBlock(const std::wstring_view& blockName) noexcept
 {
   addIndent();
   ++_indent;
@@ -22,7 +22,7 @@ void JsonConvertor::beginBlock(const std::wstring_view& blockName)
 }
 
 
-void JsonConvertor::endBlock(const std::wstring_view&)
+void JsonConvertor::endBlock(const std::wstring_view&) noexcept
 {
   assert(_indent > 1);
 
@@ -32,7 +32,7 @@ void JsonConvertor::endBlock(const std::wstring_view&)
 }
 
 
-void JsonConvertor::field(const std::wstring_view& fieldName, const std::wstring_view& fieldData)
+void JsonConvertor::field(const std::wstring_view& fieldName, const std::wstring_view& fieldData) noexcept
 {
   addIndent();
   _buffer.push_back(L"\"");
@@ -43,7 +43,7 @@ void JsonConvertor::field(const std::wstring_view& fieldName, const std::wstring
 }
 
 
-std::wstring JsonConvertor::result()
+std::wstring JsonConvertor::result() noexcept
 {
   std::wstring result;
 
@@ -58,7 +58,7 @@ std::wstring JsonConvertor::result()
 }
 
 
-void JsonConvertor::clear()
+void JsonConvertor::clear() noexcept
 {
   _buffer.clear();
   _buffer.push_back(L"{\n");
@@ -66,7 +66,7 @@ void JsonConvertor::clear()
 }
 
 
-void JsonConvertor::addIndent()
+void JsonConvertor::addIndent() noexcept
 {
   for (int i = 0; i < _indent; ++i)
   {
