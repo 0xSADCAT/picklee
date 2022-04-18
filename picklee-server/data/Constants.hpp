@@ -38,4 +38,5 @@ constexpr std::wstring_view dateTime = L"Invalid date-time format";
 constexpr std::wstring_view unexpectedEOF = L"Unexpected end of file";
 constexpr std::wstring_view fileNotFound = L"File not found";
 constexpr std::wstring_view permissionDenied = L"Permission denied";
+constexpr std::wstring_view alreadyExists = L"Id already exists";
 }

@@ -96,3 +96,8 @@ void Order::convert(Convertor& convertor) const noexcept
 
   convertor.endBlock(className);
 }
+
+
+std::wstring Order::statusToString(Status status)
+{
+}

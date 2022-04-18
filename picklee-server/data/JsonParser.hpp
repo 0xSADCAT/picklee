@@ -33,16 +33,17 @@ private:
   std::vector<ProductDescription> _descriptions;
   std::vector<Warehouse> _warehouses;
 
-  std::vector<std::pair<std::wstring_view, std::wstring>> _errors;
+  std::vector<std::pair<std::wstring_view, std::wstring>> _errorList;
 
   void pushError(std::wstring_view err, const std::wstring& string) noexcept;
+  static bool isBrackestValid(const std::wstring& string);
 
   Order parseOrder(const std::wstring& string);
   Operator parseOperator(const std::wstring& string);
   Customer parseCustomer(const std::wstring& string);
   Person parsePerson(const std::wstring& string);
   ProductDescription parseDescription(const std::wstring& string);
-  ProductCount parseCount(const std::wstring& string);
+  std::vector<ProductCount> parseCount(const std::wstring& string) noexcept;
   Warehouse parseWarehouse(const std::wstring& string);
 };
 

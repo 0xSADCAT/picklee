@@ -42,6 +42,8 @@ public:
 
   void convert(Convertor& convertor) const noexcept;
 
+  static std::wstring statusToString(Status status);
+
 private:
   std::wstring _id;
   int _operId;
