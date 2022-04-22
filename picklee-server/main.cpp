@@ -1,16 +1,49 @@
 #include "MainWindow.hpp"
-#include "data/Convertor.hpp"
 #include "data/DataBase.hpp"
-#include "data/JsonLoader.hpp"
 
 #include <QApplication>
 #include <iostream>
 #include <string>
 
 
+void ok(std::wstring_view name)
+{
+  std::wcout << name << L" <- OK" << std::endl;
+}
+
+
+void err(std::wstring_view name)
+{
+  std::wcout << name << L" <- ERR" << std::endl;
+}
+
+
+void check(bool cond, std::wstring_view name)
+{
+  if (cond)
+  {
+    ok(name);
+  }
+  else
+  {
+    err(name);
+  }
+}
+
+
+#define CHECK(val, name)                                                                   \
+  try                                                                                      \
+  {                                                                                        \
+    check(val.toString() == name::fromString(val.toString()).toString(), name::className); \
+  }                                                                                        \
+  catch (...)                                                                              \
+  {                                                                                        \
+    err(name::className);                                                                  \
+  }
+
+
 int main(int argc, char* argv[])
 {
-  JsonConvertor conv;
   IdGenerator idGenerator;
   idGenerator.reset(24, 377, 2);
 
@@ -27,24 +60,12 @@ int main(int argc, char* argv[])
   ware.deliver({desc.code(), 400});
   ware.deliver({{L"00000"}, 1});
 
-  DataBase db;
-  JsonLoader loader(db);
-
-  oper.convert(conv);
-  loader.loadFrom(conv.result());
-  conv.clear();
-
-  cust.convert(conv);
-  loader.loadFrom(conv.result());
-  conv.clear();
-
-  order.convert(conv);
-  loader.loadFrom(conv.result());
-  conv.clear();
-
-  ware.convert(conv);
-  loader.loadFrom(conv.result());
-  conv.clear();
+  CHECK(oper, Operator);
+  CHECK(cust, Customer);
+  CHECK(desc, ProductDescription);
+  CHECK(prod, ProductCount);
+  CHECK(order, Order);
+  CHECK(ware, Warehouse);
 
   return 0;
 

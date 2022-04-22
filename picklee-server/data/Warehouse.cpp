@@ -1,14 +1,34 @@
 #include "Warehouse.hpp"
 
 #include "Constants.hpp"
-#include "Convertor.hpp"
 
 #include <algorithm>
 #include <cassert>
+#include <regex>
+
+
+namespace
+{
+
+const static auto wrap = [](const std::wstring& str) {
+  return L"\"" + str + L"\"";
+};
+
+}
 
 
 Warehouse::Warehouse(int id, int priority, const std::wstring& description) noexcept
     : _id(id), _priority(priority), _description(description)
+{
+}
+
+
+Warehouse Warehouse::fromString(const std::wstring& string)
+{
+}
+
+
+std::wstring Warehouse::toString() const noexcept
 {
 }
 
@@ -108,22 +128,4 @@ bool Warehouse::canFetch(const ProductCount& product) const noexcept
 int Warehouse::id() const noexcept
 {
   return _id;
-}
-
-
-void Warehouse::convert(Convertor& conv) noexcept
-{
-  conv.beginBlock(className);
-  conv.field(fn::id, std::to_wstring(_id));
-  conv.field(fn::priority, std::to_wstring(_priority));
-  conv.field(fn::description, _description);
-
-  conv.beginBlock(_products.data()->className);
-  for (auto&& prod : _products)
-  {
-    prod.convert(conv);
-  }
-  conv.endBlock(_products.data()->className);
-
-  conv.endBlock(className);
 }

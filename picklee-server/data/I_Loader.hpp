@@ -1,34 +1,44 @@
 #pragma once
 
+#include "Order.hpp"
+#include "Person.hpp"
+#include "Product.hpp"
+#include "Warehouse.hpp"
+
+#include <filesystem>
 #include <string>
 #include <vector>
 
 
-class I_DataBase;
-
-
-/// Загрузчик базы данных из строки
+/// Загрузчик данных из файлов
 class I_Loader
 {
 public:
-  I_Loader(I_DataBase& dataBase) noexcept : _dataBase(dataBase)
-  {
-  }
+  using File = const std::filesystem::path&;
 
+  struct Error
+  {
+    const std::wstring message;
+    const std::wstring where;
+
+    Error(const std::wstring message, const std::wstring where) : message(message), where(where)
+    {
+    }
+  };
+
+  template<typename T>
+  struct Result
+  {
+    std::vector<T> results;
+    std::vector<Error> errors;
+  };
+
+  I_Loader() noexcept = default;
   virtual ~I_Loader() noexcept = default;
 
-  /**
-   * @brief Загрузить в БД из строки
-   * @param string Строка для загрузки
-   */
-  virtual void loadFrom(const std::wstring& string) noexcept = 0;
-
-  /// Получить ошибки при загрузке
-  virtual std::vector<std::pair<std::wstring_view, std::wstring>> errors() const noexcept = 0;
-
-  /// Очистить лог ошибок
-  virtual void clearErrors() noexcept = 0;
-
-protected:
-  I_DataBase& _dataBase;
+  virtual Result<ProductDescription> loadDescriptions(File file) const noexcept = 0;
+  virtual Result<Operator> loadOperators(File file) const noexcept = 0;
+  virtual Result<Customer> loadCustomers(File file) const noexcept = 0;
+  virtual Result<Order> loadOrders(File file) const noexcept = 0;
+  virtual Result<Warehouse> loadWarehouses(File file) const noexcept = 0;
 };

@@ -6,15 +6,16 @@
 #include <vector>
 
 
-class Convertor;
-
-
 class Warehouse
 {
 public:
   static inline constexpr std::wstring_view className = L"Warehouse";
 
   Warehouse(int id, int priority, const std::wstring& description) noexcept;
+
+  static Warehouse fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
 
   int priority() const noexcept;
   void setPriority(int newPriority) noexcept;
@@ -52,8 +53,6 @@ public:
   bool canFetch(const ProductCount& product) const noexcept;
 
   int id() const noexcept;
-
-  void convert(Convertor& conv) noexcept;
 
 private:
   int _id;                             ///< Идентификатор

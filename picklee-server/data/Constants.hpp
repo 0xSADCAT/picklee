@@ -1,9 +1,30 @@
 #pragma once
 
-#include <string_view>
+#include <exception>
+#include <string>
 
 
-static constexpr std::wstring_view dateTimeFormat = L"dd-MM-yy.hh:mm:ss";
+class InvalidFormatException : public std::exception
+{
+public:
+  InvalidFormatException(std::wstring_view error, const std::wstring& where) : _error(error), _where(where)
+  {
+  }
+
+  const std::wstring& error() const
+  {
+    return _error;
+  }
+
+  const std::wstring& where() const
+  {
+    return _where;
+  }
+
+private:
+  const std::wstring _error;
+  const std::wstring _where;
+};
 
 
 /// Имена полей данных

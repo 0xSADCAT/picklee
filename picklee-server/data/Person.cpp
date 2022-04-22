@@ -2,14 +2,47 @@
 
 #include "../utils/Utils.hpp"
 #include "Constants.hpp"
-#include "Convertor.hpp"
 
 #include <algorithm>
+#include <regex>
+
+
+namespace
+{
+
+const static auto wrap = [](const std::wstring& str) {
+  return L"\"" + str + L"\"";
+};
+
+}
 
 
 Person::Person(const std::wstring& firstName, const std::wstring& lastName, const std::wstring& patronymic) noexcept
     : _firstName(firstName), _lastName(lastName), _patronymic(patronymic)
 {
+}
+
+
+Person Person::fromString(const std::wstring& string)
+{
+  const static std::wregex expr(std::wstring(className)
+                                + L"\\s*\\{\\s*\"([^\"]+)\"\\s*,?\\s*\"([^\"]+)\"\\s*,?\\s*\"([^\"]+)\",?\\s*\\}\\s*");
+  std::wsmatch match;
+  if (std::regex_search(string, match, expr))
+  {
+    return Person(match[1].str(), match[2].str(), match[3].str());
+  }
+  else
+  {
+    throw InvalidFormatException(className, string);
+  }
+}
+
+
+std::wstring Person::toString() const noexcept
+{
+  return std::wstring(className) + L" { " + wrap(_firstName) + L", " + wrap(_lastName) + L", " + wrap(_patronymic)
+         + L" }";
 }
 
 
@@ -56,18 +89,31 @@ bool Person::anyContains(const std::wstring& str) const noexcept
 }
 
 
-void Person::convert(Convertor& conv) noexcept
+Operator::Operator(int id, const Person& name) noexcept : _id(id), _name(name)
 {
-  conv.beginBlock(className);
-  conv.field(fn::firstName, _firstName);
-  conv.field(fn::lastName, _lastName);
-  conv.field(fn::patronymic, _patronymic);
-  conv.endBlock(className);
 }
 
 
-Operator::Operator(int id, const Person& name) noexcept : _id(id), _name(name)
+Operator Operator::fromString(const std::wstring& string)
 {
+  const static std::wregex expr(std::wstring(className) + L"\\s*\\{\\s*\"(\\d+)\"\\s*,?\\s*("
+                                + std::wstring(Person::className) + L"\\s*\\{.*\\})" + L"\\s*\\}\\s*");
+  std::wsmatch match;
+
+  if (std::regex_search(string, match, expr))
+  {
+    return Operator(std::stoi(match[1].str()), Person::fromString(match[2].str()));
+  }
+  else
+  {
+    throw InvalidFormatException(className, string);
+  }
+}
+
+
+std::wstring Operator::toString() const noexcept
+{
+  return std::wstring(className) + L" { " + wrap(std::to_wstring(_id)) + L", " + _name.toString() + L" }";
 }
 
 
@@ -89,17 +135,31 @@ int Operator::id() const noexcept
 }
 
 
-void Operator::convert(Convertor& conv) noexcept
+Customer::Customer(int id, const Person& name) noexcept : _id(id), _name(name)
 {
-  conv.beginBlock(className);
-  conv.field(fn::id, std::to_wstring(_id));
-  _name.convert(conv);
-  conv.endBlock(className);
 }
 
 
-Customer::Customer(int id, const Person& name) noexcept : _id(id), _name(name)
+Customer Customer::fromString(const std::wstring& string)
 {
+  const static std::wregex expr(std::wstring(className) + L"\\s*\\{\\s*\"(\\d+)\"\\s*,?\\s*("
+                                + std::wstring(Person::className) + L"\\s*\\{.*\\})" + L"\\s*\\}\\s*");
+  std::wsmatch match;
+
+  if (std::regex_search(string, match, expr))
+  {
+    return Customer(std::stoi(match[1].str()), Person::fromString(match[2].str()));
+  }
+  else
+  {
+    throw InvalidFormatException(className, string);
+  }
+}
+
+
+std::wstring Customer::toString() const noexcept
+{
+  return std::wstring(className) + L" { " + wrap(std::to_wstring(_id)) + L", " + _name.toString() + L" }";
 }
 
 
@@ -118,13 +178,4 @@ const Person& Customer::name() const noexcept
 void Customer::setName(const Person& newName) noexcept
 {
   _name = newName;
-}
-
-
-void Customer::convert(Convertor& conv) noexcept
-{
-  conv.beginBlock(className);
-  conv.field(fn::id, std::to_wstring(_id));
-  _name.convert(conv);
-  conv.endBlock(className);
 }

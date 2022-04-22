@@ -1,10 +1,20 @@
 #include "Order.hpp"
 
 #include "Constants.hpp"
-#include "Convertor.hpp"
 
 #include <algorithm>
 #include <cassert>
+#include <regex>
+
+
+namespace
+{
+
+const static auto wrap = [](const std::wstring& str) {
+  return L"\"" + str + L"\"";
+};
+
+}
 
 
 Order::Order(const std::wstring& id,
@@ -14,6 +24,86 @@ Order::Order(const std::wstring& id,
              Status status) noexcept
     : _id(id), _operId(operId), _customerId(customerId), _products(products), _status(status)
 {
+}
+
+
+Order Order::fromString(std::wstring string)
+{
+  const static std::wregex expr(std::wstring(className)
+                                + L"\\s*\\{\\s*\"([^\"]+)\"\\s*,?\\s*\"(\\d+)\"\\s*,?\\s*\"(\\d+)\"\\s*,?\\s*\"([^"
+                                  L"\"]+)\"\\s*,?\\s*\\[(.*)\\]\\s*\\}");
+  const static std::wregex countExpr(L"(" + std::wstring(ProductCount::className) + L"\\s*\\{\\s*[^\\{]+\\s*\\})");
+
+  for (auto&& ch : string)
+  {
+    if (ch == L'\n')
+    {
+      ch = L' ';
+    }
+  }
+
+  std::wsmatch match;
+  if (std::regex_search(string, match, expr))
+  {
+    std::wstring id = match[1].str();
+    int operId = std::stoi(match[2].str());
+    int custId = std::stoi(match[3].str());
+    std::wstring statusStr = match[4].str();
+    Status status;
+
+    if (statusStr == statusToString(Status::InProcessing))
+    {
+      status = Status::InProcessing;
+    }
+    else if (statusStr == statusToString(Status::Issued))
+    {
+      status = Status::Issued;
+    }
+    else if (statusStr == statusToString(Status::ReadyToIssue))
+    {
+      status = Status::ReadyToIssue;
+    }
+    else if (statusStr == statusToString(Status::WaitingForDelivery))
+    {
+      status = Status::WaitingForDelivery;
+    }
+    else
+    {
+      throw InvalidFormatException(className, string);
+    }
+
+    std::vector<ProductCount> products;
+    std::vector<std::wsmatch> matches {std::wsregex_iterator {string.begin(), string.end(), countExpr},
+                                       std::wsregex_iterator {}};
+    for (auto&& each : matches)
+    {
+      products.push_back(ProductCount::fromString(each[1].str()));
+    }
+
+    return Order(std::move(id), operId, custId, std::move(products), status);
+  }
+  else
+  {
+    throw InvalidFormatException(className, string);
+  }
+}
+
+
+std::wstring Order::toString() const noexcept
+{
+  std::wstring result(className);
+
+  result += L" {\n" + wrap(_id) + L", " + wrap(std::to_wstring(_operId)) + L", " + wrap(std::to_wstring(_customerId))
+            + L", " + wrap(statusToString(_status)) + L",\n  [\n";
+
+  for (auto&& prod : _products)
+  {
+    result += L"  " + prod.toString() + L"\n";
+  }
+
+  result += L"  ]\n}";
+
+  return result;
 }
 
 
@@ -59,45 +149,23 @@ void Order::setStatus(Status newStatus) noexcept
 }
 
 
-void Order::convert(Convertor& convertor) const noexcept
-{
-  std::wstring_view status;
-  switch (_status)
-  {
-  case Status::InProcessing:
-    status = L"InProcessing";
-    break;
-
-  case Status::Issued:
-    status = L"Issued";
-    break;
-
-  case Status::ReadyToIssue:
-    status = L"ReadyToIssue";
-    break;
-
-  case Status::WaitingForDelivery:
-    status = L"WaitingForDelivery";
-    break;
-  }
-
-  convertor.beginBlock(className);
-  convertor.field(fn::id, _id);
-  convertor.field(fn::operId, std::to_wstring(_operId));
-  convertor.field(fn::customerId, std::to_wstring(_customerId));
-  convertor.field(fn::status, status);
-
-  convertor.beginBlock(_products.data()->className);
-  for (auto&& prod : _products)
-  {
-    prod.convert(convertor);
-  }
-  convertor.endBlock(_products.data()->className);
-
-  convertor.endBlock(className);
-}
-
-
 std::wstring Order::statusToString(Status status)
 {
+  switch (status)
+  {
+  case Status::InProcessing:
+    return L"InProcessing";
+
+  case Status::WaitingForDelivery:
+    return L"WaitingForDelivery";
+
+  case Status::ReadyToIssue:
+    return L"ReadyToIssue";
+
+  case Status::Issued:
+    return L"Issued";
+
+  default:
+    return L"Undefined";
+  }
 }

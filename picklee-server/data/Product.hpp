@@ -3,14 +3,11 @@
 #include <string>
 
 
-class Convertor;
-
-
 /// Артикул
 class VendorCode
 {
 public:
-  static inline const std::wstring className = L"VendorCode";
+  static inline const std::wstring wstring_view = L"VendorCode";
 
   VendorCode(const std::wstring& code) noexcept;
 
@@ -29,17 +26,19 @@ bool operator!=(const VendorCode& left, const VendorCode& right) noexcept;
 class ProductDescription
 {
 public:
-  static inline const std::wstring className = L"ProductDescription";
+  static inline const std::wstring_view className = L"ProductDescription";
 
   ProductDescription(const VendorCode& code, const std::wstring& description) noexcept;
+
+  static ProductDescription fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
 
   const VendorCode& code() const noexcept;
   void setCode(const VendorCode& newCode) noexcept;
 
   const std::wstring& description() const noexcept;
   void setDescription(const std::wstring& newDescription) noexcept;
-
-  void convert(Convertor& convertor) const noexcept;
 
 private:
   VendorCode _code;
@@ -51,9 +50,15 @@ private:
 class ProductCount
 {
 public:
-  static inline const std::wstring className = L"ProductCount";
+  static inline const std::wstring_view className = L"ProductCount";
+  static inline const std::wstring expr
+      = std::wstring(className) + L"\\s*\\{\\s*\"([^\"]+)\"\\s*,?\\s*\"(\\d+)\"\\s*\\}\\s*";
 
   ProductCount(const VendorCode& code, int count) noexcept;
+
+  static ProductCount fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
 
   const VendorCode& code() const noexcept;
   void setCode(const VendorCode& newCode) noexcept;
@@ -62,8 +67,6 @@ public:
   void setCount(int newCount) noexcept;
 
   int& countRef() noexcept;
-
-  void convert(Convertor& convertor) const noexcept;
 
 private:
   VendorCode _code;

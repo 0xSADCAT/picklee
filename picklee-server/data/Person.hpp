@@ -3,9 +3,6 @@
 #include <string>
 
 
-class Convertor;
-
-
 /// Общие данные для человека
 class Person
 {
@@ -13,6 +10,10 @@ public:
   static inline constexpr std::wstring_view className = L"Person";
 
   Person(const std::wstring& firstName, const std::wstring& lastName, const std::wstring& patronymic) noexcept;
+
+  static Person fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
 
   const std::wstring& firstName() const noexcept;
   void setFirstName(const std::wstring& newFirstName) noexcept;
@@ -31,8 +32,6 @@ public:
    */
   bool anyContains(const std::wstring& str) const noexcept;
 
-  void convert(Convertor& conv) noexcept;
-
 private:
   std::wstring _firstName;
   std::wstring _lastName;
@@ -48,12 +47,14 @@ public:
 
   Operator(int id, const Person& name) noexcept;
 
+  static Operator fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
+
   const Person& name() const noexcept;
   void setName(const Person& newName) noexcept;
 
   int id() const noexcept;
-
-  void convert(Convertor& conv) noexcept;
 
 private:
   int _id;
@@ -69,12 +70,14 @@ public:
 
   Customer(int id, const Person& name) noexcept;
 
+  static Customer fromString(const std::wstring& string);
+
+  std::wstring toString() const noexcept;
+
   int id() const noexcept;
 
   const Person& name() const noexcept;
   void setName(const Person& newName) noexcept;
-
-  void convert(Convertor& conv) noexcept;
 
 private:
   int _id;

@@ -7,9 +7,6 @@
 #include <vector>
 
 
-class Convertor;
-
-
 /// Заказ
 class Order
 {
@@ -31,6 +28,10 @@ public:
         const std::vector<ProductCount> products,
         Status status) noexcept;
 
+  static Order fromString(std::wstring string);
+
+  std::wstring toString() const noexcept;
+
   const std::wstring& id() const noexcept;
 
   const std::vector<ProductCount>& products() const noexcept;
@@ -39,8 +40,6 @@ public:
 
   Status status() const noexcept;
   void setStatus(Status newStatus) noexcept;
-
-  void convert(Convertor& convertor) const noexcept;
 
   static std::wstring statusToString(Status status);
 
