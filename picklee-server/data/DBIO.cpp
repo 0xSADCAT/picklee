@@ -3,6 +3,7 @@
 #include "Exceptions.hpp"
 
 #include <fstream>
+#include <regex>
 #include <string>
 
 
@@ -49,31 +50,201 @@ DBIO::DBIO(const Path& databaseDirectory) : I_FileIO(databaseDirectory)
 
 I_FileIO::Result<ProductDescription> DBIO::loadDescriptions() const
 {
-  return {};
+  Result<ProductDescription> result;
+
+  std::wifstream stream(path(_dir, FileName::desc));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring buffer;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      try
+      {
+        result.results.push_back(ProductDescription::fromString(buffer));
+      }
+      catch (const InvalidFormatException& ex)
+      {
+        result.errors.push_back({ex.error(), ex.where()});
+      }
+      catch (const std::invalid_argument&)
+      {
+        result.errors.push_back({L"Invalid number format", buffer});
+      }
+    }
+  }
+
+  return result;
 }
 
 
 I_FileIO::Result<Operator> DBIO::loadOperators() const
 {
-  return {};
+  Result<Operator> result;
+
+  std::wifstream stream(path(_dir, FileName::oper));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring buffer;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      try
+      {
+        result.results.push_back(Operator::fromString(buffer));
+      }
+      catch (const InvalidFormatException& ex)
+      {
+        result.errors.push_back({ex.error(), ex.where()});
+      }
+      catch (const std::invalid_argument&)
+      {
+        result.errors.push_back({L"Invalid number format", buffer});
+      }
+    }
+  }
+
+  return result;
 }
 
 
 I_FileIO::Result<Customer> DBIO::loadCustomers() const
 {
-  return {};
+  Result<Customer> result;
+
+  std::wifstream stream(path(_dir, FileName::cust));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring buffer;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      try
+      {
+        result.results.push_back(Customer::fromString(buffer));
+      }
+      catch (const InvalidFormatException& ex)
+      {
+        result.errors.push_back({ex.error(), ex.where()});
+      }
+      catch (const std::invalid_argument&)
+      {
+        result.errors.push_back({L"Invalid number format", buffer});
+      }
+    }
+  }
+
+  return result;
 }
 
 
 I_FileIO::Result<Order> DBIO::loadOrders() const
 {
-  return {};
+  const static std::wregex expr {L"(\\s*" + std::wstring(Order::className) + LR"(\s*\{[^\[]+\[[^\[]*\]\s*\}))"};
+
+  Result<Order> result;
+
+  std::wifstream stream(path(_dir, FileName::order));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring string;
+  std::wstring buffer;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      if (buffer.back() == L'\n')
+      {
+        buffer.back() = L' ';
+      }
+
+      string += buffer;
+    }
+  }
+
+  std::vector<std::wsmatch> matches {std::wsregex_iterator {string.begin(), string.end(), expr},
+                                     std::wsregex_iterator {}};
+  for (auto&& match : matches)
+  {
+    try
+    {
+      result.results.push_back(Order::fromString(match[1].str()));
+    }
+    catch (const InvalidFormatException& ex)
+    {
+      result.errors.push_back({ex.error(), ex.where()});
+    }
+    catch (const std::invalid_argument&)
+    {
+      result.errors.push_back({L"Invalid number format", buffer});
+    }
+  }
+
+  return result;
 }
 
 
 I_FileIO::Result<Warehouse> DBIO::loadWarehouses() const
 {
-  return {};
+  const static std::wregex expr {L"(\\s*" + std::wstring(Warehouse::className) + LR"(\s*\{[^\[]+\[[^\[]*\]\s*\}))"};
+
+  Result<Warehouse> result;
+
+  std::wifstream stream(path(_dir, FileName::ware));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring string;
+  std::wstring buffer;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      if (buffer.back() == L'\n')
+      {
+        buffer.back() = L' ';
+      }
+
+      string += buffer;
+    }
+  }
+
+  std::vector<std::wsmatch> matches {std::wsregex_iterator {string.begin(), string.end(), expr},
+                                     std::wsregex_iterator {}};
+  for (auto&& match : matches)
+  {
+    try
+    {
+      result.results.push_back(Warehouse::fromString(match[1].str()));
+    }
+    catch (const InvalidFormatException& ex)
+    {
+      result.errors.push_back({ex.error(), ex.where()});
+    }
+    catch (const std::invalid_argument&)
+    {
+      result.errors.push_back({L"Invalid number format", buffer});
+    }
+  }
+
+  return result;
 }
 
 
@@ -162,6 +333,49 @@ void DBIO::saveWarehouses(const std::vector<Warehouse>& warehouses) const
   {
     stream << desc.toString() << L'\n';
   }
+
+  stream.close();
+}
+
+
+std::tuple<int, int, int> DBIO::loadId() const
+{
+  const static std::wregex expr {LR"(Id \{\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\})"};
+
+  std::wifstream stream(path(_dir, FileName::configs));
+  if (not stream.is_open())
+  {
+    throw FileIOException(_dir);
+  }
+
+  std::wstring buffer;
+  std::wsmatch match;
+  while (std::getline(stream, buffer))
+  {
+    if (not buffer.empty())
+    {
+      if (std::regex_search(buffer, match, expr))
+      {
+        return {std::stoi(match[1].str()), std::stoi(match[2].str()), std::stoi(match[3].str())};
+      }
+    }
+  }
+
+  throw FileIOException(path(_dir, FileName::configs));
+}
+
+
+void DBIO::saveId(int operId, int custId, int wareId) const
+{
+  std::wofstream stream(path(_dir, FileName::configs));
+
+  if (not stream.is_open())
+  {
+    throw FileIOException(path(_dir, FileName::configs));
+  }
+
+  stream << L"Id { " << std::to_wstring(operId) << L", " << std::to_wstring(custId) << L", " << std::to_wstring(wareId)
+         << L" }";
 
   stream.close();
 }

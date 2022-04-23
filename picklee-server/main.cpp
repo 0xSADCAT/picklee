@@ -83,11 +83,63 @@ int main(int argc, char* argv[])
 
   DBIO io("picklee-test/");
 
+  io.saveId(500, 22, 43);
+  auto&& [x, y, z] = io.loadId();
+  if (x == 500 and y == 22 and z == 43)
+  {
+    ok(L"id");
+  }
+  else
+  {
+    err(L"id");
+  }
+
   io.saveCustomers({cust, cust2});
   io.saveDescriptions({desc, desc2});
   io.saveOperators({oper, oper2});
   io.saveOrders({order, order2});
   io.saveWarehouses({ware, ware2});
+
+  auto des = io.loadDescriptions();
+  auto ope = io.loadOperators();
+  auto cus = io.loadCustomers();
+  auto ord = io.loadOrders();
+  auto war = io.loadWarehouses();
+
+  std::wcout << std::endl;
+
+  for (auto&& d : des.results)
+  {
+    std::wcout << d.toString() << std::endl;
+  }
+
+  std::wcout << std::endl;
+
+  for (auto&& o : ope.results)
+  {
+    std::wcout << o.toString() << std::endl;
+  }
+
+  std::wcout << std::endl;
+
+  for (auto&& c : cus.results)
+  {
+    std::wcout << c.toString() << std::endl;
+  }
+
+  std::wcout << std::endl;
+
+  for (auto&& o : ord.results)
+  {
+    std::wcout << o.toString() << std::endl;
+  }
+
+  std::wcout << std::endl;
+
+  for (auto&& w : war.results)
+  {
+    std::wcout << w.toString() << std::endl;
+  }
 
   return 0;
 

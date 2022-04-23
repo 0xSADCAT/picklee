@@ -19,4 +19,7 @@ public:
   void saveCustomers(const std::vector<Customer>& customers) const override;
   void saveOrders(const std::vector<Order>& orders) const override;
   void saveWarehouses(const std::vector<Warehouse>& warehouses) const override;
+
+  std::tuple<int, int, int> loadId() const override;
+  void saveId(int operId, int custId, int wareId) const override;
 };
