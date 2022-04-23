@@ -13,7 +13,11 @@ SOURCES += \
     data/Product.cpp \
     data/Warehouse.cpp \
     main.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    ui/Description.cpp \
+    ui/DescriptionList.cpp \
+    ui/EditableLabel.cpp \
+    ui/LineEditWidget.cpp
 
 HEADERS += \
     MainWindow.hpp \
@@ -29,6 +33,10 @@ HEADERS += \
     data/Person.hpp \
     data/Product.hpp \
     data/Warehouse.hpp \
+    ui/Description.hpp \
+    ui/DescriptionList.hpp \
+    ui/EditableLabel.hpp \
+    ui/LineEditWidget.hpp \
     utils/Utils.hpp
 
 # Default rules for deployment.
