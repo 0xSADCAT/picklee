@@ -1,6 +1,6 @@
 #include "Warehouse.hpp"
 
-#include "Constants.hpp"
+#include "Exceptions.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -23,13 +23,62 @@ Warehouse::Warehouse(int id, int priority, const std::wstring& description) noex
 }
 
 
-Warehouse Warehouse::fromString(const std::wstring& string)
+Warehouse Warehouse::fromString(std::wstring string)
 {
+  const static std::wregex expr(
+      std::wstring(className)
+      + L"\\s*\\{\\s*\"(\\d+)\"\\s*,?\\s*\"(-?\\d+)\"\\s*,?\\s*\"([^\"]+)\"\\s*,?\\s*\\[(.*)\\]\\s*\\}");
+  const static std::wregex countExpr(L"(" + std::wstring(ProductCount::className) + L"\\s*\\{\\s*[^\\{]+\\s*\\})");
+
+  for (auto&& ch : string)
+  {
+    if (ch == L'\n')
+    {
+      ch = L' ';
+    }
+  }
+
+  std::wsmatch match;
+  if (std::regex_search(string, match, expr))
+  {
+    int id = std::stoi(match[1].str());
+    int priority = std::stoi(match[2].str());
+    std::wstring description = match[3].str();
+
+    std::vector<ProductCount> products;
+    std::vector<std::wsmatch> matches {std::wsregex_iterator {string.begin(), string.end(), countExpr},
+                                       std::wsregex_iterator {}};
+    for (auto&& each : matches)
+    {
+      products.push_back(ProductCount::fromString(each[1].str()));
+    }
+
+    Warehouse result(id, priority, description);
+    result._products = std::move(products);
+    return result;
+  }
+  else
+  {
+    throw InvalidFormatException(className, string);
+  }
 }
 
 
 std::wstring Warehouse::toString() const noexcept
 {
+  std::wstring result(className);
+
+  result += L" {\n" + wrap(std::to_wstring(_id)) + L", " + wrap(std::to_wstring(_priority)) + L", " + wrap(_description)
+            + L",\n  [\n";
+
+  for (auto&& prod : _products)
+  {
+    result += L"  " + prod.toString() + L"\n";
+  }
+
+  result += L"  ]\n}";
+
+  return result;
 }
 
 

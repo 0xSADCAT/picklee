@@ -1,4 +1,5 @@
 #include "MainWindow.hpp"
+#include "data/DBIO.hpp"
 #include "data/DataBase.hpp"
 
 #include <QApplication>
@@ -60,12 +61,33 @@ int main(int argc, char* argv[])
   ware.deliver({desc.code(), 400});
   ware.deliver({{L"00000"}, 1});
 
+  Operator oper2(idGenerator.generateOperator(), Person(L"John2", L"Johnson2", L"Johnsovich2"));
+  Customer cust2(idGenerator.generateClient(), Person(L"Albert2", L"Testoviy2", L"Mahmudovich2"));
+  ProductDescription desc2({L"500-222"}, L"Some shit2");
+  ProductCount prod2(desc.code(), 14);
+  Order order2(idGenerator.generateOrder(oper, cust),
+               oper.id(),
+               cust.id(),
+               {prod2, ProductCount({L"255-35-35"}, 200)},
+               Order::Status::WaitingForDelivery);
+  Warehouse ware2(200, -4, L"BigTIHS");
+  ware.deliver({desc2.code(), 2000});
+  ware.deliver({{L"11111"}, 6});
+
   CHECK(oper, Operator);
   CHECK(cust, Customer);
   CHECK(desc, ProductDescription);
   CHECK(prod, ProductCount);
   CHECK(order, Order);
   CHECK(ware, Warehouse);
+
+  DBIO io("picklee-test/");
+
+  io.saveCustomers({cust, cust2});
+  io.saveDescriptions({desc, desc2});
+  io.saveOperators({oper, oper2});
+  io.saveOrders({order, order2});
+  io.saveWarehouses({ware, ware2});
 
   return 0;
 

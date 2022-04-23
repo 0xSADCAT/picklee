@@ -13,7 +13,7 @@ public:
 
   Warehouse(int id, int priority, const std::wstring& description) noexcept;
 
-  static Warehouse fromString(const std::wstring& string);
+  static Warehouse fromString(std::wstring string);
 
   std::wstring toString() const noexcept;
 

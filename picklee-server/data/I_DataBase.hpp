@@ -155,8 +155,8 @@ public:
    *          и идентификатор склада, на котором этот продукт был обнаружен.
    *          Например, если есть 2 склада с артикулом #ar: id = 3, количество = 2 и id = 34, количество = 1, в таком
    *          случае функция вернет следующее:
-   *          { {{#ar, 3},  2},
-   *            {{#ar, 34}, 1} }
+   *          { {{#ar, 2}, 3},
+   *            {{#ar, 1}, 34} }
    */
   virtual void allProductCountByCode(const VendorCode& code, CountInserter inserter) const noexcept = 0;
 
