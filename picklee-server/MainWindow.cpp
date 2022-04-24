@@ -108,6 +108,19 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
   layout()->setContentsMargins(0, 0, 0, 0);
 
   splitter->setStyleSheet("QSplitter::handle{background: #888888;} QSplitter::handle:hover{background: #9de4f1;}");
+
+  /*
+   * ***************************************************************************************************************
+   * **************************    T E S T    Z O N E      *********************************************************
+   * ***************************************************************************************************************
+   */
+
+  descriptionMain->addDescription("500.500.23.400", "Ведро гвоздей");
+  descriptionMain->addDescription("DOG.22.40.401", "Собака обычная");
+  descriptionMain->addDescription("DOG.22.40.401-01", "Собака сутулая");
+  descriptionMain->addDescription("137.22.40.200", "Изолетнта");
+  descriptionMain->addDescription("000.0000.00000", "Флюгегехаймен");
+  descriptionMain->addDescription("SOME-SCARY-THING", "Страшная штуковина");
 }
 
 

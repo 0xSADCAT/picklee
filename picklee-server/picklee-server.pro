@@ -20,10 +20,9 @@ SOURCES += \
     ui/TabPanel.cpp \
     ui/customer/CustomerInfoWidget.cpp \
     ui/customer/CustomerMainWidget.cpp \
-    ui/description/Description.cpp \
     ui/description/DescriptionInfoWidget.cpp \
-    ui/description/DescriptionList.cpp \
     ui/description/DescriptionMainWidget.cpp \
+    ui/description/DescriptionWidget.cpp \
     ui/info/InfoWidget.cpp \
     ui/operator/OperatorInfoWidget.cpp \
     ui/operator/OperatorMainWidget.cpp \
@@ -53,10 +52,9 @@ HEADERS += \
     ui/TabPanel.hpp \
     ui/customer/CustomerInfoWidget.hpp \
     ui/customer/CustomerMainWidget.hpp \
-    ui/description/Description.hpp \
     ui/description/DescriptionInfoWidget.hpp \
-    ui/description/DescriptionList.hpp \
     ui/description/DescriptionMainWidget.hpp \
+    ui/description/DescriptionWidget.hpp \
     ui/info/InfoWidget.hpp \
     ui/operator/OperatorInfoWidget.hpp \
     ui/operator/OperatorMainWidget.hpp \
