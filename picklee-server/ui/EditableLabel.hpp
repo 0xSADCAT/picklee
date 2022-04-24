@@ -21,7 +21,7 @@ public:
   void setEditMode(bool edit);
 
 signals:
-  void valueChanged(const QString& text);
+  void valueChanged(const QString& text, const QString& oldText);
 
 protected:
   void mouseDoubleClickEvent(QMouseEvent* event) override;

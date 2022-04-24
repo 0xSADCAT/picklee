@@ -1,34 +1,37 @@
-#include "CodeEdit.hpp"
+#include "LineEditWidget.hpp"
 
 #include <QKeyEvent>
 
 
-CodeEdit::CodeEdit(QWidget* parent) : QLineEdit {parent}
+LineEditWidget::LineEditWidget(QWidget* parent) : QLineEdit {parent}
 {
 }
 
 
-void CodeEdit::keyPressEvent(QKeyEvent* event)
+void LineEditWidget::keyPressEvent(QKeyEvent* event)
 {
   if (event)
   {
-    if (event->key() == Qt::Key::Key_Return)
+    switch (event->key())
     {
+    case Qt::Key::Key_Return:
+    case Qt::Key::Key_Enter:
       emit enterPressed();
-    }
-    else if (event->key() == Qt::Key::Key_Escape)
-    {
+      break;
+
+    case Qt::Key::Key_Escape:
       emit escapePressed();
-    }
-    else
-    {
+      break;
+
+    default:
       QLineEdit::keyPressEvent(event);
+      break;
     }
   }
 }
 
 
-void CodeEdit::keyReleaseEvent(QKeyEvent* event)
+void LineEditWidget::keyReleaseEvent(QKeyEvent* event)
 {
   if (event == nullptr)
   {

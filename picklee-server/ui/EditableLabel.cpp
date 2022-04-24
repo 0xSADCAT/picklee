@@ -85,8 +85,17 @@ void EditableLabel::setViewMode()
   {
     if (_edit->text() != _label->text())
     {
+      if (_edit->text().isEmpty())
+      {
+        _edit->setVisible(false);
+        _label->setVisible(true);
+        _edit->setText(_label->text());
+        return;
+      }
+
+      QString oldText = _edit->text();
       _label->setText(_edit->text());
-      emit valueChanged(_label->text());
+      emit valueChanged(_label->text(), oldText);
     }
   }
 

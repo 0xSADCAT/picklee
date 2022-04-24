@@ -14,10 +14,24 @@ SOURCES += \
     data/Warehouse.cpp \
     main.cpp \
     MainWindow.cpp \
-    ui/Description.cpp \
-    ui/DescriptionList.cpp \
+    ui/ContainerWidget.cpp \
     ui/EditableLabel.cpp \
-    ui/LineEditWidget.cpp
+    ui/LineEditWidget.cpp \
+    ui/TabPanel.cpp \
+    ui/customer/CustomerInfoWidget.cpp \
+    ui/customer/CustomerMainWidget.cpp \
+    ui/description/Description.cpp \
+    ui/description/DescriptionInfoWidget.cpp \
+    ui/description/DescriptionList.cpp \
+    ui/description/DescriptionMainWidget.cpp \
+    ui/info/InfoWidget.cpp \
+    ui/operator/OperatorInfoWidget.cpp \
+    ui/operator/OperatorMainWidget.cpp \
+    ui/order/OrderInfoWidget.cpp \
+    ui/order/OrderMainWidget.cpp \
+    ui/server/ServerWidget.cpp \
+    ui/warehouse/WarehouseInfoWidget.cpp \
+    ui/warehouse/WarehouseMainWidget.cpp
 
 HEADERS += \
     MainWindow.hpp \
@@ -33,10 +47,24 @@ HEADERS += \
     data/Person.hpp \
     data/Product.hpp \
     data/Warehouse.hpp \
-    ui/Description.hpp \
-    ui/DescriptionList.hpp \
+    ui/ContainerWidget.hpp \
     ui/EditableLabel.hpp \
     ui/LineEditWidget.hpp \
+    ui/TabPanel.hpp \
+    ui/customer/CustomerInfoWidget.hpp \
+    ui/customer/CustomerMainWidget.hpp \
+    ui/description/Description.hpp \
+    ui/description/DescriptionInfoWidget.hpp \
+    ui/description/DescriptionList.hpp \
+    ui/description/DescriptionMainWidget.hpp \
+    ui/info/InfoWidget.hpp \
+    ui/operator/OperatorInfoWidget.hpp \
+    ui/operator/OperatorMainWidget.hpp \
+    ui/order/OrderInfoWidget.hpp \
+    ui/order/OrderMainWidget.hpp \
+    ui/server/ServerWidget.hpp \
+    ui/warehouse/WarehouseInfoWidget.hpp \
+    ui/warehouse/WarehouseMainWidget.hpp \
     utils/Utils.hpp
 
 # Default rules for deployment.
