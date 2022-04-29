@@ -1,5 +1,6 @@
 #include "DescriptionMainWidget.hpp"
 
+#include "DescriptionInfoWidget.hpp"
 #include "DescriptionWidget.hpp"
 
 #include <QScrollArea>
@@ -40,6 +41,7 @@ void DescriptionMainWidget::setInfoWidget(DescriptionInfoWidget* widget)
   assert(_infoWidget == nullptr);
 
   _infoWidget = widget;
+  _infoWidget->connectTo(this);
 }
 
 
@@ -122,6 +124,7 @@ void DescriptionMainWidget::editId(const QString& id, const QString& newId)
       if (auto desc = qobject_cast<DescriptionWidget*>(widget))
       {
         desc->setId(newId);
+        eid = newId;
         return;
       }
     }
@@ -169,5 +172,20 @@ void DescriptionMainWidget::onElementClicked()
 {
   if (DescriptionWidget* from = qobject_cast<DescriptionWidget*>(sender()))
   {
+    for (auto&& [unused, widget] : _descriptions)
+    {
+      if (auto desc = qobject_cast<DescriptionWidget*>(widget))
+      {
+        desc->unselect();
+      }
+    }
+
+    from->setSelected();
+
+    assert(_infoWidget);
+    if (_infoWidget)
+    {
+      _infoWidget->setData(from->id(), from->desc());
+    }
   }
 }

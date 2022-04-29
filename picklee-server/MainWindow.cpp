@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 
+#include "Settings.hpp"
 #include "ui/ContainerWidget.hpp"
 #include "ui/TabPanel.hpp"
 #include "ui/customer/CustomerInfoWidget.hpp"
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
   DescriptionInfoWidget* descriptionInfo = new DescriptionInfoWidget;
   DescriptionMainWidget* descriptionMain = new DescriptionMainWidget;
+  descriptionMain->setInfoWidget(descriptionInfo);
 
   OperatorInfoWidget* operatorInfo = new OperatorInfoWidget;
   OperatorMainWidget* operatorMain = new OperatorMainWidget;
@@ -109,6 +111,25 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
   splitter->setStyleSheet("QSplitter::handle{background: #888888;} QSplitter::handle:hover{background: #9de4f1;}");
 
+  QVariant winSize = settings::get()->value(settings::windowSize);
+  QVariant winPos = settings::get()->value(settings::windowPos);
+  if (not winSize.isNull() and winSize.isValid() and not winPos.isNull() and winPos.isValid())
+  {
+    setGeometry(QRect {qvariant_cast<QPoint>(winPos), qvariant_cast<QSize>(winSize)});
+  }
+
+  QVariant splSizes = settings::get()->value(settings::splitterPos);
+  if (not splSizes.isNull() and splSizes.isValid())
+  {
+    QList<int> ints;
+    for (auto&& str : qvariant_cast<QStringList>(splSizes))
+    {
+      ints << str.toInt();
+    }
+
+    splitter->setSizes(ints);
+  }
+
   /*
    * ***************************************************************************************************************
    * **************************    T E S T    Z O N E      *********************************************************
@@ -126,4 +147,22 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
 MainWindow::~MainWindow()
 {
+  if (auto lay = layout())
+  {
+    if (auto splitter = qobject_cast<QSplitter*>(lay->itemAt(0)->widget()))
+    {
+      QStringList sizes;
+      for (int s : splitter->sizes().toStdList())
+      {
+        sizes << QString::number(s);
+      }
+
+      settings::get()->setValue(settings::splitterPos, sizes);
+    }
+  }
+
+  settings::get()->setValue(settings::windowPos, pos());
+  settings::get()->setValue(settings::windowSize, size());
+
+  settings::del();
 }

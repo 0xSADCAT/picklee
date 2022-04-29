@@ -47,6 +47,26 @@ void DescriptionWidget::setDesc(const QString& value)
 }
 
 
+void DescriptionWidget::setSelected()
+{
+  if (not _selected)
+  {
+    _selected = true;
+    updateStyle();
+  }
+}
+
+
+void DescriptionWidget::unselect()
+{
+  if (_selected)
+  {
+    _selected = false;
+    updateStyle();
+  }
+}
+
+
 void DescriptionWidget::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)
@@ -57,4 +77,13 @@ void DescriptionWidget::mousePressEvent(QMouseEvent* event)
   {
     QWidget::mousePressEvent(event);
   }
+}
+
+
+void DescriptionWidget::updateStyle()
+{
+  const static QString selectedStyle = "*{background: #d3e8ff;}";
+  const static QString unselectedStyle = "";
+
+  setStyleSheet(_selected ? selectedStyle : unselectedStyle);
 }

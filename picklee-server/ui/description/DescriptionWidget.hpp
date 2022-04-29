@@ -16,6 +16,11 @@ public:
   void setId(const QString& value);
   void setDesc(const QString& value);
 
+  void setSelected();
+  void unselect();
+
+  bool isSelected() const;
+
 signals:
   void clicked();
 
@@ -25,4 +30,7 @@ protected:
 private:
   QLabel* _idLabel = nullptr;
   QLabel* _descLabel = nullptr;
+  bool _selected = false;
+
+  void updateStyle();
 };

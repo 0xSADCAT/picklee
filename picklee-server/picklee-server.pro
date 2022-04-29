@@ -3,6 +3,7 @@ QT += core gui widgets
 CONFIG += c++17
 
 SOURCES += \
+    Settings.cpp \
     data/DBIO.cpp \
     data/DataBase.cpp \
     data/DateTime.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
     ui/TabPanel.cpp \
     ui/customer/CustomerInfoWidget.cpp \
     ui/customer/CustomerMainWidget.cpp \
+    ui/customer/CustomerWidget.cpp \
     ui/description/DescriptionInfoWidget.cpp \
     ui/description/DescriptionMainWidget.cpp \
     ui/description/DescriptionWidget.cpp \
@@ -34,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
     MainWindow.hpp \
+    Settings.hpp \
     data/DBIO.hpp \
     data/DataBase.hpp \
     data/DateTime.hpp \
@@ -52,6 +55,7 @@ HEADERS += \
     ui/TabPanel.hpp \
     ui/customer/CustomerInfoWidget.hpp \
     ui/customer/CustomerMainWidget.hpp \
+    ui/customer/CustomerWidget.hpp \
     ui/description/DescriptionInfoWidget.hpp \
     ui/description/DescriptionMainWidget.hpp \
     ui/description/DescriptionWidget.hpp \

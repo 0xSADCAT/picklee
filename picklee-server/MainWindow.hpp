@@ -2,6 +2,7 @@
 
 #include <QtWidgets>
 
+
 class MainWindow : public QWidget
 {
   Q_OBJECT;
