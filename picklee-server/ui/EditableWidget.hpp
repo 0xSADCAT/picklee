@@ -25,6 +25,10 @@ public:
 
   State state() const;
   void setViewMode(bool reset);
+  void select();
+
+signals:
+  void selected();
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;

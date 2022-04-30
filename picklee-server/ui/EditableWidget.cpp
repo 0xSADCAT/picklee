@@ -37,7 +37,7 @@ EditableWidget::EditableWidget(QWidget* parent) : QFrame {parent}
   layout()->setSpacing(0);
   layout()->setContentsMargins(0, 0, 0, 0);
 
-  setStyleSheet(".QWidget:hover { background-color: #fbe5cf; }");
+  setStyleSheet("QFrame:hover { background-color: #fbe5cf; }");
 
   onStateChanged();
 }
@@ -59,6 +59,16 @@ void EditableWidget::setViewMode(bool reset)
 }
 
 
+void EditableWidget::select()
+{
+  if (_state == State::View)
+  {
+    _state = State::Selected;
+    onStateChanged();
+  }
+}
+
+
 void EditableWidget::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)
@@ -67,11 +77,12 @@ void EditableWidget::mousePressEvent(QMouseEvent* event)
     {
       _state = State::Selected;
       onStateChanged();
+      emit selected();
     }
   }
   else
   {
-    QWidget::mousePressEvent(event);
+    QFrame::mousePressEvent(event);
   }
 }
 
