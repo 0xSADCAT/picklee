@@ -18,7 +18,11 @@ SOURCES += \
     ui/CustomerWidget.cpp \
     ui/EditableList.cpp \
     ui/EditableWidget.cpp \
-    ui/ProductDescriptionWidget.cpp
+    ui/OperatorWidget.cpp \
+    ui/OrderWidget.cpp \
+    ui/ProductCountWidget.cpp \
+    ui/ProductDescriptionWidget.cpp \
+    ui/SpoilerWidget.cpp
 
 HEADERS += \
     MainWindow.hpp \
@@ -38,7 +42,11 @@ HEADERS += \
     ui/CustomerWidget.hpp \
     ui/EditableList.hpp \
     ui/EditableWidget.hpp \
+    ui/OperatorWidget.hpp \
+    ui/OrderWidget.hpp \
+    ui/ProductCountWidget.hpp \
     ui/ProductDescriptionWidget.hpp \
+    ui/SpoilerWidget.hpp \
     utils/Utils.hpp
 
 # Default rules for deployment.

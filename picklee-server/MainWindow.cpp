@@ -1,8 +1,8 @@
 #include "MainWindow.hpp"
 
 #include "Settings.hpp"
-#include "ui/CustomerWidget.hpp"
 #include "ui/EditableList.hpp"
+#include "ui/ProductCountWidget.hpp"
 
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
   setLayout(new QVBoxLayout);
   auto list = new EditableList;
-  list->insert(new CustomerWidget("1", "0xSAD", "0xCAT", "Patron", QDate(2022, 5, 12)));
-  list->insert(new CustomerWidget("2", "Some", "Person", "Data", QDate(1970, 1, 1)));
-  list->insert(new CustomerWidget("3", "This", "is the", "test", QDate(2022, 2, 1)));
+  list->insert(new ProductCountWidget("500-200-CODE", "source code", 1));
+  list->insert(new ProductCountWidget("230-78.YT", "issues", 20000));
+  list->insert(new ProductCountWidget("VendorCode", "test element", 3));
   layout()->addWidget(list);
 
   layout()->setSpacing(0);

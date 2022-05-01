@@ -61,7 +61,7 @@ void EditableWidget::setViewMode(bool reset)
 
 void EditableWidget::select()
 {
-  if (_state == State::View)
+  if (_state == State::View and not _editLocked)
   {
     _state = State::Selected;
     onStateChanged();
@@ -69,11 +69,30 @@ void EditableWidget::select()
 }
 
 
+void EditableWidget::lockEdit()
+{
+  _editLocked = true;
+  setViewMode(true);
+}
+
+
+void EditableWidget::unlockEdit()
+{
+  _editLocked = false;
+}
+
+
+bool EditableWidget::isEditLocked() const
+{
+  return _editLocked;
+}
+
+
 void EditableWidget::mousePressEvent(QMouseEvent* event)
 {
   if (event->button() == Qt::LeftButton)
   {
-    if (_state == State::View)
+    if (_state == State::View and not _editLocked)
     {
       _state = State::Selected;
       onStateChanged();

@@ -27,6 +27,10 @@ public:
   void setViewMode(bool reset);
   void select();
 
+  void lockEdit();
+  void unlockEdit();
+  bool isEditLocked() const;
+
 signals:
   void selected();
 
@@ -46,6 +50,8 @@ private:
   QWidget* _content;
 
   State _state = State::View;
+
+  bool _editLocked = false;
 
   void onStateChanged();
 
