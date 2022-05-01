@@ -15,6 +15,7 @@ SOURCES += \
     data/Warehouse.cpp \
     main.cpp \
     MainWindow.cpp \
+    ui/CustomerWidget.cpp \
     ui/EditableList.cpp \
     ui/EditableWidget.cpp \
     ui/ProductDescriptionWidget.cpp
@@ -34,6 +35,7 @@ HEADERS += \
     data/Person.hpp \
     data/Product.hpp \
     data/Warehouse.hpp \
+    ui/CustomerWidget.hpp \
     ui/EditableList.hpp \
     ui/EditableWidget.hpp \
     ui/ProductDescriptionWidget.hpp \
