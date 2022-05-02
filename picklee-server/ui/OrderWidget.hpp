@@ -59,6 +59,8 @@ private:
   QLineEdit* _custIdEdit;
   QComboBox* _statusEdit;
 
+  bool _productsEdited = false;
+
   static Order::Status statusFromString(const QString& string);
   QList<QPair<QString, int>> makeList() const;
 

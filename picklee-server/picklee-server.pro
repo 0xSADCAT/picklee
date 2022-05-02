@@ -22,7 +22,8 @@ SOURCES += \
     ui/OrderWidget.cpp \
     ui/ProductCountWidget.cpp \
     ui/ProductDescriptionWidget.cpp \
-    ui/SpoilerWidget.cpp
+    ui/SpoilerWidget.cpp \
+    ui/WarehouseWidget.cpp
 
 HEADERS += \
     MainWindow.hpp \
@@ -47,6 +48,7 @@ HEADERS += \
     ui/ProductCountWidget.hpp \
     ui/ProductDescriptionWidget.hpp \
     ui/SpoilerWidget.hpp \
+    ui/WarehouseWidget.hpp \
     utils/Utils.hpp
 
 # Default rules for deployment.

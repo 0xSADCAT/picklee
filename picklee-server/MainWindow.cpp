@@ -2,8 +2,8 @@
 
 #include "Settings.hpp"
 #include "ui/EditableList.hpp"
-#include "ui/OrderWidget.hpp"
 #include "ui/ProductCountWidget.hpp"
+#include "ui/WarehouseWidget.hpp"
 
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
@@ -17,20 +17,18 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
   setLayout(new QVBoxLayout);
   auto list = new EditableList;
-  list->insert(new OrderWidget("1-3-02.05.2022-16:42",
-                               "1",
-                               "3",
-                               {new ProductCountWidget("500-255-3", "Some thing", 4),
-                                new ProductCountWidget("500-255-4", "Some thing 2", 5),
-                                new ProductCountWidget("500-255-5", "Some thing 3", 6),
-                                new ProductCountWidget("500-255-6", "Some thing 4", 7)},
-                               Order::Status::InProcessing));
-  list->insert(new OrderWidget(
-      "1-3-02.05.2022-16:42",
-      "1",
-      "3",
-      {new ProductCountWidget("0xSAD", "Dev", 1), new ProductCountWidget("0xCAT", "Lazy developer", 20)},
-      Order::Status::WaitingForDelivery));
+  list->insert(new WarehouseWidget("1",
+                                   "Основной склад",
+                                   1,
+                                   {new ProductCountWidget("A4", "Лист бумаги", 4),
+                                    new ProductCountWidget("C-19.22", "Двухлетняя маска", 5),
+                                    new ProductCountWidget("124561.97964.4564.2764", "Какая-то хреновина", 1),
+                                    new ProductCountWidget("500-255-6", "Изолента", 7)}));
+  list->insert(new WarehouseWidget("2",
+                                   "Барахолка в чулане",
+                                   -4,
+                                   {new ProductCountWidget("255-63-ZQ.2", "Ведро гвоздей", 1),
+                                    new ProductCountWidget("Au-997-65", "Кубометр золота", 20)}));
   layout()->addWidget(list);
 
   layout()->setSpacing(0);

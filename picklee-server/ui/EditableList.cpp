@@ -6,29 +6,40 @@
 #include <QVBoxLayout>
 
 
-EditableList::EditableList(QWidget* parent) : QWidget {parent}
+EditableList::EditableList(bool hasScroll) : QWidget {nullptr}
 {
-  auto scrollArea = new QScrollArea;
-  auto scrollLayout = new QVBoxLayout;
   _layout = new QVBoxLayout;
-  auto mainLayout = new QVBoxLayout;
-  auto scrollWidget = new QWidget;
 
   _layout->setSpacing(0);
   _layout->setContentsMargins(0, 0, 0, 0);
 
-  scrollLayout->addLayout(_layout, 0);
-  scrollLayout->addStretch(1);
-  scrollLayout->setSpacing(0);
-  scrollLayout->setContentsMargins(0, 0, 0, 0);
+  if (hasScroll)
+  {
+    auto scrollArea = new QScrollArea;
+    auto scrollLayout = new QVBoxLayout;
+    auto mainLayout = new QVBoxLayout;
+    auto scrollWidget = new QWidget;
 
-  scrollWidget->setLayout(scrollLayout);
+    scrollLayout->addLayout(_layout, 0);
+    scrollLayout->addStretch(1);
+    scrollLayout->setSpacing(0);
+    scrollLayout->setContentsMargins(0, 0, 0, 0);
 
-  scrollArea->setWidget(scrollWidget);
-  scrollArea->setWidgetResizable(true);
+    scrollWidget->setLayout(scrollLayout);
 
-  mainLayout->addWidget(scrollArea);
-  setLayout(mainLayout);
+    scrollArea->setWidget(scrollWidget);
+    scrollArea->setWidgetResizable(true);
+
+    mainLayout->addWidget(scrollArea);
+    setLayout(mainLayout);
+  }
+  else
+  {
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(_layout, 0);
+    mainLayout->addStretch(1);
+    setLayout(mainLayout);
+  }
 
   layout()->setSpacing(0);
   layout()->setContentsMargins(0, 0, 0, 0);

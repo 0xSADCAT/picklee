@@ -12,7 +12,7 @@ class EditableList : public QWidget
   Q_OBJECT;
 
 public:
-  explicit EditableList(QWidget* parent = nullptr);
+  explicit EditableList(bool hasScroll = true);
 
   void insert(EditableWidget* widget);
   void remove(EditableWidget* widget);

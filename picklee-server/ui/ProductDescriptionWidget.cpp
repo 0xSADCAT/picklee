@@ -5,7 +5,7 @@
 #include <QLineEdit>
 
 
-ProductDescriptionWidget::ProductDescriptionWidget(const QString& id, const QString& desc) : EditableWidget()
+ProductDescriptionWidget::ProductDescriptionWidget(const QString& id, const QString& desc) : EditableWidget {false}
 {
   _idLabel = new QLabel(id);
   _descLabel = new QLabel(desc);

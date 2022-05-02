@@ -17,7 +17,7 @@ const QString OperatorWidget::dateFormat = "dd.MM.yyyy";
 
 OperatorWidget::OperatorWidget(
     const QString& id, const QString& firstName, const QString& lastName, const QString& patronymic, const QDate& date)
-    : EditableWidget {nullptr}
+    : EditableWidget {false}
 {
   _idLabel = new QLabel(id);
   _idEdit = new QLineEdit;

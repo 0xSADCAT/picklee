@@ -13,7 +13,7 @@ constexpr int countMaxValue = 1'000'000'000;
 }
 
 
-ProductCountWidget::ProductCountWidget(const QString& code, const QString& desc, int count) : EditableWidget {nullptr}
+ProductCountWidget::ProductCountWidget(const QString& code, const QString& desc, int count) : EditableWidget {true}
 {
   _codeLabel = new QLabel(code);
   _codeEdit = new QLineEdit;

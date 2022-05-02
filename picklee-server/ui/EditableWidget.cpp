@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 
 
-EditableWidget::EditableWidget(QWidget* parent) : QFrame {parent}
+EditableWidget::EditableWidget(bool oneLine) : QFrame {nullptr}
 {
   _editButton = new QPushButton("Редактировать");
   _okButton = new QPushButton(style()->standardIcon(QStyle::SP_DialogOkButton), "Ок");
@@ -18,7 +18,10 @@ EditableWidget::EditableWidget(QWidget* parent) : QFrame {parent}
   connect(_cancelButton, &QPushButton::clicked, this, &EditableWidget::onCancelClicked);
 
   QHBoxLayout* buttons = new QHBoxLayout;
-  buttons->addStretch(1);
+  if (not oneLine)
+  {
+    buttons->addStretch(1);
+  }
   buttons->addWidget(_okButton, 0);
   buttons->addSpacing(15);
   buttons->addWidget(_cancelButton, 0);
@@ -29,9 +32,10 @@ EditableWidget::EditableWidget(QWidget* parent) : QFrame {parent}
 
   _content = new QWidget;
 
-  auto mainLayout = new QVBoxLayout;
-  mainLayout->addWidget(_content);
-  mainLayout->addLayout(buttons);
+  QBoxLayout* mainLayout
+      = oneLine ? static_cast<QBoxLayout*>(new QHBoxLayout) : static_cast<QBoxLayout*>(new QVBoxLayout);
+  mainLayout->addWidget(_content, 1);
+  mainLayout->addLayout(buttons, 0);
   setLayout(mainLayout);
 
   layout()->setSpacing(0);

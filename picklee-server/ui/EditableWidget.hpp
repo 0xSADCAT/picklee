@@ -21,7 +21,7 @@ public:
     Edit
   };
 
-  explicit EditableWidget(QWidget* parent = nullptr);
+  explicit EditableWidget(bool oneLine = false);
 
   State state() const;
   void setViewMode(bool reset);

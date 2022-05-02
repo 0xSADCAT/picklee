@@ -52,7 +52,7 @@ OrderWidget::OrderWidget(const QString& id,
                          const QString& custId,
                          const QList<ProductCountWidget*>& products,
                          Order::Status status)
-    : EditableWidget {nullptr}
+    : EditableWidget {false}
 {
   QStringList statusList = {str(inProcessing), str(waitingForDelivery), str(readyToIssue), str(issued)};
 
@@ -68,8 +68,8 @@ OrderWidget::OrderWidget(const QString& id,
   _custIdEdit = new QLineEdit;
   _custIdEdit->setVisible(false);
 
-  QWidget* prodHeader = new QLabel("Список необходимого");
-  EditableList* prodContent = new EditableList;
+  QWidget* prodHeader = new QLabel("Продукты");
+  EditableList* prodContent = new EditableList(false);
   for (auto&& widget : products)
   {
     assert(widget != nullptr);
@@ -180,6 +180,8 @@ void OrderWidget::onEditMode()
   _custIdEdit->setVisible(true);
   _statusEdit->setVisible(true);
 
+  _productsEdited = false;
+
   if (auto list = qobject_cast<EditableList*>(_productWidget->content()))
   {
     for (auto&& item : *list)
@@ -245,7 +247,8 @@ void OrderWidget::onViewMode(bool reset)
   if (not reset)
   {
     if (_idLabel->text() != _idEdit->text() or _operIdLabel->text() != _operIdEdit->text()
-        or _custIdLabel->text() != _custIdEdit->text() or _statusLabel->text() != _statusEdit->currentText())
+        or _custIdLabel->text() != _custIdEdit->text() or _statusLabel->text() != _statusEdit->currentText()
+        or _productsEdited)
     {
       emit dataChanged(_idLabel->text(),
                        _idEdit->text(),
@@ -323,5 +326,6 @@ void OrderWidget::onInnerDataChanged(QString oldCode, QString newCode, int)
   if (oldCode != newCode)
   {
     emit productIdChanged(oldCode, newCode);
+    _productsEdited = true;
   }
 }
