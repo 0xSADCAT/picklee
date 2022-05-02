@@ -13,6 +13,7 @@ SpoilerWidget::SpoilerWidget(QWidget* header, QWidget* content)
   assert(content != nullptr);
 
   _button = new QPushButton;
+  connect(_button, &QPushButton::clicked, this, &SpoilerWidget::onButtonClicked);
 
   QHBoxLayout* topLayout = new QHBoxLayout;
   topLayout->addSpacing(5);
@@ -50,21 +51,15 @@ QWidget* SpoilerWidget::content()
 
 void SpoilerWidget::showContent()
 {
-  if (not _content->isVisible())
-  {
-    _content->setVisible(true);
-    updateButtonIcon();
-  }
+  _content->setVisible(true);
+  updateButtonIcon();
 }
 
 
 void SpoilerWidget::hideContent()
 {
-  if (_content->isVisible())
-  {
-    _content->setVisible(false);
-    updateButtonIcon();
-  }
+  _content->setVisible(false);
+  updateButtonIcon();
 }
 
 

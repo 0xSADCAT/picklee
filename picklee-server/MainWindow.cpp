@@ -2,6 +2,7 @@
 
 #include "Settings.hpp"
 #include "ui/EditableList.hpp"
+#include "ui/OrderWidget.hpp"
 #include "ui/ProductCountWidget.hpp"
 
 
@@ -16,9 +17,20 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
   setLayout(new QVBoxLayout);
   auto list = new EditableList;
-  list->insert(new ProductCountWidget("500-200-CODE", "source code", 1));
-  list->insert(new ProductCountWidget("230-78.YT", "issues", 20000));
-  list->insert(new ProductCountWidget("VendorCode", "test element", 3));
+  list->insert(new OrderWidget("1-3-02.05.2022-16:42",
+                               "1",
+                               "3",
+                               {new ProductCountWidget("500-255-3", "Some thing", 4),
+                                new ProductCountWidget("500-255-4", "Some thing 2", 5),
+                                new ProductCountWidget("500-255-5", "Some thing 3", 6),
+                                new ProductCountWidget("500-255-6", "Some thing 4", 7)},
+                               Order::Status::InProcessing));
+  list->insert(new OrderWidget(
+      "1-3-02.05.2022-16:42",
+      "1",
+      "3",
+      {new ProductCountWidget("0xSAD", "Dev", 1), new ProductCountWidget("0xCAT", "Lazy developer", 20)},
+      Order::Status::WaitingForDelivery));
   layout()->addWidget(list);
 
   layout()->setSpacing(0);

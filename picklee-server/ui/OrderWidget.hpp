@@ -17,13 +17,14 @@ class OrderWidget : public EditableWidget
   Q_OBJECT;
 
 public:
-  OrderWidget(const QString& newId,
+  OrderWidget(const QString& id,
               const QString& operId,
               const QString& custId,
               const QList<ProductCountWidget*>& products,
               Order::Status status);
 
-  void setProducts(QList<ProductCountWidget*> products);
+  void addProduct(ProductCountWidget* product);
+
   EditableList* products() const;
 
   void setStatus(Order::Status status);
@@ -40,6 +41,8 @@ signals:
                    QList<QPair<QString, int>> products,
                    Order::Status status);
 
+  void productIdChanged(QString oldId, QString newId);
+
 protected:
   void onEditMode() override;
   void onViewMode(bool reset) override;
@@ -52,10 +55,13 @@ private:
   QLabel* _statusLabel;
 
   QLineEdit* _idEdit;
-  QLineEdit* _operEdit;
-  QLineEdit* _custEdit;
+  QLineEdit* _operIdEdit;
+  QLineEdit* _custIdEdit;
   QComboBox* _statusEdit;
 
   static Order::Status statusFromString(const QString& string);
   QList<QPair<QString, int>> makeList() const;
+
+private slots:
+  void onInnerDataChanged(QString oldCode, QString newCode, int);
 };
