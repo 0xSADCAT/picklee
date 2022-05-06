@@ -7,35 +7,37 @@
 #include <QVBoxLayout>
 
 
-EditableWidget::EditableWidget(bool oneLine) : QFrame {nullptr}
+EditableWidget::EditableWidget(bool programControlled) : QFrame {nullptr}, _programControlled(programControlled)
 {
-  _editButton = new QPushButton("Редактировать");
-  _okButton = new QPushButton(style()->standardIcon(QStyle::SP_DialogOkButton), "Ок");
-  _cancelButton = new QPushButton(style()->standardIcon(QStyle::SP_DialogCancelButton), "Отмена");
-
-  connect(_editButton, &QPushButton::clicked, this, &EditableWidget::onEditClicked);
-  connect(_okButton, &QPushButton::clicked, this, &EditableWidget::onOkClicked);
-  connect(_cancelButton, &QPushButton::clicked, this, &EditableWidget::onCancelClicked);
-
-  QHBoxLayout* buttons = new QHBoxLayout;
-  if (not oneLine)
-  {
-    buttons->addStretch(1);
-  }
-  buttons->addWidget(_okButton, 0);
-  buttons->addSpacing(15);
-  buttons->addWidget(_cancelButton, 0);
-  buttons->addWidget(_editButton, 0);
-
-  buttons->setSpacing(0);
-  buttons->setContentsMargins(0, 0, 0, 0);
+  QBoxLayout* mainLayout = static_cast<QBoxLayout*>(new QVBoxLayout);
 
   _content = new QWidget;
 
-  QBoxLayout* mainLayout
-      = oneLine ? static_cast<QBoxLayout*>(new QHBoxLayout) : static_cast<QBoxLayout*>(new QVBoxLayout);
   mainLayout->addWidget(_content, 1);
-  mainLayout->addLayout(buttons, 0);
+
+  if (not programControlled)
+  {
+    _editButton = new QPushButton("Редактировать");
+    _okButton = new QPushButton(style()->standardIcon(QStyle::SP_DialogOkButton), "Ок");
+    _cancelButton = new QPushButton(style()->standardIcon(QStyle::SP_DialogCancelButton), "Отмена");
+
+    connect(_editButton, &QPushButton::clicked, this, &EditableWidget::onEditClicked);
+    connect(_okButton, &QPushButton::clicked, this, &EditableWidget::onOkClicked);
+    connect(_cancelButton, &QPushButton::clicked, this, &EditableWidget::onCancelClicked);
+
+    QHBoxLayout* buttons = new QHBoxLayout;
+    buttons->addStretch(1);
+    buttons->addWidget(_okButton, 0);
+    buttons->addSpacing(15);
+    buttons->addWidget(_cancelButton, 0);
+    buttons->addWidget(_editButton, 0);
+
+    buttons->setSpacing(0);
+    buttons->setContentsMargins(0, 0, 0, 0);
+
+    mainLayout->addLayout(buttons, 0);
+  }
+
   setLayout(mainLayout);
 
   layout()->setSpacing(0);
@@ -59,6 +61,17 @@ void EditableWidget::setViewMode(bool reset)
     _state = State::View;
     onStateChanged();
     onViewMode(reset);
+  }
+}
+
+
+void EditableWidget::setEditMode()
+{
+  if (_state != State::Edit)
+  {
+    _state = State::Edit;
+    onStateChanged();
+    onEditMode();
   }
 }
 
@@ -94,7 +107,7 @@ bool EditableWidget::isEditLocked() const
 
 void EditableWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::LeftButton)
+  if (not _programControlled and event->button() == Qt::LeftButton)
   {
     if (_state == State::View and not _editLocked)
     {
@@ -118,6 +131,11 @@ QWidget* EditableWidget::contentWidget() const
 
 void EditableWidget::onStateChanged()
 {
+  if (_programControlled)
+  {
+    return;
+  }
+
   switch (_state)
   {
   case State::View:

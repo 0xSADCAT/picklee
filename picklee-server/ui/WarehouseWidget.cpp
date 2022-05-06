@@ -138,6 +138,18 @@ void WarehouseWidget::onEditMode()
   _descEdit->setText(_descLabel->text());
   _priorityEdit->setValue(_priorityLabel->text().toInt());
 
+  for (auto&& item : *_products)
+  {
+    if (auto widget = qobject_cast<ProductCountWidget*>(item))
+    {
+      widget->setEditMode();
+    }
+    else
+    {
+      assert(false);
+    }
+  }
+
   _productsEdited = false;
 }
 
@@ -156,6 +168,18 @@ void WarehouseWidget::onViewMode(bool reset)
       _idLabel->setText(_idEdit->text());
       _descLabel->setText(_descEdit->text());
       _priorityLabel->setText(QString::number(_priorityEdit->value()));
+    }
+  }
+
+  for (auto&& item : *_products)
+  {
+    if (auto widget = qobject_cast<ProductCountWidget*>(item))
+    {
+      widget->setViewMode(false);
+    }
+    else
+    {
+      assert(false);
     }
   }
 }
@@ -191,18 +215,6 @@ void WarehouseWidget::setMode(bool edit)
   _idEdit->setVisible(edit);
   _descEdit->setVisible(edit);
   _priorityEdit->setVisible(edit);
-
-  for (auto item : *_products)
-  {
-    if (auto widget = qobject_cast<EditableWidget*>(item))
-    {
-      edit ? widget->unlockEdit() : widget->lockEdit();
-    }
-    else
-    {
-      assert(false);
-    }
-  }
 }
 
 

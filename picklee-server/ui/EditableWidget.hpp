@@ -21,10 +21,11 @@ public:
     Edit
   };
 
-  explicit EditableWidget(bool oneLine = false);
+  explicit EditableWidget(bool programControlled = false);
 
   State state() const;
   void setViewMode(bool reset);
+  void setEditMode();
   void select();
 
   void lockEdit();
@@ -52,6 +53,7 @@ private:
   State _state = State::View;
 
   bool _editLocked = false;
+  bool _programControlled;
 
   void onStateChanged();
 

@@ -188,18 +188,16 @@ void OrderWidget::onEditMode()
     {
       if (auto widget = qobject_cast<EditableWidget*>(item))
       {
-        widget->unlockEdit();
+        widget->setEditMode();
       }
       else
       {
-        // Почему-то там не то, что ожидалось
         assert(false);
       }
     }
   }
   else
   {
-    // Почему-то там не то, что ожидалось
     assert(false);
   }
 
@@ -229,18 +227,16 @@ void OrderWidget::onViewMode(bool reset)
     {
       if (auto widget = qobject_cast<EditableWidget*>(item))
       {
-        widget->lockEdit();
+        widget->setViewMode(false);
       }
       else
       {
-        // Почему-то там не то, что ожидалось
         assert(false);
       }
     }
   }
   else
   {
-    // Почему-то там не то, что ожидалось
     assert(false);
   }
 
@@ -306,14 +302,12 @@ QList<QPair<QString, int>> OrderWidget::makeList() const
       }
       else
       {
-        // widget почему-то не ProductCountWidget
         assert(false);
       }
     }
   }
   else
   {
-    // В контенте почему-то не EditableList
     assert(false);
   }
 
