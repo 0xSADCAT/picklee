@@ -62,6 +62,12 @@ AddResult DataBase::addOrder(const Order& order) noexcept
 }
 
 
+AddResult DataBase::addWarehouse(const Warehouse& warehouse) noexcept
+{
+  return addSomeToContainer(warehouse, _warehouses, makeIntPredicate(warehouse));
+}
+
+
 CreateResult DataBase::createOperator(const Person& person) noexcept
 {
   int id = _idGenerator.generateOperator();
@@ -232,6 +238,31 @@ void DataBase::allProductCountByCode(const VendorCode& code, CountInserter inser
       inserter = {*it, warehouse.id()};
     }
   }
+}
+
+
+const std::vector<Warehouse*> DataBase::warehouses() const noexcept
+{
+  std::vector<Warehouse*> result;
+
+  for (auto&& item : _warehouses)
+  {
+    result.push_back(const_cast<Warehouse*>(&item));
+  }
+
+  return result;
+}
+
+
+std::tuple<int, int, int> DataBase::ids() const noexcept
+{
+  return _idGenerator.getAll();
+}
+
+
+void DataBase::resetId(int oper, int cust, int warehouse) noexcept
+{
+  _idGenerator.reset(oper, cust, warehouse);
 }
 
 

@@ -50,10 +50,15 @@ public:
   virtual void saveOperators(const std::vector<Operator>& operators) const = 0;
   virtual void saveCustomers(const std::vector<Customer>& customers) const = 0;
   virtual void saveOrders(const std::vector<Order>& orders) const = 0;
-  virtual void saveWarehouses(const std::vector<Warehouse>& warehouses) const = 0;
+  virtual void saveWarehouses(const std::vector<Warehouse*>& warehouses) const = 0;
 
   virtual std::tuple<int, int, int> loadId() const = 0;
   virtual void saveId(int operId, int custId, int wareId) const = 0;
+
+  inline const Path& dir() const noexcept
+  {
+    return _dir;
+  }
 
 protected:
   Path _dir;

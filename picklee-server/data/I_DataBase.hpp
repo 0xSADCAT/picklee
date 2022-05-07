@@ -103,6 +103,9 @@ public:
   /// Добавить заказ
   virtual AddResult addOrder(const Order& order) noexcept = 0;
 
+  /// Добавить склад
+  virtual AddResult addWarehouse(const Warehouse& warehouse) noexcept = 0;
+
   /// Создать ногово оператора
   virtual CreateResult createOperator(const Person& person) noexcept = 0;
 
@@ -159,6 +162,18 @@ public:
    *            {{#ar, 1}, 34} }
    */
   virtual void allProductCountByCode(const VendorCode& code, CountInserter inserter) const noexcept = 0;
+
+  /// Список указателей на все склады
+  virtual const std::vector<Warehouse*> warehouses() const noexcept = 0;
+
+  /// Установить новые значения идентификаторов для генератора
+  virtual void resetId(int oper, int cust, int warehouse) noexcept = 0;
+
+  /**
+   * @brief Текущие значения генератора идентификаторов
+   * @return По порядку: оператор, заказчик, склад
+   */
+  virtual std::tuple<int, int, int> ids() const noexcept = 0;
 
   /**
    * @brief Можно ли получить товар (с любого склада)

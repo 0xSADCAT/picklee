@@ -3,6 +3,9 @@ QT += core gui widgets
 CONFIG += c++17
 
 SOURCES += \
+    Kernel.cpp \
+    KernelImpl.cpp \
+    Logger.cpp \
     Settings.cpp \
     data/DBIO.cpp \
     data/DataBase.cpp \
@@ -26,6 +29,9 @@ SOURCES += \
     ui/WarehouseWidget.cpp
 
 HEADERS += \
+    Kernel.hpp \
+    KernelImpl.hpp \
+    Logger.hpp \
     MainWindow.hpp \
     Settings.hpp \
     data/DBIO.hpp \

@@ -24,6 +24,7 @@ public:
   AddResult addOperator(const Operator& oper) noexcept override;
   AddResult addCustomer(const Customer& customer) noexcept override;
   AddResult addOrder(const Order& order) noexcept override;
+  AddResult addWarehouse(const Warehouse& warehouse) noexcept override;
 
   CreateResult createOperator(const Person& person) noexcept override;
   CreateResult createCustomer(const Person& person) noexcept override;
@@ -44,6 +45,12 @@ public:
   std::optional<ProductDescription> productByCode(const VendorCode& code) const noexcept override;
 
   void allProductCountByCode(const VendorCode& code, CountInserter inserter) const noexcept override;
+
+  const std::vector<Warehouse*> warehouses() const noexcept override;
+
+  std::tuple<int, int, int> ids() const noexcept override;
+
+  void resetId(int oper, int cust, int warehouse) noexcept override;
 
   std::vector<std::pair<int, int>> canFetch(const VendorCode& code, int count, bool onlyFull) const noexcept override;
 

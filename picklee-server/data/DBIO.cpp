@@ -1,6 +1,7 @@
 #include "DBIO.hpp"
 
 #include "Exceptions.hpp"
+#include "Logger.hpp"
 
 #include <fstream>
 #include <regex>
@@ -10,16 +11,18 @@
 namespace
 {
 
-struct FileName
+namespace FileName
 {
-  const static inline std::string dir = "picklee-database";
-  const static inline std::string suffix = ".pf";
-  const static inline std::string configs = "picklee-configs" + suffix;
-  const static inline std::string desc = "descriptions" + suffix;
-  const static inline std::string oper = "operators" + suffix;
-  const static inline std::string cust = "customers" + suffix;
-  const static inline std::string order = "orders" + suffix;
-  const static inline std::string ware = "warehouses" + suffix;
+
+const static inline std::string dir = "picklee-database";
+const static inline std::string suffix = ".pf";
+const static inline std::string configs = "picklee-configs" + suffix;
+const static inline std::string desc = "descriptions" + suffix;
+const static inline std::string oper = "operators" + suffix;
+const static inline std::string cust = "customers" + suffix;
+const static inline std::string order = "orders" + suffix;
+const static inline std::string ware = "warehouses" + suffix;
+
 };
 
 
@@ -50,9 +53,16 @@ DBIO::DBIO(const Path& databaseDirectory) : I_FileIO(databaseDirectory)
 
 I_FileIO::Result<ProductDescription> DBIO::loadDescriptions() const
 {
+  auto file = path(_dir, FileName::desc);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   Result<ProductDescription> result;
 
-  std::wifstream stream(path(_dir, FileName::desc));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -84,9 +94,16 @@ I_FileIO::Result<ProductDescription> DBIO::loadDescriptions() const
 
 I_FileIO::Result<Operator> DBIO::loadOperators() const
 {
+  auto file = path(_dir, FileName::oper);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   Result<Operator> result;
 
-  std::wifstream stream(path(_dir, FileName::oper));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -118,9 +135,16 @@ I_FileIO::Result<Operator> DBIO::loadOperators() const
 
 I_FileIO::Result<Customer> DBIO::loadCustomers() const
 {
+  auto file = path(_dir, FileName::cust);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   Result<Customer> result;
 
-  std::wifstream stream(path(_dir, FileName::cust));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -154,9 +178,16 @@ I_FileIO::Result<Order> DBIO::loadOrders() const
 {
   const static std::wregex expr {L"(\\s*" + std::wstring(Order::className) + LR"(\s*\{[^\[]+\[[^\[]*\]\s*\}))"};
 
+  auto file = path(_dir, FileName::order);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   Result<Order> result;
 
-  std::wifstream stream(path(_dir, FileName::order));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -203,9 +234,16 @@ I_FileIO::Result<Warehouse> DBIO::loadWarehouses() const
 {
   const static std::wregex expr {L"(\\s*" + std::wstring(Warehouse::className) + LR"(\s*\{[^\[]+\[[^\[]*\]\s*\}))"};
 
+  auto file = path(_dir, FileName::ware);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   Result<Warehouse> result;
 
-  std::wifstream stream(path(_dir, FileName::ware));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -320,7 +358,7 @@ void DBIO::saveOrders(const std::vector<Order>& orders) const
 }
 
 
-void DBIO::saveWarehouses(const std::vector<Warehouse>& warehouses) const
+void DBIO::saveWarehouses(const std::vector<Warehouse*>& warehouses) const
 {
   std::wofstream stream(path(_dir, FileName::ware));
 
@@ -331,7 +369,8 @@ void DBIO::saveWarehouses(const std::vector<Warehouse>& warehouses) const
 
   for (auto&& desc : warehouses)
   {
-    stream << desc.toString() << L'\n';
+    PICKLEE_ASSERT(desc != nullptr);
+    stream << desc->toString() << L'\n';
   }
 
   stream.close();
@@ -340,9 +379,16 @@ void DBIO::saveWarehouses(const std::vector<Warehouse>& warehouses) const
 
 std::tuple<int, int, int> DBIO::loadId() const
 {
+  auto file = path(_dir, FileName::configs);
+
+  if (not std::filesystem::exists(file))
+  {
+    return {};
+  }
+
   const static std::wregex expr {LR"(Id \{\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*\})"};
 
-  std::wifstream stream(path(_dir, FileName::configs));
+  std::wifstream stream(file);
   if (not stream.is_open())
   {
     throw FileIOException(_dir);
@@ -357,6 +403,10 @@ std::tuple<int, int, int> DBIO::loadId() const
       if (std::regex_search(buffer, match, expr))
       {
         return {std::stoi(match[1].str()), std::stoi(match[2].str()), std::stoi(match[3].str())};
+      }
+      else
+      {
+        return {0, 0, 0};
       }
     }
   }
