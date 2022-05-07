@@ -1,5 +1,6 @@
 #include "EditableList.hpp"
 
+#include "../Logger.hpp"
 #include "EditableWidget.hpp"
 
 #include <QScrollArea>
@@ -48,8 +49,8 @@ EditableList::EditableList(bool hasScroll) : QWidget {nullptr}
 
 void EditableList::insert(EditableWidget* widget)
 {
-  assert(not _widgets.contains(widget));
-  assert(widget != nullptr);
+  PICKLEE_ASSERT(not _widgets.contains(widget));
+  PICKLEE_ASSERT(widget != nullptr);
 
   _widgets << widget;
   _layout->addWidget(widget);
@@ -59,11 +60,12 @@ void EditableList::insert(EditableWidget* widget)
 
 void EditableList::remove(EditableWidget* widget)
 {
-  assert(widget != nullptr);
-  assert(_widgets.contains(widget));
+  PICKLEE_ASSERT(widget != nullptr);
+  PICKLEE_ASSERT(_widgets.contains(widget));
 
   _widgets.removeOne(widget);
   _layout->removeWidget(widget);
+  widget->deleteLater();
 }
 
 
@@ -121,7 +123,8 @@ void EditableList::onWidgetSelected()
 {
   EditableWidget* widget = qobject_cast<EditableWidget*>(sender());
 
-  assert(widget != nullptr);
+  PICKLEE_ASSERT(widget != nullptr);
+
   if (widget == nullptr)
   {
     return;

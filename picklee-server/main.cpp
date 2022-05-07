@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
   MainWindow window;
   window.show();
 
+  kernel::setDescriptionPresenter(&window);
   kernel::loadDataBase();
 
   int code = app.exec();

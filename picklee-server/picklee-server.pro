@@ -49,6 +49,7 @@ HEADERS += \
     ui/CustomerWidget.hpp \
     ui/EditableList.hpp \
     ui/EditableWidget.hpp \
+    ui/I_ProductDescriptionPresenter.hpp \
     ui/OperatorWidget.hpp \
     ui/OrderWidget.hpp \
     ui/ProductCountWidget.hpp \

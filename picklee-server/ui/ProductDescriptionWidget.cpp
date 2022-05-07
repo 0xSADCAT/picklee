@@ -70,10 +70,14 @@ void ProductDescriptionWidget::onViewMode(bool reset)
 
     if (_idEdit->text() != _idLabel->text() or _descEdit->text() != _descLabel->text())
     {
-      emit dataChanged(_idLabel->text(), _idEdit->text(), _descEdit->text());
+      QString id = _idLabel->text();
+      QString newId = _idEdit->text();
+      QString desc = _descEdit->text();
 
       _idLabel->setText(_idEdit->text());
       _descLabel->setText(_descEdit->text());
+
+      emit dataChanged(id, newId, desc);
     }
   }
 }
